@@ -16,8 +16,24 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "TigerDuck — 臺科大校園助手",
+  metadataBase: new URL("https://tigerduck.app"),
+  title: {
+    default: "TigerDuck — 臺科大校園助手",
+    template: "%s | TigerDuck",
+  },
   description: "由臺科大學生建造的校園助手 App，整合作業、課表、圖書館、行事曆",
+  openGraph: {
+    type: "website",
+    siteName: "TigerDuck",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "TigerDuck" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -42,6 +58,13 @@ export default function RootLayout({
             } catch(e) {}
           })();
         ` }} />
+        {process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN && (
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={`{"token": "${process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN}"}`}
+          />
+        )}
       </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
