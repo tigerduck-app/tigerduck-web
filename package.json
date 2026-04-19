@@ -10,7 +10,10 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "preview": "opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare deploy"
+    "deploy": "opennextjs-cloudflare deploy",
+    "budgets": "bash scripts/check-budgets.sh",
+    "lighthouse": "bash scripts/lighthouse-check.sh",
+    "a11y": "npx tsx scripts/axe-check.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -22,7 +25,9 @@
     "three": "^0.184.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.2",
     "@opennextjs/cloudflare": "^1.8.3",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
