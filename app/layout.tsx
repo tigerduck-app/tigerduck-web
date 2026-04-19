@@ -25,11 +25,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "TigerDuck",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "TigerDuck" }],
+    images: [{ url: "https://tigerduck.app/og-image.png", width: 1200, height: 630, alt: "TigerDuck" }],
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/og-image.png"],
+    images: ["https://tigerduck.app/og-image.png"],
   },
   icons: {
     icon: "/favicon.ico",
@@ -48,6 +48,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <meta property="og:image" content="https://tigerduck.app/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {
             try {
