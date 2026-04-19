@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "features": "功能",
+    "download": "下載",
+    "roadmap": "開發計畫",
+    "team": "團隊",
+    "faq": "常見問題",
+    "policy": "隱私政策"
+  },
+  "hero": {
+    "title": "你的臺科大校園助手",
+    "subtitle": "作業、課表、圖書館、行事曆，一個 App 全搞定",
+    "badge": "由臺科學生建造"
+  },
+  "cta": {
+    "ios": "加入 iOS 內測",
+    "android": "加入 Android 內測",
+    "iosSub": "TestFlight 免費加入",
+    "androidSub": "Discord 申請內測資格"
+  },
+  "stats": {
+    "iosStars": "iOS GitHub Stars",
+    "androidStars": "Android GitHub Stars",
+    "contributors": "貢獻者",
+    "version": "最新版本"
+  },
+  "features": {
+    "title": "核心功能",
+    "subtitle": "為臺科大學生量身打造的六大功能",
+    "homework": {
+      "title": "作業追蹤",
+      "description": "全自動從 Moodle 同步作業與截止日期，動態島即時提醒"
+    },
+    "classtable": {
+      "title": "課表",
+      "description": "從選課系統同步，動態島顯示下一節課資訊"
+    },
+    "calendar": {
+      "title": "行事曆",
+      "description": "整合校公告、Moodle 等行程資訊"
+    },
+    "library": {
+      "title": "圖書館",
+      "description": "秒開入館 QR-Code，無任何延遲"
+    },
+    "customize": {
+      "title": "客製化",
+      "description": "自由拖放區塊排序、編輯 Tab、選擇主題色"
+    },
+    "platform": {
+      "title": "平台特色",
+      "description": "iOS Dynamic Island / Widget、Android 時光機雙樣式"
+    }
+  },
+  "ios": {
+    "title": "原汁原味 iOS 體驗",
+    "subtitle": "Dynamic Island、Widget、Live Activity 全支援",
+    "badge": "iOS 18+"
+  },
+  "android": {
+    "title": "Material You，讓手機感覺是你的",
+    "subtitle": "時光機雙樣式、Material 3 動態配色",
+    "badge": "Android 8.0+"
+  },
+  "roadmap": {
+    "title": "開發計畫",
+    "subtitle": "我們正在努力的方向",
+    "status": {
+      "done": "已完成",
+      "inProgress": "開發中",
+      "planned": "規劃中"
+    }
+  },
+  "team": {
+    "title": "開發團隊",
+    "subtitle": "由臺科大學生共同建造",
+    "contribute": "成為貢獻者"
+  },
+  "faq": {
+    "title": "常見問題",
+    "subtitle": "有任何疑問嗎？"
+  },
+  "footer": {
+    "about": "關於",
+    "aboutDesc": "由臺科學生建造的校園助手",
+    "disclaimer": "本專案為學生獨立開發，非 NTUST 官方專案",
+    "links": "連結",
+    "contact": "聯絡",
+    "copyright": "© 2026 TigerDuck Contributors, AGPL-3.0 licensed"
+  },
+  "policy": {
+    "title": "隱私權政策",
+    "lastUpdated": "最後更新：2026-04-19"
+  },
+  "deleteAccount": {
+    "title": "刪除帳號",
+    "lastUpdated": "最後更新：2026-04-19"
+  }
+}
