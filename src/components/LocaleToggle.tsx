@@ -5,7 +5,7 @@ export function LocaleToggle() {
   const { locale, toggle } = useLocale();
   const messages = tFor(locale);
   const targetLabel = locale === 'zh' ? 'English' : '中文';
-  const display = locale === 'zh' ? '中' : 'EN';
+  const display = locale === 'zh' ? 'EN' : '中';
 
   return (
     <button
