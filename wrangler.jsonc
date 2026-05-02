@@ -9,7 +9,7 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tigerduck-web",
+  "name": "tigerduck-website",
   "compatibility_date": "2025-04-15",
   "compatibility_flags": ["global_fetch_strictly_public"],
   "assets": {
