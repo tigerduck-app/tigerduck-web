@@ -47,7 +47,7 @@ export function TopNav() {
             {messages.discord}
           </a>
           <a href={SUPPORT_FORM_URL} className="td-nav-link">
-            {messages.support}
+            {messages.feedback}
           </a>
           {downloadHref ? (
             <a href={downloadHref} className="td-nav-link td-nav-cta">

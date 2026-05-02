@@ -5,7 +5,7 @@ interface NavMessages {
   gdg: string;
   github: string;
   discord: string;
-  support: string;
+  feedback: string;
   download: string;
 }
 
@@ -83,7 +83,7 @@ interface FooterMessages {
     discord: string;
     gdg: string;
     contributors: string;
-    supportForm: string;
+    feedbackForm: string;
     privacy: string;
     deleteAccount: string;
   };
@@ -173,7 +173,7 @@ const zh: Messages = {
     gdg: 'GDG',
     github: 'GitHub',
     discord: 'Discord',
-    support: '支援',
+    feedback: '回饋',
     download: '下載',
   },
   hero: {
@@ -309,14 +309,14 @@ const zh: Messages = {
     links: {
       iosApp: 'iOS · App Store',
       androidApp: 'Android · Google Play',
-      iosRepo: 'iOS GitHub Repository',
-      androidRepo: 'Android GitHub Repository',
+      iosRepo: 'iOS Repository',
+      androidRepo: 'Android Repository',
       issues: 'Issue 回報',
       license: 'AGPL-3.0',
       discord: 'Discord',
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
-      supportForm: '支援表單',
+      feedbackForm: '回饋表單',
       privacy: '隱私政策',
       deleteAccount: '刪除帳號',
     },
@@ -409,7 +409,7 @@ const en: Messages = {
     gdg: 'GDG',
     github: 'GitHub',
     discord: 'Discord',
-    support: 'Support',
+    feedback: 'Feedback',
     download: 'Download',
   },
   hero: {
@@ -580,14 +580,14 @@ const en: Messages = {
     links: {
       iosApp: 'iOS · App Store',
       androidApp: 'Android · Google Play',
-      iosRepo: 'iOS GitHub repository',
-      androidRepo: 'Android GitHub repository',
+      iosRepo: 'iOS repository',
+      androidRepo: 'Android repository',
       issues: 'Report an issue',
       license: 'AGPL-3.0',
       discord: 'Discord',
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
-      supportForm: 'Support form',
+      feedbackForm: 'Feedback form',
       privacy: 'Privacy policy',
       deleteAccount: 'Delete account',
     },

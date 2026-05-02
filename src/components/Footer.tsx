@@ -67,7 +67,7 @@ export function Footer() {
             <h4>{messages.support}</h4>
             <ul>
               <li>
-                <a href={SUPPORT_FORM_URL}>{messages.links.supportForm}</a>
+                <a href={SUPPORT_FORM_URL}>{messages.links.feedbackForm}</a>
               </li>
               <li>
                 <Link to="/privacy-policy">{messages.links.privacy}</Link>
