@@ -546,7 +546,6 @@ const en: Messages = {
     ],
     contributorsTitle: 'Contributors',
     contributorsLede: [
-      'Mostly from the Open Source Tech Research Club',
       'Google Developer Groups on Campus | NTUST',
     ],
   },
@@ -592,7 +591,7 @@ const en: Messages = {
       privacy: 'Privacy policy',
       deleteAccount: 'Delete account',
     },
-    copyright: '© 2026 TigerDuck · Open Source Tech Research Club',
+    copyright: '© 2026 TigerDuck',
     org: 'Google Developer Groups on Campus | NTUST',
   },
   privacy: {
