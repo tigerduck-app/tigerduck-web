@@ -1,0 +1,169 @@
+/* TigerDuck Design Tokens */
+:root {
+  /* Brand Accents */
+  --td-blue: #007aff;
+  --td-purple: #af52de;
+  --td-pink: #ff2d55;
+  --td-red: #ff3b30;
+  --td-orange: #ff9500;
+  --td-green: #34c759;
+  --td-cyan: #5ac8fa;
+  --td-indigo: #5856d6;
+
+  /* Course Palette (Time Slider only) */
+  --td-course-01: #ff6b6b;
+  --td-course-02: #4ecdc4;
+  --td-course-03: #45b7d1;
+  --td-course-04: #f39c12;
+  --td-course-05: #dda0dd;
+  --td-course-06: #2ecc71;
+  --td-course-07: #e74c3c;
+  --td-course-08: #3498db;
+  --td-course-09: #f7dc6f;
+  --td-course-10: #9b59b6;
+  --td-course-11: #1abc9c;
+  --td-course-12: #e67e22;
+  --td-course-13: #85c1e9;
+  --td-course-14: #d35400;
+  --td-course-15: #27ae60;
+  --td-course-16: #c0392b;
+  --td-course-17: #8e44ad;
+  --td-course-18: #16a085;
+  --td-course-19: #f1c40f;
+  --td-course-20: #2980b9;
+
+  /* Spacing */
+  --td-space-xs: 4px;
+  --td-space-sm: 8px;
+  --td-space-md: 12px;
+  --td-space-lg: 16px;
+  --td-space-xl: 24px;
+  --td-space-2xl: 32px;
+  --td-space-3xl: 48px;
+  --td-space-4xl: 72px;
+  --td-space-5xl: 120px;
+
+  /* Radius */
+  --td-radius-sm: 8px;
+  --td-radius-md: 12px;
+  --td-radius-lg: 18px;
+  --td-radius-xl: 24px;
+  --td-radius-2xl: 32px;
+
+  /* Typography */
+  --td-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --td-font-tc: 'Noto Sans TC', 'Inter', system-ui, sans-serif;
+  --td-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Density default */
+  --td-section-py: 120px;
+  --td-card-pad: 32px;
+
+  /* Surface — Light (default) */
+  --td-bg: #ffffff;
+  --td-bg-soft: #f2f2f7;
+  --td-bg-card: #ffffff;
+  --td-bg-tint: #f9f9fb;
+  --td-border-soft: #e5e5ea;
+  --td-border-hairline: rgba(60, 60, 67, 0.12);
+  --td-text: #1c1c1e;
+  --td-text-secondary: #5b5f68;
+  --td-text-tertiary: #8e8e93;
+
+  /* Shadows — restrained, iOS-style */
+  --td-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.03);
+  --td-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --td-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='dark'] {
+  --td-bg: #000000;
+  --td-bg-soft: #1c1c1e;
+  --td-bg-card: #1c1c1e;
+  --td-bg-tint: #141416;
+  --td-border-soft: #2c2c2e;
+  --td-border-hairline: rgba(235, 235, 245, 0.16);
+  --td-text: #ffffff;
+  --td-text-secondary: #aeaeb2;
+  --td-text-tertiary: #8e8e93;
+  --td-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --td-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --td-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Auto theme follows system preference */
+@media (prefers-color-scheme: dark) {
+  [data-theme='auto'] {
+    --td-bg: #000000;
+    --td-bg-soft: #1c1c1e;
+    --td-bg-card: #1c1c1e;
+    --td-bg-tint: #141416;
+    --td-border-soft: #2c2c2e;
+    --td-border-hairline: rgba(235, 235, 245, 0.16);
+    --td-text: #ffffff;
+    --td-text-secondary: #aeaeb2;
+    --td-text-tertiary: #8e8e93;
+    --td-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --td-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --td-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Density */
+[data-density='compact'] {
+  --td-section-py: 64px;
+  --td-card-pad: 20px;
+}
+[data-density='regular'] {
+  --td-section-py: 96px;
+  --td-card-pad: 28px;
+}
+[data-density='spacious'] {
+  --td-section-py: 120px;
+  --td-card-pad: 32px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--td-font-tc);
+  background: var(--td-bg);
+  color: var(--td-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+}
+body {
+  line-height: 1.6;
+}
+a {
+  color: var(--td-blue);
+  text-decoration: none;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+img,
+svg {
+  display: block;
+}
+::selection {
+  background: rgba(0, 122, 255, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

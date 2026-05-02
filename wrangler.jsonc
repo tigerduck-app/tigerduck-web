@@ -1,9 +1,26 @@
+/**
+ * TigerDuck Web — Cloudflare Workers (Static Assets / SPA)
+ *
+ * Deploys the Vite-built SPA in `dist/` as Worker static assets.
+ * - `not_found_handling: "single-page-application"` lets client-side routing fall back to index.html.
+ * - Custom domain bound via `routes` to tigerduck.app/*.
+ *
+ * Docs: https://developers.cloudflare.com/workers/static-assets/
+ */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
-  "name": "tigerduck-website",
-  "compatibility_date": "2024-12-01",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
-  "routes": [{ "pattern": "tigerduck.app/*", "zone_name": "tigerduck.app" }]
+  "name": "tigerduck-web",
+  "compatibility_date": "2025-04-15",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    { "pattern": "tigerduck.app/*", "zone_name": "tigerduck.app" },
+    { "pattern": "www.tigerduck.app/*", "zone_name": "tigerduck.app" }
+  ],
+  "observability": {
+    "enabled": true
+  }
 }

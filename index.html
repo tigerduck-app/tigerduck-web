@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#007AFF" />
+
+    <title>TigerDuck — 為臺科大學生打造的校園助手</title>
+    <meta name="description" content="一個將作業、課表、行事曆、公告、圖書館、成績都整合起來的 App。功能不夠？你提出我們都會做！" />
+
+    <meta property="og:title" content="TigerDuck — 為臺科大學生打造的校園助手" />
+    <meta property="og:description" content="把作業、課表、行事曆、公告、圖書館、成績整合進一個 App" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tigerduck.app" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:image" content="https://tigerduck.app/og-image.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TigerDuck — 為臺科大學生打造的校園助手" />
+    <meta name="twitter:description" content="一個將作業、課表、行事曆、公告、圖書館、成績都整合起來的 App。功能不夠？你提出我們都會做！" />
+    <meta name="twitter:image" content="https://tigerduck.app/og-image.png" />
+
+    <link rel="canonical" href="https://tigerduck.app/" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <script>
+      // No-flash theme boot — runs before React mounts.
+      (function () {
+        try {
+          var t = localStorage.getItem('td-theme');
+          if (t !== 'auto' && t !== 'light' && t !== 'dark') t = 'auto';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (_e) {
+          document.documentElement.setAttribute('data-theme', 'auto');
+        }
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
