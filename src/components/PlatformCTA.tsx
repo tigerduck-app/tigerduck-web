@@ -34,7 +34,7 @@ export function PlatformCTA({ size = 'lg', secondary = false }: Props) {
     return (
       <a href={APP_STORE_URL} className={primaryCls}>
         <AppleIcon />
-        <span>App Store</span>
+        <span>TestFlight</span>
       </a>
     );
   }
@@ -42,7 +42,7 @@ export function PlatformCTA({ size = 'lg', secondary = false }: Props) {
     return (
       <a href={PLAY_STORE_URL} className={primaryCls}>
         <AndroidIcon />
-        <span>Google Play</span>
+        <span>APK File</span>
       </a>
     );
   }
@@ -50,11 +50,11 @@ export function PlatformCTA({ size = 'lg', secondary = false }: Props) {
     <>
       <a href={APP_STORE_URL} className={primaryCls}>
         <AppleIcon />
-        <span>App Store</span>
+        <span>TestFlight</span>
       </a>
       <a href={PLAY_STORE_URL} className={ghostCls}>
         <AndroidIcon />
-        <span>Google Play</span>
+        <span>APK File</span>
       </a>
     </>
   );

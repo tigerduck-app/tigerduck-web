@@ -307,8 +307,8 @@ const zh: Messages = {
     community: '社群',
     support: '支援',
     links: {
-      iosApp: 'iOS · App Store',
-      androidApp: 'Android · Google Play',
+      iosApp: 'iOS · TestFlight',
+      androidApp: 'Android · APK File',
       iosRepo: 'iOS Repository',
       androidRepo: 'Android Repository',
       issues: 'Issue 回報',
@@ -578,8 +578,8 @@ const en: Messages = {
     community: 'Community',
     support: 'Support',
     links: {
-      iosApp: 'iOS · App Store',
-      androidApp: 'Android · Google Play',
+      iosApp: 'iOS · TestFlight',
+      androidApp: 'Android · APK File',
       iosRepo: 'iOS repository',
       androidRepo: 'Android repository',
       issues: 'Report an issue',
