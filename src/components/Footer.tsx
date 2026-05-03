@@ -1,13 +1,13 @@
 import { Link } from '@/components/Link';
 import {
-  ANDROID_RELEASES_URL,
+  APP_STORE_URL,
+  PLAY_STORE_URL,
   DISCORD_URL,
   GDG_NTUST_URL,
   GITHUB_ANDROID_REPO,
   GITHUB_IOS_REPO,
   LICENSE_URL,
   SUPPORT_FORM_URL,
-  TESTFLIGHT_URL,
 } from '@/lib/constants';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
@@ -24,10 +24,10 @@ export function Footer() {
             <h4>{messages.download}</h4>
             <ul>
               <li>
-                <a href={TESTFLIGHT_URL}>{messages.links.iosApp}</a>
+                <a href={APP_STORE_URL}>{messages.links.iosApp}</a>
               </li>
               <li>
-                <a href={ANDROID_RELEASES_URL}>{messages.links.androidApp}</a>
+                <a href={PLAY_STORE_URL}>{messages.links.androidApp}</a>
               </li>
             </ul>
           </div>
