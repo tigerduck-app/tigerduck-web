@@ -31,7 +31,7 @@ export function HeroB() {
           </p>
 
           <div className="td-cta-row" style={{ marginBottom: 24 }}>
-            <PlatformCTA />
+            <PlatformCTA placement="hero" />
           </div>
         </div>
 

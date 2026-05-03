@@ -30,7 +30,7 @@ export function CTASection() {
           {messages.lede}
         </p>
         <div className="td-cta-row" style={{ justifyContent: 'center' }}>
-          <PlatformCTA />
+          <PlatformCTA placement="final_cta" />
           <a href={GITHUB_ORG_URL} className="td-btn td-btn--ghost td-btn--lg td-cta-github">
             <GitHubIcon />
             <span>GitHub</span>

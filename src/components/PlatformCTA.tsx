@@ -1,11 +1,21 @@
 import { useEffect, useState } from 'react';
 import { detectPlatform, type Platform } from '@/lib/detectPlatform';
 import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/constants';
+import { trackEvent } from '@/lib/analytics';
 
 type Props = {
   size?: 'md' | 'lg';
   secondary?: boolean;
+  placement?: string;
 };
+
+function fireCtaClick(store: 'testflight' | 'apk', placement: string, plat: Platform) {
+  trackEvent('cta_click', {
+    store,
+    placement,
+    detected_platform: plat,
+  });
+}
 
 const AppleIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -19,7 +29,7 @@ const AndroidIcon = () => (
   </svg>
 );
 
-export function PlatformCTA({ size = 'lg', secondary = false }: Props) {
+export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unknown' }: Props) {
   const [plat, setPlat] = useState<Platform>('desktop');
 
   useEffect(() => {
@@ -29,10 +39,14 @@ export function PlatformCTA({ size = 'lg', secondary = false }: Props) {
   const cls = `td-btn td-btn--${size}`;
   const primaryCls = `${cls} ${secondary ? 'td-btn--ghost' : 'td-btn--primary'}`;
   const ghostCls = `${cls} td-btn--ghost`;
-  console.log(plat)
+
   if (plat === 'ios') {
     return (
-      <a href={APP_STORE_URL} className={primaryCls}>
+      <a
+        href={APP_STORE_URL}
+        className={primaryCls}
+        onClick={() => fireCtaClick('testflight', placement, plat)}
+      >
         <AppleIcon />
         <span>TestFlight</span>
       </a>
@@ -40,7 +54,11 @@ export function PlatformCTA({ size = 'lg', secondary = false }: Props) {
   }
   if (plat === 'android') {
     return (
-      <a href={PLAY_STORE_URL} className={primaryCls}>
+      <a
+        href={PLAY_STORE_URL}
+        className={primaryCls}
+        onClick={() => fireCtaClick('apk', placement, plat)}
+      >
         <AndroidIcon />
         <span>APK File</span>
       </a>
@@ -48,11 +66,19 @@ export function PlatformCTA({ size = 'lg', secondary = false }: Props) {
   }
   return (
     <>
-      <a href={APP_STORE_URL} className={primaryCls}>
+      <a
+        href={APP_STORE_URL}
+        className={primaryCls}
+        onClick={() => fireCtaClick('testflight', placement, plat)}
+      >
         <AppleIcon />
         <span>TestFlight</span>
       </a>
-      <a href={PLAY_STORE_URL} className={ghostCls}>
+      <a
+        href={PLAY_STORE_URL}
+        className={ghostCls}
+        onClick={() => fireCtaClick('apk', placement, plat)}
+      >
         <AndroidIcon />
         <span>APK File</span>
       </a>
