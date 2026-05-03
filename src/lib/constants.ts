@@ -5,7 +5,7 @@ export const TESTFLIGHT_URL = 'https://testflight.apple.com/join/eVt9Gjkw';
 export const GITHUB_ORG_URL = 'https://github.com/tigerduck-app';
 export const GITHUB_IOS_REPO = 'https://github.com/tigerduck-app/tigerduck-app';
 export const GITHUB_ANDROID_REPO = 'https://github.com/tigerduck-app/tigerduck-app-android';
-export const LICENSE_URL = 'https://github.com/tigerduck-app/tigerduck-app/blob/main/LICENSE';
+export const LICENSE_URL = 'https://www.gnu.org/licenses/agpl-3.0.en.html';
 export const ANDROID_RELEASES_URL = 'https://github.com/tigerduck-app/tigerduck-app-android/releases';
 
 export const GDG_NTUST_URL = 'https://gdg-ntust.org';
