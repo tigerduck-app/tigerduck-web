@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
+import { trackEvent } from '@/lib/analytics';
 
 const screenshots = [
   '/screenshots/homeworks.png',
@@ -132,8 +133,31 @@ export function FeaturesSection() {
   const slideWidth = slideWidthRef.current || 1;
   const dragPx = isDragging ? dragOffset : 0;
 
+  const sectionRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          trackEvent('view_section', { section_name: 'features' });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="features" className="td-section" aria-labelledby="features-heading">
+    <section
+      id="features"
+      ref={sectionRef}
+      className="td-section"
+      aria-labelledby="features-heading"
+    >
       <div className="td-container">
         <div style={{ maxWidth: 720, marginBottom: 56 }}>
           <h2 id="features-heading" className="td-h2">
