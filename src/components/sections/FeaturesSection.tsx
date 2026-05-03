@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
 
@@ -12,6 +12,20 @@ const screenshots = [
   '/screenshots/customize.png',
 ];
 
+const SWIPE_THRESHOLD_PX = 48;
+const LOCK_THRESHOLD_PX = 6;
+const MAX_BLUR_PX = 6;
+const MIN_OPACITY = 0.35;
+const VISIBLE_RANGE = 1.5;
+
+function shortestDelta(i: number, idx: number, total: number): number {
+  let delta = i - idx;
+  const half = total / 2;
+  if (delta > half) delta -= total;
+  else if (delta < -half) delta += total;
+  return delta;
+}
+
 export function FeaturesSection() {
   const { locale } = useLocale();
   const messages = tFor(locale).features;
@@ -21,6 +35,102 @@ export function FeaturesSection() {
   const f = features[idx % total];
 
   const go = (n: number) => setIdx((n + total) % total);
+
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [pointerActive, setPointerActive] = useState(false);
+
+  const stackRef = useRef<HTMLDivElement | null>(null);
+  const pointerStartXRef = useRef(0);
+  const pointerStartYRef = useRef(0);
+  const pointerIdRef = useRef<number | null>(null);
+  const horizontalLockedRef = useRef<'h' | 'v' | null>(null);
+  const slideWidthRef = useRef(0);
+  const dragOffsetRef = useRef(0);
+
+  const endDrag = useCallback(() => {
+    if (pointerIdRef.current === null) return;
+    pointerIdRef.current = null;
+
+    const dx = dragOffsetRef.current;
+    dragOffsetRef.current = 0;
+    const wasHorizontal = horizontalLockedRef.current === 'h';
+    horizontalLockedRef.current = null;
+
+    setPointerActive(false);
+    setIsDragging(false);
+    setDragOffset(0);
+
+    if (wasHorizontal && Math.abs(dx) > SWIPE_THRESHOLD_PX) {
+      const step = dx < 0 ? 1 : -1;
+      setIdx((i) => (((i + step) % total) + total) % total);
+    }
+  }, [total]);
+
+  useEffect(() => {
+    if (!pointerActive) return;
+    document.body.classList.add('td-swipe-active');
+    return () => {
+      document.body.classList.remove('td-swipe-active');
+    };
+  }, [pointerActive]);
+
+  useEffect(() => {
+    if (!pointerActive) return;
+
+    const matches = (e: PointerEvent) =>
+      pointerIdRef.current !== null && e.pointerId === pointerIdRef.current;
+
+    const onMove = (e: PointerEvent) => {
+      if (!matches(e)) return;
+      const dx = e.clientX - pointerStartXRef.current;
+      const dy = e.clientY - pointerStartYRef.current;
+
+      if (horizontalLockedRef.current === null) {
+        if (Math.abs(dx) < LOCK_THRESHOLD_PX && Math.abs(dy) < LOCK_THRESHOLD_PX) return;
+        horizontalLockedRef.current = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+      }
+      if (horizontalLockedRef.current !== 'h') return;
+
+      if (e.cancelable) e.preventDefault();
+      setIsDragging(true);
+      dragOffsetRef.current = dx;
+      setDragOffset(dx);
+    };
+
+    const onEnd = (e: PointerEvent) => {
+      if (!matches(e)) return;
+      endDrag();
+    };
+
+    const onBlur = () => endDrag();
+
+    window.addEventListener('pointermove', onMove, { passive: false });
+    window.addEventListener('pointerup', onEnd);
+    window.addEventListener('pointercancel', onEnd);
+    window.addEventListener('blur', onBlur);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onEnd);
+      window.removeEventListener('pointercancel', onEnd);
+      window.removeEventListener('blur', onBlur);
+    };
+  }, [pointerActive, endDrag]);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (pointerIdRef.current !== null) return;
+    pointerIdRef.current = e.pointerId;
+    pointerStartXRef.current = e.clientX;
+    pointerStartYRef.current = e.clientY;
+    horizontalLockedRef.current = null;
+    slideWidthRef.current = stackRef.current?.getBoundingClientRect().width ?? 0;
+    dragOffsetRef.current = 0;
+    setPointerActive(true);
+  };
+
+  const slideWidth = slideWidthRef.current || 1;
+  const dragPx = isDragging ? dragOffset : 0;
 
   return (
     <section id="features" className="td-section" aria-labelledby="features-heading">
@@ -148,20 +258,42 @@ export function FeaturesSection() {
           </div>
 
           <div className="td-feature-visual">
-            <div className="td-feature-stack" aria-hidden={false}>
-              {features.map((feat, i) => (
-                <img
-                  key={i}
-                  src={screenshots[i]}
-                  alt={i === idx ? feat.alt : ''}
-                  className={`td-feature-shot${i === idx ? ' is-active' : ''}`}
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  width={1419}
-                  height={2796}
-                  draggable={false}
-                />
-              ))}
+            <div
+              ref={stackRef}
+              className={`td-feature-stack${isDragging ? ' is-dragging' : ''}`}
+              onPointerDown={onPointerDown}
+              role="group"
+              aria-roledescription="carousel"
+              aria-label={messages.title}
+            >
+              {features.map((feat, i) => {
+                const delta = shortestDelta(i, idx, total);
+                const effectiveDelta = delta + dragPx / slideWidth;
+                const absEffective = Math.abs(effectiveDelta);
+                const visible = absEffective < VISIBLE_RANGE;
+                const progress = Math.min(absEffective, 1);
+                const opacity = visible ? 1 - progress * (1 - MIN_OPACITY) : 0;
+                const blurPx = visible ? progress * MAX_BLUR_PX : 0;
+                return (
+                  <img
+                    key={i}
+                    src={screenshots[i]}
+                    alt={i === idx ? feat.alt : ''}
+                    className="td-feature-shot"
+                    style={{
+                      transform: `translate3d(calc(${delta * 100}% + ${dragPx}px), 0, 0)`,
+                      opacity,
+                      filter: blurPx > 0.05 ? `blur(${blurPx.toFixed(2)}px)` : 'none',
+                      visibility: visible ? 'visible' : 'hidden',
+                    }}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    width={1419}
+                    height={2796}
+                    draggable={false}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

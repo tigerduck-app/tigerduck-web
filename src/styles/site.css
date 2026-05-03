@@ -618,27 +618,27 @@
   touch-action: pan-y;
   cursor: grab;
   border-radius: 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 .td-hero-carousel-viewport:active {
   cursor: grabbing;
 }
-.td-hero-carousel-track {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  will-change: transform;
-  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.td-hero-carousel-track.is-dragging {
-  transition: none;
-}
 .td-hero-carousel-slide {
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  will-change: transform, opacity, filter;
+  transition:
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.td-hero-carousel-viewport.is-dragging .td-hero-carousel-slide {
+  transition: none;
 }
 .td-hero-carousel-slide .td-hero-image {
   width: 100%;
@@ -676,7 +676,7 @@
   background: var(--td-text);
 }
 @media (prefers-reduced-motion: reduce) {
-  .td-hero-carousel-track {
+  .td-hero-carousel-slide {
     transition: none;
   }
 }
@@ -808,6 +808,16 @@
   width: 100%;
   max-width: 280px;
   aspect-ratio: 1419 / 2796;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  border-radius: 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.td-feature-stack:active {
+  cursor: grabbing;
 }
 .td-feature-shot {
   position: absolute;
@@ -816,17 +826,22 @@
   height: 100%;
   display: block;
   object-fit: contain;
-  opacity: 0;
-  transform: scale(0.985);
+  will-change: transform, opacity, filter;
   transition:
-    opacity 0.45s ease,
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   pointer-events: none;
+  -webkit-user-drag: none;
 }
-.td-feature-shot.is-active {
-  opacity: 1;
-  transform: scale(1);
+.td-feature-stack.is-dragging .td-feature-shot {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .td-feature-shot {
+    transition: none;
+  }
 }
 .td-feature-copy-col {
   display: flex;
@@ -1223,4 +1238,14 @@
   .td-doc-callout {
     padding: 20px 18px;
   }
+}
+
+/* ============ Drag-active selection guard ============
+   Toggled by carousel components while a pointer drag is in progress to
+   prevent accidental text selection (especially when the cursor leaves the
+   carousel and travels over surrounding copy). */
+body.td-swipe-active,
+body.td-swipe-active * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }

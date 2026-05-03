@@ -32,6 +32,17 @@ const AUTO_INTERVAL_MS = 4200;
 const RESUME_AFTER_INTERACTION_MS = 6000;
 const SWIPE_THRESHOLD_PX = 48;
 const LOCK_THRESHOLD_PX = 6;
+const MAX_BLUR_PX = 6;
+const MIN_OPACITY = 0.35;
+const VISIBLE_RANGE = 1.5;
+
+function shortestDelta(i: number, idx: number, total: number): number {
+  let delta = i - idx;
+  const half = total / 2;
+  if (delta > half) delta -= total;
+  else if (delta < -half) delta += total;
+  return delta;
+}
 
 export function HeroCarousel() {
   const { locale } = useLocale();
@@ -43,7 +54,7 @@ export function HeroCarousel() {
   const [pointerActive, setPointerActive] = useState(false);
   const [paused, setPaused] = useState(false);
 
-  const trackRef = useRef<HTMLDivElement | null>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
   const pointerStartXRef = useRef(0);
   const pointerStartYRef = useRef(0);
   const pointerIdRef = useRef<number | null>(null);
@@ -91,6 +102,14 @@ export function HeroCarousel() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!pointerActive) return;
+    document.body.classList.add('td-swipe-active');
+    return () => {
+      document.body.classList.remove('td-swipe-active');
+    };
+  }, [pointerActive]);
 
   const endDrag = useCallback(() => {
     if (pointerIdRef.current === null) return;
@@ -163,7 +182,7 @@ export function HeroCarousel() {
     pointerStartXRef.current = e.clientX;
     pointerStartYRef.current = e.clientY;
     horizontalLockedRef.current = null;
-    slideWidthRef.current = trackRef.current?.getBoundingClientRect().width ?? 0;
+    slideWidthRef.current = viewportRef.current?.getBoundingClientRect().width ?? 0;
     dragOffsetRef.current = 0;
     setPaused(true);
     setPointerActive(true);
@@ -184,7 +203,7 @@ export function HeroCarousel() {
   };
 
   const slideWidth = slideWidthRef.current || 1;
-  const offsetPct = -idx * 100 + (isDragging ? (dragOffset / slideWidth) * 100 : 0);
+  const dragPx = isDragging ? dragOffset : 0;
 
   return (
     <div
@@ -200,15 +219,19 @@ export function HeroCarousel() {
       }}
     >
       <div
-        ref={trackRef}
-        className="td-hero-carousel-viewport"
+        ref={viewportRef}
+        className={`td-hero-carousel-viewport${isDragging ? ' is-dragging' : ''}`}
         onPointerDown={onPointerDown}
       >
-        <div
-          className={`td-hero-carousel-track${isDragging ? ' is-dragging' : ''}`}
-          style={{ transform: `translate3d(${offsetPct}%, 0, 0)` }}
-        >
-          {slides.map((s, i) => (
+        {slides.map((s, i) => {
+          const delta = shortestDelta(i, idx, total);
+          const effectiveDelta = delta + dragPx / slideWidth;
+          const absEffective = Math.abs(effectiveDelta);
+          const visible = absEffective < VISIBLE_RANGE;
+          const progress = Math.min(absEffective, 1);
+          const opacity = visible ? 1 - progress * (1 - MIN_OPACITY) : 0;
+          const blurPx = visible ? progress * MAX_BLUR_PX : 0;
+          return (
             <div
               key={s.src}
               className="td-hero-carousel-slide"
@@ -216,6 +239,12 @@ export function HeroCarousel() {
               aria-roledescription="slide"
               aria-label={`${i + 1} / ${total}`}
               aria-hidden={i === idx ? undefined : true}
+              style={{
+                transform: `translate3d(calc(${delta * 100}% + ${dragPx}px), 0, 0)`,
+                opacity,
+                filter: blurPx > 0.05 ? `blur(${blurPx.toFixed(2)}px)` : 'none',
+                visibility: visible ? 'visible' : 'hidden',
+              }}
             >
               <img
                 src={s.src}
@@ -229,8 +258,8 @@ export function HeroCarousel() {
                 draggable={false}
               />
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
       <div className="td-hero-carousel-dots" role="tablist" aria-label={messages.dotsAriaLabel}>
