@@ -5,7 +5,6 @@ import {
   GDG_NTUST_URL,
   GITHUB_ANDROID_REPO,
   GITHUB_IOS_REPO,
-  GITHUB_ISSUES_URL,
   LICENSE_URL,
   SUPPORT_FORM_URL,
   TESTFLIGHT_URL,
@@ -40,9 +39,6 @@ export function Footer() {
               </li>
               <li>
                 <a href={GITHUB_ANDROID_REPO}>{messages.links.androidRepo}</a>
-              </li>
-              <li>
-                <a href={GITHUB_ISSUES_URL}>{messages.links.issues}</a>
               </li>
               <li>
                 <a href={LICENSE_URL}>{messages.links.license}</a>

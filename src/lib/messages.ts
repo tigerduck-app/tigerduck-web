@@ -78,7 +78,6 @@ interface FooterMessages {
     androidApp: string;
     iosRepo: string;
     androidRepo: string;
-    issues: string;
     license: string;
     discord: string;
     gdg: string;
@@ -311,7 +310,6 @@ const zh: Messages = {
       androidApp: 'Android · APK File',
       iosRepo: 'iOS Repository',
       androidRepo: 'Android Repository',
-      issues: 'Issue 回報',
       license: 'AGPL-3.0',
       discord: 'Discord',
       gdg: 'GDG on Campus | NTUST',
@@ -582,7 +580,6 @@ const en: Messages = {
       androidApp: 'Android · APK File',
       iosRepo: 'iOS repository',
       androidRepo: 'Android repository',
-      issues: 'Report an issue',
       license: 'AGPL-3.0',
       discord: 'Discord',
       gdg: 'GDG on Campus | NTUST',
