@@ -60,7 +60,7 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
         onClick={() => fireCtaClick('apk', placement, plat)}
       >
         <AndroidIcon />
-        <span>APK File</span>
+        <span>Play Store</span>
       </a>
     );
   }
@@ -80,7 +80,7 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
         onClick={() => fireCtaClick('apk', placement, plat)}
       >
         <AndroidIcon />
-        <span>APK File</span>
+        <span>Play Store</span>
       </a>
     </>
   );
