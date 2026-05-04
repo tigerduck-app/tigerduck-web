@@ -4,7 +4,7 @@ import {
   DISCORD_URL,
   GDG_NTUST_URL,
   GITHUB_ORG_URL,
-  PLAY_STORE_URL,
+  GOOGLE_PLAY_URL,
   SUPPORT_FORM_URL,
 } from '@/lib/constants';
 import { detectPlatform, type Platform } from '@/lib/detectPlatform';
@@ -15,7 +15,7 @@ import { tFor } from '@/lib/messages';
 
 const DOWNLOAD_URL_BY_PLATFORM: Record<Exclude<Platform, 'desktop'>, string> = {
   ios: APP_STORE_URL,
-  android: PLAY_STORE_URL,
+  android: GOOGLE_PLAY_URL,
 };
 
 export function TopNav() {

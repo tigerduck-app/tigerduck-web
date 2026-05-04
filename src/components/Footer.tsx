@@ -1,7 +1,7 @@
 import { Link } from '@/components/Link';
 import {
   APP_STORE_URL,
-  PLAY_STORE_URL,
+  GOOGLE_PLAY_URL,
   DISCORD_URL,
   GDG_NTUST_URL,
   GITHUB_ANDROID_REPO,
@@ -27,7 +27,7 @@ export function Footer() {
                 <a href={APP_STORE_URL}>{messages.links.iosApp}</a>
               </li>
               <li>
-                <a href={PLAY_STORE_URL}>{messages.links.androidApp}</a>
+                <a href={GOOGLE_PLAY_URL}>{messages.links.androidApp}</a>
               </li>
             </ul>
           </div>

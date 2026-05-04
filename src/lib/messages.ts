@@ -307,7 +307,7 @@ const zh: Messages = {
     support: '支援',
     links: {
       iosApp: 'iOS · TestFlight',
-      androidApp: 'Android · Play Store',
+      androidApp: 'Android · Google Play',
       iosRepo: 'iOS Repository',
       androidRepo: 'Android Repository',
       license: 'AGPL-3.0',
@@ -577,7 +577,7 @@ const en: Messages = {
     support: 'Support',
     links: {
       iosApp: 'iOS · TestFlight',
-      androidApp: 'Android · Play Store',
+      androidApp: 'Android · Google Play',
       iosRepo: 'iOS repository',
       androidRepo: 'Android repository',
       license: 'AGPL-3.0',

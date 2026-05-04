@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { detectPlatform, type Platform } from '@/lib/detectPlatform';
-import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/constants';
+import { APP_STORE_URL, GOOGLE_PLAY_URL } from '@/lib/constants';
 import { trackEvent } from '@/lib/analytics';
 
 type Props = {
@@ -55,12 +55,12 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
   if (plat === 'android') {
     return (
       <a
-        href={PLAY_STORE_URL}
+        href={GOOGLE_PLAY_URL}
         className={primaryCls}
         onClick={() => fireCtaClick('apk', placement, plat)}
       >
         <AndroidIcon />
-        <span>Play Store</span>
+        <span>Google Play</span>
       </a>
     );
   }
@@ -75,12 +75,12 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
         <span>TestFlight</span>
       </a>
       <a
-        href={PLAY_STORE_URL}
+        href={GOOGLE_PLAY_URL}
         className={ghostCls}
         onClick={() => fireCtaClick('apk', placement, plat)}
       >
         <AndroidIcon />
-        <span>Play Store</span>
+        <span>Google Play</span>
       </a>
     </>
   );
