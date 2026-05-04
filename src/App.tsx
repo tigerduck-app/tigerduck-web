@@ -9,7 +9,7 @@ import { useRoute } from '@/hooks/useRoute';
 import { useLocale } from '@/hooks/useLocale';
 import { EXTERNAL_REDIRECTS } from '@/lib/constants';
 import { tFor } from '@/lib/messages';
-import { loadGA, trackPageView } from '@/lib/analytics';
+import { trackPageView } from '@/lib/analytics';
 
 export default function App() {
   const path = useRoute();
@@ -18,7 +18,6 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-density', 'spacious');
-    loadGA();
   }, []);
 
   useEffect(() => {
