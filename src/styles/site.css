@@ -1231,6 +1231,54 @@
   font-size: 13px;
   color: var(--td-text-tertiary);
 }
+.td-doc-preface {
+  position: relative;
+  padding: 30px 32px 28px;
+  border-radius: var(--td-radius-xl);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--td-blue) 6%, var(--td-bg-card)),
+      var(--td-bg-card) 70%
+    );
+  border: 1px solid color-mix(in oklab, var(--td-blue) 22%, var(--td-border-hairline));
+  overflow: hidden;
+}
+.td-doc-preface::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 26px;
+  bottom: 26px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--td-blue);
+}
+.td-doc-preface-eyebrow {
+  display: inline-block;
+  font-family: var(--td-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--td-blue);
+  margin-bottom: 14px;
+}
+.td-doc-preface-body {
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: var(--td-text);
+  letter-spacing: -0.005em;
+}
+.td-doc-preface-body p {
+  margin: 0 0 12px;
+}
+.td-doc-preface-body p:last-child {
+  margin: 0;
+}
+.td-doc-preface-body strong {
+  font-weight: 600;
+  color: var(--td-text);
+}
 .td-policy-subhead {
   font-size: 13px;
   font-weight: 600;
@@ -1291,6 +1339,13 @@
   }
   .td-doc-callout {
     padding: 20px 18px;
+  }
+  .td-doc-preface {
+    padding: 24px 22px 22px;
+  }
+  .td-doc-preface-body {
+    font-size: 15.5px;
+    line-height: 1.75;
   }
 }
 

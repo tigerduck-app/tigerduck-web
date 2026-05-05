@@ -84,7 +84,6 @@ export function PrivacyPolicy() {
     ));
 
   const bodyByIndex: ReactNode[] = [
-    <p key="intro">{richText(messages.bodies.intro)}</p>,
     <>
       <p key="auth1">{richText(messages.bodies.auth1)}</p>
       <p key="authIntro">{messages.bodies.authReadIntro}</p>
@@ -141,6 +140,13 @@ export function PrivacyPolicy() {
       </header>
 
       <main className="td-container td-doc-body">
+        <section className="td-doc-preface td-reveal" aria-label={messages.prefaceLabel}>
+          <span className="td-doc-preface-eyebrow">{messages.prefaceLabel}</span>
+          <div className="td-doc-preface-body">
+            <p>{richText(messages.bodies.intro)}</p>
+          </div>
+        </section>
+
         {messages.sections.map((s, i) => (
           <section key={s.n} className="td-doc-section td-reveal">
             <div className="td-doc-section-num">{s.n}</div>
