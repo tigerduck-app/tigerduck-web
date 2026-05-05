@@ -1231,6 +1231,60 @@
   font-size: 13px;
   color: var(--td-text-tertiary);
 }
+.td-policy-subhead {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--td-text);
+  margin: 18px 0 6px;
+}
+.td-footnote-ref {
+  border-bottom: 0 !important;
+  text-decoration: none;
+  margin-left: 1px;
+  color: var(--td-blue);
+  font-feature-settings: 'sups';
+}
+.td-footnote-ref sup {
+  font-size: 0.72em;
+  padding: 0 2px;
+}
+.td-footnote-ref:hover sup {
+  text-decoration: underline;
+}
+.td-doc-footnotes {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--td-text-tertiary);
+  border-top: 1px solid var(--td-border-hairline);
+  padding-top: 22px;
+  margin-top: 4px;
+}
+.td-footnotes-list {
+  list-style: decimal;
+  padding-left: 22px;
+  margin: 0;
+}
+.td-footnotes-list li {
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.5s ease;
+}
+.td-footnote-back {
+  margin-left: 6px;
+  color: var(--td-blue);
+  font-size: 13px;
+  text-decoration: none;
+  border-bottom: 0 !important;
+}
+.td-footnote-back:hover {
+  text-decoration: underline;
+}
+.td-footnote-flash {
+  background: color-mix(in oklab, var(--td-blue) 16%, transparent);
+}
 @media (max-width: 768px) {
   .td-doc-section {
     padding: 22px 20px;
