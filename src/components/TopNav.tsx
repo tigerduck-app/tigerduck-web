@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 import {
   APP_STORE_URL,
   DISCORD_URL,
@@ -12,6 +13,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { LocaleToggle } from '@/components/LocaleToggle';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
+import { getPath, navigate } from '@/lib/router';
 
 const DOWNLOAD_URL_BY_PLATFORM: Record<Exclude<Platform, 'desktop'>, string> = {
   ios: APP_STORE_URL,
@@ -29,10 +31,21 @@ export function TopNav() {
 
   const downloadHref = platform === 'desktop' ? null : DOWNLOAD_URL_BY_PLATFORM[platform];
 
+  const handleBrandClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    if (getPath() === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <nav className="td-nav" aria-label={messages.ariaLabel}>
       <div className="td-nav-inner">
-        <a href="#top" className="td-nav-brand">
+        <a href="/" className="td-nav-brand" onClick={handleBrandClick}>
           <img src="/logo.png" alt="" className="td-nav-brand-icon" width={28} height={28} />
           <span>TigerDuck</span>
         </a>

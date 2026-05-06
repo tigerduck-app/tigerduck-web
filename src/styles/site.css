@@ -1231,12 +1231,121 @@
   font-size: 13px;
   color: var(--td-text-tertiary);
 }
+.td-doc-preface {
+  position: relative;
+  padding: 30px 32px 28px;
+  border-radius: var(--td-radius-xl);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--td-blue) 6%, var(--td-bg-card)),
+      var(--td-bg-card) 70%
+    );
+  border: 1px solid color-mix(in oklab, var(--td-blue) 22%, var(--td-border-hairline));
+  overflow: hidden;
+}
+.td-doc-preface::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 26px;
+  bottom: 26px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--td-blue);
+}
+.td-doc-preface-eyebrow {
+  display: inline-block;
+  font-family: var(--td-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--td-blue);
+  margin-bottom: 14px;
+}
+.td-doc-preface-body {
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: var(--td-text);
+  letter-spacing: -0.005em;
+}
+.td-doc-preface-body p {
+  margin: 0 0 12px;
+}
+.td-doc-preface-body p:last-child {
+  margin: 0;
+}
+.td-doc-preface-body strong {
+  font-weight: 600;
+  color: var(--td-text);
+}
+.td-policy-subhead {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--td-text);
+  margin: 18px 0 6px;
+}
+.td-footnote-ref {
+  border-bottom: 0 !important;
+  text-decoration: none;
+  margin-left: 1px;
+  color: var(--td-blue);
+  font-feature-settings: 'sups';
+}
+.td-footnote-ref sup {
+  font-size: 0.72em;
+  padding: 0 2px;
+}
+.td-footnote-ref:hover sup {
+  text-decoration: underline;
+}
+.td-doc-footnotes {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--td-text-tertiary);
+  border-top: 1px solid var(--td-border-hairline);
+  padding-top: 22px;
+  margin-top: 4px;
+}
+.td-footnotes-list {
+  list-style: decimal;
+  padding-left: 22px;
+  margin: 0;
+}
+.td-footnotes-list li {
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.5s ease;
+}
+.td-footnote-back {
+  margin-left: 6px;
+  color: var(--td-blue);
+  font-size: 13px;
+  text-decoration: none;
+  border-bottom: 0 !important;
+}
+.td-footnote-back:hover {
+  text-decoration: underline;
+}
+.td-footnote-flash {
+  background: color-mix(in oklab, var(--td-blue) 16%, transparent);
+}
 @media (max-width: 768px) {
   .td-doc-section {
     padding: 22px 20px;
   }
   .td-doc-callout {
     padding: 20px 18px;
+  }
+  .td-doc-preface {
+    padding: 24px 22px 22px;
+  }
+  .td-doc-preface-body {
+    font-size: 15.5px;
+    line-height: 1.75;
   }
 }
 
