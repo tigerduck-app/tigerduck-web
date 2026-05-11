@@ -41,7 +41,7 @@ export function DeleteAccount() {
           </p>
           <div className="td-doc-meta">
             <span>{messages.lastUpdated}</span>
-            <time dateTime="2026-04-19">2026-04-19</time>
+            <time dateTime="2026-05-10">2026-05-10</time>
           </div>
         </div>
       </header>
@@ -89,6 +89,16 @@ export function DeleteAccount() {
               </a>
               {messages.s3Suffix}
             </p>
+          </div>
+        </section>
+
+        <section className="td-doc-section td-reveal">
+          <div className="td-doc-section-num">04</div>
+          <h2 className="td-doc-section-title">{messages.s4Title}</h2>
+          <div className="td-doc-section-body">
+            <p>{richText(messages.s4Scope)}</p>
+            <p>{richText(messages.s4Push)}</p>
+            <p>{richText(messages.s4Analytics)}</p>
           </div>
         </section>
 
