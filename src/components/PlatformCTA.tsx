@@ -23,9 +23,12 @@ const AppleIcon = () => (
   </svg>
 );
 
-const AndroidIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M16.61 15.15c-.46 0-.84-.37-.84-.84s.38-.84.84-.84.84.37.84.84-.37.84-.84.84zm-9.22 0c-.46 0-.84-.37-.84-.84s.38-.84.84-.84.84.37.84.84-.37.84-.84.84zm9.52-5.03l1.67-2.89c.1-.17.04-.39-.13-.49-.17-.1-.39-.04-.49.13l-1.69 2.93C14.85 9.04 13.46 8.7 12 8.7s-2.85.34-4.27.9L6.04 6.67c-.1-.17-.32-.23-.49-.13-.17.1-.23.32-.13.49l1.67 2.89C4.5 11.5 2.65 13.91 2.5 16.8h19c-.15-2.89-2-5.3-4.59-6.68z" />
+const GooglePlayIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M3.609 1.814 13.792 12 3.61 22.186a1.5 1.5 0 0 1-.61-1.21V3.024a1.5 1.5 0 0 1 .609-1.21z" fill="#00C3FF" />
+    <path d="M16.81 8.99 6.05 2.78a1.5 1.5 0 0 0-1.44-.06l10.18 10.18 2.02-2.02a.92.92 0 0 0 0-1.3l-.001-.001z" fill="#00DE76" />
+    <path d="M16.81 15.01a.92.92 0 0 0 0-1.3l-2.02-2.02L4.61 21.87a1.5 1.5 0 0 0 1.44-.06l10.76-6.21z" fill="#FF3A44" />
+    <path d="M20.16 10.81 17.6 9.34l-2.27 2.27 2.27 2.27 2.56-1.47a1.5 1.5 0 0 0 0-2.6z" fill="#FFC107" />
   </svg>
 );
 
@@ -59,7 +62,7 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
         className={primaryCls}
         onClick={() => fireCtaClick('apk', placement, plat)}
       >
-        <AndroidIcon />
+        <GooglePlayIcon />
         <span>Google Play</span>
       </a>
     );
@@ -79,7 +82,7 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
         className={ghostCls}
         onClick={() => fireCtaClick('apk', placement, plat)}
       >
-        <AndroidIcon />
+        <GooglePlayIcon />
         <span>Google Play</span>
       </a>
     </>
