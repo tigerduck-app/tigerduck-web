@@ -9,7 +9,7 @@ type Props = {
   placement?: string;
 };
 
-function fireCtaClick(store: 'testflight' | 'apk', placement: string, plat: Platform) {
+function fireCtaClick(store: 'ios' | 'apk', placement: string, plat: Platform) {
   trackEvent('cta_click', {
     store,
     placement,
@@ -48,10 +48,10 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
       <a
         href={APP_STORE_URL}
         className={primaryCls}
-        onClick={() => fireCtaClick('testflight', placement, plat)}
+        onClick={() => fireCtaClick('ios', placement, plat)}
       >
         <AppleIcon />
-        <span>TestFlight</span>
+        <span>App Store</span>
       </a>
     );
   }
@@ -72,10 +72,10 @@ export function PlatformCTA({ size = 'lg', secondary = false, placement = 'unkno
       <a
         href={APP_STORE_URL}
         className={primaryCls}
-        onClick={() => fireCtaClick('testflight', placement, plat)}
+        onClick={() => fireCtaClick('ios', placement, plat)}
       >
         <AppleIcon />
-        <span>TestFlight</span>
+        <span>App Store</span>
       </a>
       <a
         href={GOOGLE_PLAY_URL}

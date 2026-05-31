@@ -320,7 +320,7 @@ const zh: Messages = {
     community: '社群',
     support: '支援',
     links: {
-      iosApp: 'iOS · TestFlight',
+      iosApp: 'iOS · App Store',
       androidApp: 'Android · Google Play',
       iosRepo: 'iOS Repository',
       androidRepo: 'Android Repository',
@@ -624,7 +624,7 @@ const en: Messages = {
     community: 'Community',
     support: 'Support',
     links: {
-      iosApp: 'iOS · TestFlight',
+      iosApp: 'iOS · App Store',
       androidApp: 'Android · Google Play',
       iosRepo: 'iOS repository',
       androidRepo: 'Android repository',

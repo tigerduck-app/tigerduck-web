@@ -1,4 +1,4 @@
-export const APP_STORE_URL = 'https://testflight.apple.com/join/eVt9Gjkw'; // TODO: Apple Store URL
+export const APP_STORE_URL = 'https://apps.apple.com/app/id6761084888';
 export const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=org.ntust.app.tigerduck';
 
 export const GITHUB_ORG_URL = 'https://github.com/tigerduck-app';
