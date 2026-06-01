@@ -114,6 +114,9 @@ export function PrivacyPolicy() {
       <p key="pushScope">{richText(messages.bodies.pushAnalyticsScope)}</p>
       <p key="pushPush">{richText(messages.bodies.pushAnalyticsPush)}</p>
       <p key="pushSchedule">{richText(messages.bodies.pushAnalyticsSchedule)}</p>
+      <p key="pushLiveActivity">{richText(messages.bodies.pushAnalyticsLiveActivity)}</p>
+      <p key="pushBulletins">{richText(messages.bodies.pushAnalyticsBulletins)}</p>
+      <p key="pushWear">{richText(messages.bodies.pushAnalyticsWear)}</p>
       <p key="pushAnalytics">{richText(messages.bodies.pushAnalyticsAnalytics)}</p>
     </>,
   ];
@@ -134,7 +137,7 @@ export function PrivacyPolicy() {
           </p>
           <div className="td-doc-meta">
             <span>{messages.lastUpdated}</span>
-            <time dateTime="2026-05-10">2026-05-10</time>
+            <time dateTime="2026-06-01">2026-06-01</time>
           </div>
         </div>
       </header>
