@@ -41,7 +41,7 @@ export function DeleteAccount() {
           </p>
           <div className="td-doc-meta">
             <span>{messages.lastUpdated}</span>
-            <time dateTime="2026-05-10">2026-05-10</time>
+            <time dateTime="2026-06-01">2026-06-01</time>
           </div>
         </div>
       </header>

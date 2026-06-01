@@ -113,8 +113,19 @@ export function PrivacyPolicy() {
     <>
       <p key="pushScope">{richText(messages.bodies.pushAnalyticsScope)}</p>
       <p key="pushPush">{richText(messages.bodies.pushAnalyticsPush)}</p>
-      <p key="pushSchedule">{richText(messages.bodies.pushAnalyticsSchedule)}</p>
-      <p key="pushAnalytics">{richText(messages.bodies.pushAnalyticsAnalytics)}</p>
+      <p key="pushBulletins">{richText(messages.bodies.pushAnalyticsBulletins)}</p>
+      <div key="pushApple" className="td-policy-block">
+        <h3 className="td-policy-subhead">{messages.bodies.pushAppleDevicesTitle}</h3>
+        <p key="pushSchedule">{richText(messages.bodies.pushAnalyticsSchedule)}</p>
+        <p key="pushLiveActivity">{richText(messages.bodies.pushAnalyticsLiveActivity)}</p>
+        <p key="pushSentry">{richText(messages.bodies.pushAnalyticsSentry)}</p>
+      </div>
+      <div key="pushAndroid" className="td-policy-block">
+        <h3 className="td-policy-subhead">{messages.bodies.pushAndroidDevicesTitle}</h3>
+        <p key="pushWear">{richText(messages.bodies.pushAnalyticsWear)}</p>
+        <p key="pushFirebase">{richText(messages.bodies.pushAnalyticsFirebase)}</p>
+        <p key="pushFdroid">{richText(messages.bodies.pushAnalyticsFdroid)}</p>
+      </div>
     </>,
   ];
 
@@ -134,7 +145,7 @@ export function PrivacyPolicy() {
           </p>
           <div className="td-doc-meta">
             <span>{messages.lastUpdated}</span>
-            <time dateTime="2026-05-10">2026-05-10</time>
+            <time dateTime="2026-06-01">2026-06-01</time>
           </div>
         </div>
       </header>
