@@ -425,14 +425,14 @@ const zh: Messages = {
   deleteAccount: {
     documentTitle: '刪除帳號 — TigerDuck',
     back: '← 回首頁',
-    eyebrow: 'Account · Deletion',
+    eyebrow: '刪除帳號',
     title: '刪除帳號',
     lede: 'F-Droid 版本不會記錄任何資訊。App Store 與 Google Play 版本僅在推播通知時使用伺服器；移除 App 即可清除本機資料，伺服器端的清理方式請見下方第 04 節。',
     lastUpdated: '最後更新',
     importantLabel: '重要說明',
     importantBody:
       'TigerDuck 與國立臺灣科技大學無隸屬關係。開發團隊不擁有任何帳號管理權限。',
-    s1Title: '關於帳號刪除',
+    s1Title: '關於刪除帳號',
     s1Body:
       'TigerDuck 透過 NTUST 的 SSO 系統做使用者驗證。**App 本身不建立、也不維護任何使用者帳號**，因此沒有「從 TigerDuck 刪除帳號」這個動作。',
     s2Title: '如何清除你的資料',
@@ -742,14 +742,14 @@ const en: Messages = {
   deleteAccount: {
     documentTitle: 'Delete Account — TigerDuck',
     back: '← Back to home',
-    eyebrow: 'Account · Deletion',
+    eyebrow: 'Delete Account',
     title: 'Delete Account',
     lede: 'The F-Droid build records nothing. The App Store and Google Play builds only contact our server for push notifications. Removing the app erases local data; for server-side cleanup, see Section 04 below.',
     lastUpdated: 'Last updated',
     importantLabel: 'Important',
     importantBody:
       'TigerDuck is not affiliated with National Taiwan University of Science and Technology. The dev team has no account-management privileges.',
-    s1Title: 'About account deletion',
+    s1Title: 'About Account Deletion',
     s1Body:
       'TigerDuck authenticates users through NTUST SSO. **The app itself does not create or maintain any user account**, so there is no "delete from TigerDuck" action.',
     s2Title: 'How to wipe your data',
