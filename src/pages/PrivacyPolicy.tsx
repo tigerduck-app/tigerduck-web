@@ -104,6 +104,8 @@ export function PrivacyPolicy() {
       <ul key="indirectList" className="td-policy-list">
         {renderItems(messages.bodies.authIndirect)}
       </ul>
+      <p key="account">{richText(messages.bodies.account)}</p>
+      <p key="cloudSync">{richText(messages.bodies.cloudSync)}</p>
     </>,
     <p key="storage">{richText(messages.bodies.storage)}</p>,
     <p key="external">{richText(messages.bodies.external)}</p>,
@@ -145,7 +147,7 @@ export function PrivacyPolicy() {
           </p>
           <div className="td-doc-meta">
             <span>{messages.lastUpdated}</span>
-            <time dateTime="2026-06-01">2026-06-01</time>
+            <time dateTime="2026-09-09">2026-09-09</time>
           </div>
         </div>
       </header>

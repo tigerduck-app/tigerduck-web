@@ -111,6 +111,8 @@ interface PrivacyMessages {
     authDirect: { body: string; footnoteId?: string }[];
     authIndirectTitle: string;
     authIndirect: { body: string; footnoteId?: string }[];
+    account: string;
+    cloudSync: string;
     storage: string;
     external: string;
     thirdParty: string;
@@ -291,7 +293,7 @@ const zh: Messages = {
     title: '完整開源，工程與安全細節看光光',
     lede: '還在擔心嗎，連資安社幹部們都在用呢！',
     privacy: [
-      { t: '帳密憑證只存本地', d: '所有資料留在手機上，不會經過網路！' },
+      { t: '資料由你作主', d: '密碼只存在你的裝置上；雲端同步可隨時在設定中關閉。' },
       { t: '無收費、無廣告', d: '快吃土了，願意贊助我們一杯咖啡嗎？' },
       { t: '完整開源稽核', d: 'AGPL-3.0 授權，每一行程式碼都看得到' },
     ],
@@ -347,7 +349,7 @@ const zh: Messages = {
     back: '← 回首頁',
     eyebrow: 'Privacy',
     title: '隱私政策',
-    lede: 'TigerDuck 處理的大多數資料都留在你的裝置上。推播通知與選用的診斷功能是例外，下方依平台（App Store / Google Play / F-Droid）分別說明。',
+    lede: 'TigerDuck 會把你的校務系統密碼留在裝置上。登入時也會在我們的伺服器建立一個帳號，供推播通知與雲端同步使用；伺服器持有哪些資料、各安裝來源（App Store / Google Play / F-Droid）有何差異，下方逐一說明。',
     lastUpdated: '最後更新',
     contactTitle: '聯絡我們',
     contactPrefix: '對隱私政策有任何疑問，歡迎來信：',
@@ -366,7 +368,11 @@ const zh: Messages = {
       intro:
         'TigerDuck 由臺科大學生開發，珍視每位使用者的隱私。本政策說明我們如何收集、使用與保護你的個人資料。繼續使用本應用程式即表示你接受本條款。',
       auth1:
-        'App 採用 NTUST SSO（Single Sign-On）進行身份驗證。為了避免每次開啟 App 都要重新登入，登入後我們會把**學號與密碼**及衍生的存取憑證**加密儲存在你裝置的安全儲存區**（Apple 裝置：Keychain；Android：以 Android Keystore 加密的 SharedPreferences）。**這些資料只會用來向 NTUST、Moodle 與圖書館的官方端點登入，不會傳送到我們的伺服器或任何第三方**，也可在「設定 → 登出」隨時清除。',
+        'App 透過 NTUST SSO（Single Sign-On）登入。為了避免每次開啟 App 都要重新登入，登入成功後我們會把**學號與密碼**及衍生的存取憑證**加密儲存在你裝置的安全儲存區**（Apple 裝置：Keychain；Android：以 Android Keystore 加密的 SharedPreferences）。這些憑證用來向 NTUST、Moodle 與圖書館的官方端點登入。**登入時，App 也會把學號、校務系統密碼與取得的 Moodle Token 一次性傳送到我們的伺服器（api.tigerduck.app）**，用以建立你的 TigerDuck 帳號（詳見下方）。伺服器只在仍需要取得 Moodle Token 時才會使用密碼，且**絕不儲存密碼**。你可以隨時在「設定 → 登出」清除本機憑證。',
+      account:
+        '**你的 TigerDuck 帳號。**在 App Store 或 Google Play 版本登入（F-Droid 版本在連得上我們伺服器時亦同）會在我們的伺服器建立一個以學號為鍵的帳號。伺服器為該帳號保存：學號、**加密後的 Moodle Token**（讓伺服器能代你抓取課程與作業，以排程提醒並讓各裝置保持同步，即使 App 沒開啟也能運作）、你登入過的裝置清單，以及下一段所述的雲端同步資料。Moodle Token 以輪替金鑰加密儲存，一旦 Moodle 拒絕該 Token 便立即標記失效。',
+      cloudSync:
+        '**雲端同步。**App Store 與 Google Play 版本的雲端同步**預設開啟**，可在「**設定 → 雲端同步**」整體或分類關閉。開啟期間，下列資料會儲存在我們的伺服器並在你登入的裝置間共享：各學期課表（課號、課名、授課教師、學分、教室、每週時段）、你手動新增或隱藏的課程、自訂的課程顏色與名稱、作業清單與你標記的已完成／忽略狀態，以及你設定的假日提醒例外。伺服器會保留 30 天的變更紀錄，以便離線過的裝置對齊。F-Droid 版本不會上傳上述任何資料。專案維護者可透過內部管理後台檢視帳號的同步資料以進行支援與除錯，不會對專案以外的任何人揭露。',
       authReadIntro: '會被讀取的資料包含：',
       authReadList: [
         '學號（用於 SSO 登入）',
@@ -389,34 +395,34 @@ const zh: Messages = {
         { body: '選課系統 → 當前學期課表' },
       ],
       storage:
-        '臺科大校內服務的個人資料（學號、密碼、課表、作業、圖書館帳號、SSO Token 等）**儲存在你自己的裝置上的安全儲存區**。我們不會在雲端建立任何學生資料的資料庫。推播與公告功能（詳見第 07 節）會讓部分資料經過我們的伺服器，但不會被彙整成個人檔案，並會在你的裝置取消註冊時一併移除。',
+        '你的校務系統密碼、SSO 工作階段、圖書館帳號與歷年成績**只儲存在你自己的裝置上的安全儲存區**。雲端同步（第 01 節）與推播（第 07 節）涵蓋的資料會為你的帳號保存在我們的伺服器，絕不會被販售或彙整成其他用途的個人檔案，並依「刪除帳號」頁面所述的方式刪除。',
       external:
         'App 內可能連結至外部網站（NTUST 官網、Moodle 等）。這些網站有自己的隱私政策，TigerDuck 對其內容不負任何責任。',
       thirdParty:
-        '我們**不會販售或出租**你的個人資料給任何人。我們僅在以下功能所需範圍內使用第三方處理者：**Apple APNs**（Apple 裝置推播）、**Google FCM**（Google Play Android 推播）、**Firebase Analytics**（Google Play）用於彙整使用情境，以及 **Sentry**（App Store）用於 Crash 與錯誤診斷。F-Droid 版本完全不使用上述任一服務。我們絕不會將資料用於廣告或行銷。',
+        '我們**不會販售或出租**你的個人資料給任何人。我們僅在以下功能所需範圍內使用第三方處理者：**Apple APNs**（Apple 裝置推播）、**Google FCM**（Google Play Android 推播）、**Firebase Analytics**（Google Play，僅在你同意後啟用）用於彙整使用情境，以及 **Sentry**（App Store）用於 Crash 與錯誤診斷。F-Droid 版本完全不使用上述任一服務，只會連線臺科大的服務與我們自己的伺服器。我們絕不會將資料用於廣告或行銷。',
       cookies:
-        'App 不使用 Cookies。**Google Play 版本內建 Firebase Analytics SDK** 收集彙整的使用情境資料；**App Store 版本內建 Sentry SDK** 收集 Crash 與錯誤事件。F-Droid 版本則不含任何此類 SDK。',
+        'App 不使用 Cookies 追蹤你。**Google Play 版本內建 Firebase Analytics SDK**，在你於設定中開啟前不會啟用；**App Store 版本內建 Sentry SDK** 收集 Crash 與錯誤事件。F-Droid 版本則不含任何此類 SDK。',
       revisions: '我們保留隨時修訂本政策的權利。若有重大變更，會在本頁公告，並同步更新「最後更新日期」。',
       pushAnalyticsScope:
         '以下說明在推播、公告與診斷功能中，有哪些資料會離開你的裝置；實際內容會依你的裝置與安裝來源而有所不同。',
       pushAnalyticsPush:
-        '啟用推播通知時，我們會把下列資料傳送到我們的伺服器（**api.tigerduck.app**）與平台推播服務（Apple 裝置為 Apple APNs、Android 為 Google FCM）：平台推播 Token、隨機產生的裝置識別碼，以及（若你已登入）學號。我們不會傳送任何公告內容或其他個人資料。你可以隨時在「設定 → 通知」關閉。',
+        'App Store 與 Google Play 版本在你完成初次設定後——**不論是否登入**——就會向我們的伺服器（**api.tigerduck.app**）與平台推播服務（Apple 裝置為 Apple APNs、Android 為 Google FCM）註冊你的裝置。註冊內容包含：平台推播 Token、裝置識別碼（Apple 裝置為隨機 UUID；Android 為由 Android ID 衍生、重新安裝後仍相同的識別碼）、裝置類型（手機／平板／Mac）、App 與作業系統版本，以及你對「伺服器推播」的拒收設定。登入後，該裝置紀錄會與你的帳號連結。我們不會傳送任何公告內容或其他個人資料。你可以隨時在「設定 → 通知」拒收伺服器發送的通知。',
       pushAppleDevicesTitle: 'Apple 裝置',
       pushAnalyticsSchedule:
-        '為了在上課前、上課中與作業即將到期時準時推送通知，Apple 裝置上的 App 每次開啟時會把未來 48 小時內的課表（課程名稱、教室、老師、上下課時間）與作業（標題、截止時間）傳送到我們的伺服器。**每次上傳都會覆蓋前一次的內容。**當你的裝置取消註冊時——也就是你關閉推播，或推播服務回報你的 Token 已失效（例如你解除安裝 App 之後）——這些資料便會被移除。已送出的提醒可能會基於營運需求保留在伺服器，但絕不會被彙整成個人檔案。請在「設定 → 通知」關閉推播以停止同步。',
+        '為了在上課前、上課中與作業即將到期時準時推送通知，Apple 裝置上的 App 每次開啟時會把未來 48 小時內的課表（課程名稱、教室、老師、上下課時間）與作業（標題、截止時間）傳送到我們的伺服器。**每次上傳都會覆蓋前一次的內容。**當你的裝置取消註冊時——也就是你登出，或推播服務回報你的 Token 已失效（例如你解除安裝 App 之後）——這些資料便會被移除。已送出的提醒可能會基於營運需求保留在伺服器，但絕不會被彙整成個人檔案。請在「設定 → 通知」關閉推播以停止同步。',
       pushAnalyticsLiveActivity:
         '若你啟用即時動態（Live Activities），App 可能會額外儲存一組鎖定畫面更新 Token 與相同的 48 小時快照，用於更新你鎖定畫面上的倒數。其移除規則與上述相同，閒置的 Token 會被自動清除。',
       pushAnalyticsBulletins:
-        '公告：App 會顯示臺科大的公告。若你訂閱特定主題，你的訂閱條件（單位、標籤與篩選設定）會儲存在我們的伺服器，且僅與你的隨機裝置識別碼關聯，用於推送符合條件的公告。我們不會收集你閱讀了哪些公告。當你的裝置取消註冊時，這些訂閱條件會一併移除。',
+        '公告：App 會顯示臺科大的公告。若你訂閱特定主題，你的訂閱條件（單位、標籤與篩選設定）會儲存在我們伺服器上你的帳號之下，用於推送符合條件的公告。我們不會收集你閱讀了哪些公告。這些條件會與你的帳號資料一併移除。',
       pushAnalyticsWear:
         'Android Wear OS：Wear OS 手錶 App 會從你的手機同步課表，並直接連線圖書館 API 產生入館 QR Code。它不會在我們的伺服器額外儲存任何個人資料。',
       pushAnalyticsSentry:
         '**Sentry（App Store 版本）**：App Crash 與錯誤事件會傳送至 Sentry 進行處理；不會傳送學號、姓名或其他可直接辨識你身分的資訊，亦不會用於廣告。',
       pushAndroidDevicesTitle: 'Android 裝置',
       pushAnalyticsFirebase:
-        '**Firebase Analytics（Google Play 版本）**：彙整的使用情境（畫面瀏覽、操作事件等）會傳送至 Google 進行處理；不會傳送學號、姓名或其他可直接辨識你身分的資訊，亦不會用於廣告。',
+        '**Firebase Analytics（Google Play 版本，需自行開啟）**：預設關閉。若你在設定中開啟分析，彙整的使用情境（畫面瀏覽、操作事件等）會傳送至 Google 進行處理；不會傳送學號、姓名或其他可直接辨識你身分的資訊，亦不會用於廣告。',
       pushAnalyticsFdroid:
-        '**F-Droid 版本**：不含上述任何服務，沒有推播通知，也不會傳送任何資料到我們的伺服器。',
+        '**F-Droid 版本**：不含上述任何服務、沒有推播通知，也不會上傳你的課表或作業。但它仍會連線我們的伺服器下載公告與行事曆；在連得上伺服器時，登入也會建立第 01 節所述的伺服器帳號（學號與加密的 Moodle Token）。',
     },
     footnotes: [
       { id: '1', body: '需啟動實驗性功能。' },
@@ -427,16 +433,16 @@ const zh: Messages = {
     back: '← 回首頁',
     eyebrow: '刪除帳號',
     title: '刪除帳號',
-    lede: 'F-Droid 版本不會記錄任何資訊。App Store 與 Google Play 版本僅在推播通知時使用伺服器；移除 App 即可清除本機資料，伺服器端的清理方式請見下方第 04 節。',
+    lede: '移除 App 即可清除裝置上的所有資料。App Store 與 Google Play 版本另會在我們的伺服器保有一個供推播與雲端同步使用的帳號；第 04 節說明其內容與移除方式。',
     lastUpdated: '最後更新',
     importantLabel: '重要說明',
     importantBody:
       'TigerDuck 與國立臺灣科技大學無隸屬關係。開發團隊不擁有任何帳號管理權限。',
     s1Title: '關於刪除帳號',
     s1Body:
-      'TigerDuck 透過 NTUST 的 SSO 系統做使用者驗證。**App 本身不建立、也不維護任何使用者帳號**，因此沒有「從 TigerDuck 刪除帳號」這個動作。',
+      'TigerDuck 透過 NTUST 的 SSO 系統驗證你的身分，但自 2.0 版起，登入也會在我們的伺服器建立一個**TigerDuck 帳號**（以學號為鍵），供推播通知與跨裝置雲端同步使用。App 內目前尚無刪除該帳號的按鈕；第 04 節說明登出會移除哪些資料，以及如何申請完整刪除。',
     s2Title: '如何清除你的資料',
-    s2Intro: '所有資料都只存在你自己的裝置上。要清除它，把 App 移除就好：',
+    s2Intro: '本機快取的資料都存在你自己的裝置上。請先登出（這也會同時從我們的伺服器移除該裝置），再移除 App：',
     s2Steps: [
       { label: 'Apple', body: '從主畫面長按 TigerDuck → 移除 App → 刪除 App' },
       { label: 'Android', body: '從應用程式列表長按 TigerDuck → 解除安裝' },
@@ -446,13 +452,13 @@ const zh: Messages = {
     s3Prefix: '如果你要修改或刪除學校帳號本身，請直接聯繫',
     s3LinkLabel: '臺科大電子計算機中心',
     s3Suffix: '。TigerDuck 團隊沒有任何學校帳號的管理權限。',
-    s4Title: '推播與診斷工具的伺服器端資料',
+    s4Title: '伺服器端資料（帳號、雲端同步、推播）',
     s4Scope:
-      '本節僅適用於 App Store 與 Google Play 版本。**F-Droid 版本不會傳送任何資料到我們的伺服器**，可忽略本節。',
+      '本節適用於 App Store 與 Google Play 版本。**F-Droid 版本不會註冊推播，也不會上傳雲端同步資料**；但若你在連得上我們伺服器時登入，同樣會建立帳號紀錄（學號與加密的 Moodle Token），因此下方的刪除步驟亦適用。',
     s4Push:
-      '若你曾啟用推播通知，我們的伺服器（**api.tigerduck.app**）可能持有：平台推播 Token、隨機產生的裝置識別碼、學號（若你已登入）、（僅 Apple 裝置）為了排程通知所暫存的近 48 小時課表/作業，以及你設定的公告訂閱條件。**這些資料僅與你的裝置關聯。當你在「設定 → 通知」關閉推播，或你解除安裝 App 後推播服務回報 Token 已失效時，這些資料便會被移除**——屆時你的裝置紀錄與所有關聯資料都會一併刪除。我們不會以固定的閒置時間自動清除，因此若需要立即刪除，請見下方「聯絡我們」。',
+      '我們的伺服器（**api.tigerduck.app**）可能為你的帳號持有：學號、加密的 Moodle Token、每台裝置一筆紀錄（推播 Token、裝置識別碼、裝置類型、App 與作業系統版本、通知偏好）、雲端同步資料（課表、手動新增或隱藏的課程、自訂顏色與名稱、作業標記、假日提醒例外，以及 30 天的變更紀錄）、公告訂閱條件，以及（Apple 裝置）用於排程通知的近 48 小時課表／作業。**登出會刪除該裝置的紀錄；當沒有任何仍登入的裝置時，所有雲端同步資料也會一併刪除。**未登出直接解除安裝，在推播服務回報 Token 失效後亦有相同效果。帳號紀錄本身（學號與加密的 Moodle Token）會保留到你來信要求移除為止——請透過下方信箱聯絡我們，我們會盡快清除。',
     s4Analytics:
-      '**Google Play 版本的 Firebase Analytics**：使用情境資料由 Google 依其隱私政策處理；我們的伺服器不會留有副本，要停止收集請移除 App。**App Store 版本的 Sentry**：Crash 與錯誤事件由 Sentry 依其隱私政策處理；我們的伺服器不會留有副本，要停止收集請移除 App。',
+      '**Google Play 版本的 Firebase Analytics** 只在你於設定中開啟後才會運作；使用情境資料由 Google 依其隱私政策處理，我們不留副本，關閉該設定或移除 App 即停止收集。**App Store 版本的 Sentry**：Crash 與錯誤事件由 Sentry 依其隱私政策處理，我們不留副本，移除 App 即停止收集。',
     contactTitle: '聯絡我們',
     contactPrefix: '其他問題歡迎來信：',
   },
@@ -597,8 +603,8 @@ const en: Messages = {
     lede: 'Even campus security club leaders use it — what are you waiting for?',
     privacy: [
       {
-        t: 'Credentials stay on device',
-        d: 'Your data lives on your phone. It never travels through our servers.',
+        t: 'Your data, your call',
+        d: 'Passwords are stored only on your device. Cloud sync is optional and can be switched off in Settings.',
       },
       {
         t: 'No fees, no ads',
@@ -663,7 +669,7 @@ const en: Messages = {
     back: '← Back to home',
     eyebrow: 'Privacy',
     title: 'Privacy Policy',
-    lede: 'Most of the data TigerDuck handles stays on your device. Push notifications and optional diagnostics are the exceptions, and they differ by distribution channel (App Store / Google Play / F-Droid) — see the breakdown below.',
+    lede: 'TigerDuck keeps your NTUST password on your device. Signing in also creates an account on our server so that push notifications and cloud sync can work; what the server holds, and how it differs by distribution channel (App Store / Google Play / F-Droid), is spelled out below.',
     lastUpdated: 'Last updated',
     contactTitle: 'Contact us',
     contactPrefix: 'Questions about this privacy policy? Email us:',
@@ -682,7 +688,11 @@ const en: Messages = {
       intro:
         'TigerDuck is built by NTUST students and treats every user\'s privacy with care. This policy explains how we collect, use, and protect your personal data. By continuing to use the app, you agree to these terms.',
       auth1:
-        'The app uses NTUST SSO (Single Sign-On) for authentication. So you do not have to sign in every time you open the app, after a successful login we **encrypt and store your student ID and password** along with the resulting access tokens in your device\'s secure storage (Keychain on Apple devices; Android Keystore-encrypted SharedPreferences on Android). **These credentials are only ever sent to the official NTUST, Moodle, and library endpoints you log into — never to our server or any third party.** You can wipe them at any time via Settings → Sign out.',
+        'The app signs in through NTUST SSO (Single Sign-On). So you do not have to sign in every time you open the app, after a successful login we **encrypt and store your student ID and password** along with the resulting access tokens in your device\'s secure storage (Keychain on Apple devices; Android Keystore-encrypted SharedPreferences on Android). These credentials are used to log in to the official NTUST, Moodle, and library endpoints. **During sign-in the app also sends your student ID, your NTUST password, and the Moodle token it obtained to our server (api.tigerduck.app) once**, to create your TigerDuck account (see below). The server uses the password only if it still needs to obtain a Moodle token and **never stores it**. You can wipe the local credentials at any time via Settings → Sign out.',
+      account:
+        '**Your TigerDuck account.** Signing in on the App Store or Google Play build (and on the F-Droid build, whenever our server is reachable) creates an account on our server keyed by your student ID. For that account the server keeps: your student ID, an **encrypted copy of your Moodle token** (so it can fetch your courses and homework on your behalf to schedule reminders and keep your devices in sync, even while the app is closed), the list of devices you have signed in on, and the cloud-sync data described next. The Moodle token is encrypted at rest with rotating keys and is marked invalid as soon as Moodle rejects it.',
+      cloudSync:
+        '**Cloud sync.** Cloud sync is **on by default** on the App Store and Google Play builds and can be turned off, in whole or per category, in **Settings → Cloud Sync**. While it is on, the following is stored on our server and shared between your signed-in devices: your timetable for each semester (course number, name, instructor, credits, classroom, weekly schedule), courses you added or hid by hand, your custom course colours and names, your homework list with your done / ignored marks, and your holiday reminder exceptions. A change log is kept for 30 days to reconcile devices that were offline. The F-Droid build never uploads any of this. Project maintainers can inspect an account\'s synced data through an internal admin portal for support and debugging; it is never shared outside the project.',
       authReadIntro: 'Data we read includes:',
       authReadList: [
         'Student ID (used for SSO login)',
@@ -705,35 +715,35 @@ const en: Messages = {
         { body: 'Current-semester timetable (from the course-selection system)' },
       ],
       storage:
-        'Personal data tied to NTUST campus services (your student ID, password, timetable, homework, library account, SSO tokens, etc.) **lives on your own device, in secure storage**. We do not maintain any cloud database of student records. The push and announcement features (see Section 07) route some data through our server, but it is never aggregated into a personal profile, and it is removed when your device is unregistered.',
+        'Your NTUST password, SSO session, library account, and grade transcript **live only on your own device, in secure storage**. Data covered by cloud sync (Section 01) and push (Section 07) is kept on our server for your account, is never sold or aggregated into a profile for any other purpose, and is deleted as described on the Delete Account page.',
       external:
         'The app may link to external sites (NTUST portals, Moodle, etc.). Those sites have their own privacy policies, and TigerDuck takes no responsibility for their content.',
       thirdParty:
-        'We **do not sell or rent** your personal data to anyone. We only use third-party processors as required by specific features: **Apple APNs** (Apple push), **Google FCM** (Google Play Android push), **Firebase Analytics** (Google Play) for aggregate usage analytics, and **Sentry** (App Store) for crash and error diagnostics. The F-Droid build uses none of the above. We never use your data for advertising or marketing.',
+        'We **do not sell or rent** your personal data to anyone. We only use third-party processors as required by specific features: **Apple APNs** (Apple push), **Google FCM** (Google Play Android push), **Firebase Analytics** (Google Play, only if you opt in) for aggregate usage analytics, and **Sentry** (App Store) for crash and error diagnostics. The F-Droid build uses none of the above and talks only to NTUST services and our own server. We never use your data for advertising or marketing.',
       cookies:
-        'The app does not use cookies. **The Google Play build bundles the Firebase Analytics SDK** to collect aggregate usage data; **the App Store build bundles the Sentry SDK** to collect crashes and error events. The F-Droid build contains no such SDKs.',
+        'The app does not use cookies for tracking. **The Google Play build bundles the Firebase Analytics SDK**, which stays off until you enable analytics in Settings; **the App Store build bundles the Sentry SDK** to collect crashes and error events. The F-Droid build contains no such SDKs.',
       revisions:
         'We may update this policy at any time. For material changes, we will post a notice on this page and update the "Last updated" date.',
       pushAnalyticsScope:
         'Here is what leaves your device for push, announcements, and diagnostics. The specifics vary by your device and where you installed the app.',
       pushAnalyticsPush:
-        'When push is enabled, we send the following to our server (**api.tigerduck.app**) and the platform push service (Apple APNs on Apple devices, Google FCM on Android): the platform push token, a randomly generated device identifier, and (if you are signed in) your student ID. We do not send announcement content or any other personal data. You can disable this any time in **Settings → Notifications**.',
+        'The App Store and Google Play builds register your device with our server (**api.tigerduck.app**) and the platform push service (Apple APNs on Apple devices, Google FCM on Android) **as soon as you finish onboarding, whether or not you are signed in**. The registration carries: the platform push token, a device identifier (a random UUID on Apple devices; on Android, an identifier derived from the Android ID that stays the same across reinstalls), your device type (phone / tablet / Mac), the app and OS version, and your "server push" opt-out. Once you sign in, the device record is linked to your account. We do not send announcement content or any other personal data. You can opt out of server-sent notifications any time in **Settings → Notifications**.',
       pushAppleDevicesTitle: 'Apple Devices',
       pushAnalyticsSchedule:
-        'To deliver class-start, in-class, and homework-deadline reminders on time, the app on Apple devices uploads the next 48 hours of timetable entries (course name, classroom, instructor, start/end time) and homework (title, due time) to our server each time you open it. **Each upload replaces the previous set.** These entries are removed when your device is unregistered — which happens when you disable push, or when the push service reports your token is no longer valid (for example after you uninstall the app). Delivered reminders may be retained on the server for operational purposes but are never aggregated into a personal profile. Disable push in **Settings → Notifications** to stop this sync.',
+        'To deliver class-start, in-class, and homework-deadline reminders on time, the app on Apple devices uploads the next 48 hours of timetable entries (course name, classroom, instructor, start/end time) and homework (title, due time) to our server each time you open it. **Each upload replaces the previous set.** These entries are removed when your device is unregistered — which happens when you sign out, or when the push service reports your token is no longer valid (for example after you uninstall the app). Delivered reminders may be retained on the server for operational purposes but are never aggregated into a personal profile. Disable push in **Settings → Notifications** to stop this sync.',
       pushAnalyticsLiveActivity:
         'If you enable Live Activities, the app may also store a Lock Screen update token together with the same 48-hour snapshot so we can update the countdown on your Lock Screen. This follows the same removal rules as above, and inactive tokens are pruned automatically.',
       pushAnalyticsBulletins:
-        'Announcements: the app shows NTUST bulletins. If you subscribe to specific topics, your subscription rules (organizations, tags, and filters) are stored on our server, tied only to your random device identifier, so we can send you matching announcements. We do not collect which announcements you read. These rules are removed when your device is unregistered.',
+        'Announcements: the app shows NTUST bulletins. If you subscribe to specific topics, your subscription rules (organizations, tags, and filters) are stored on our server under your account so we can send you matching announcements. We do not collect which announcements you read. The rules are removed together with your account data.',
       pushAnalyticsWear:
         'Android Wear OS: the companion watch app mirrors your timetable from your phone and contacts the library API directly to generate your entry QR code. It does not store any additional personal data on our server.',
       pushAnalyticsSentry:
         '**Sentry (App Store build):** app crashes and error events are forwarded to Sentry for processing. It does not send your student ID, name, or any directly identifying data, and is never used for advertising.',
       pushAndroidDevicesTitle: 'Android Devices',
       pushAnalyticsFirebase:
-        '**Firebase Analytics (Google Play build):** aggregate usage events (screen views, taps, etc.) are sent to Google for processing. It does not send your student ID, name, or any directly identifying data, and is never used for advertising.',
+        '**Firebase Analytics (Google Play build, opt-in):** off by default. If you turn on analytics in Settings, aggregate usage events (screen views, taps, etc.) are sent to Google for processing. It does not send your student ID, name, or any directly identifying data, and is never used for advertising.',
       pushAnalyticsFdroid:
-        '**F-Droid build:** bundles none of these services, has no push notifications, and sends no data to our server.',
+        '**F-Droid build:** bundles none of these services, has no push notifications, and never uploads your timetable or homework. It still contacts our server to download announcements and the academic calendar, and signing in creates the same server account described in Section 01 (student ID plus an encrypted Moodle token) whenever our server is reachable.',
     },
     footnotes: [
       { id: '1', body: 'Requires the experimental feature toggle to be enabled.' },
@@ -744,16 +754,16 @@ const en: Messages = {
     back: '← Back to home',
     eyebrow: 'Delete Account',
     title: 'Delete Account',
-    lede: 'The F-Droid build records nothing. The App Store and Google Play builds only contact our server for push notifications. Removing the app erases local data; for server-side cleanup, see Section 04 below.',
+    lede: 'Removing the app erases everything stored on your device. The App Store and Google Play builds also keep an account on our server for push notifications and cloud sync; Section 04 explains what it holds and how to have it removed.',
     lastUpdated: 'Last updated',
     importantLabel: 'Important',
     importantBody:
       'TigerDuck is not affiliated with National Taiwan University of Science and Technology. The dev team has no account-management privileges.',
     s1Title: 'About Account Deletion',
     s1Body:
-      'TigerDuck authenticates users through NTUST SSO. **The app itself does not create or maintain any user account**, so there is no "delete from TigerDuck" action.',
+      'TigerDuck authenticates you through NTUST SSO, but since version 2.0 signing in also creates a **TigerDuck account on our server** (keyed by your student ID) so that push notifications and cloud sync can work across your devices. There is no in-app button to delete that account yet; Section 04 describes what signing out removes and how to request full deletion.',
     s2Title: 'How to wipe your data',
-    s2Intro: 'All data lives on your own device. To clear it, simply remove the app:',
+    s2Intro: 'Locally cached data lives on your own device. To clear it, sign out first (this also removes the device from our server), then remove the app:',
     s2Steps: [
       {
         label: 'Apple',
@@ -769,13 +779,13 @@ const en: Messages = {
     s3Prefix: 'To modify or delete your school account itself, contact',
     s3LinkLabel: 'the NTUST Electronic Computer Center',
     s3Suffix: ' directly. The TigerDuck team has no privileges over school accounts.',
-    s4Title: 'Server-side data for push and diagnostics',
+    s4Title: 'Server-side data (account, cloud sync, push)',
     s4Scope:
-      'This section only applies to the App Store and Google Play builds. **The F-Droid build never sends any data to our server** — you can ignore this section.',
+      'This section applies to the App Store and Google Play builds. **The F-Droid build never registers for push or uploads cloud-sync data**, but if you signed in while our server was reachable it created the same account record (student ID and encrypted Moodle token), so the deletion steps below apply to it too.',
     s4Push:
-      'If you have ever enabled push notifications, our server (**api.tigerduck.app**) may hold: your platform push token, a randomly generated device identifier, your student ID (if signed in), (Apple devices only) up to 48 hours of cached timetable / homework entries used to schedule notifications, and any announcement subscription rules you set. **This data is tied only to your device. It is removed when you disable push in Settings → Notifications, or when the push service reports your token is no longer valid after you uninstall the app** — at which point your device record and everything linked to it are deleted. We do not run a fixed inactivity timer, so to delete your data immediately, contact us below.',
+      'Our server (**api.tigerduck.app**) may hold, for your account: your student ID, an encrypted copy of your Moodle token, one record per device (push token, device identifier, device type, app and OS version, notification preferences), your cloud-sync data (timetables, hand-added or hidden courses, custom colours and names, homework marks, holiday reminder exceptions, and a 30-day change log), your announcement subscription rules, and (Apple devices) up to 48 hours of timetable and homework entries used to schedule notifications. **Signing out deletes that device\'s record and, once no signed-in device remains, all of your cloud-sync data.** Uninstalling without signing out has the same effect once the push service reports the token as invalid. The account record itself (student ID and encrypted Moodle token) is kept until you ask us to remove it — email us below and we will purge it as soon as we can.',
     s4Analytics:
-      '**Firebase Analytics on the Google Play build**: usage data is processed by Google under their privacy policy; we do not keep a copy on our servers, and you can stop collection by removing the app. **Sentry on the App Store build**: crash and error events are processed by Sentry under their privacy policy; we do not keep a copy on our servers, and you can stop collection by removing the app.',
+      '**Firebase Analytics on the Google Play build** only runs if you enabled it in Settings; usage data is processed by Google under their privacy policy, we keep no copy, and turning the setting off or removing the app stops collection. **Sentry on the App Store build**: crash and error events are processed by Sentry under their privacy policy; we keep no copy, and removing the app stops collection.',
     contactTitle: 'Contact us',
     contactPrefix: 'For other questions, email us:',
   },
