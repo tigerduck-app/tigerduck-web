@@ -2,25 +2,25 @@ import { GITHUB_ORG_URL } from '@/lib/constants';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
 
-type ContributorRole = 'iOS' | 'Android';
+type ContributorRole = 'Apple' | 'Android';
 
 interface Contributor {
   username: string;
-  role: ContributorRole;
+  roles: ContributorRole[];
 }
 
 const contributorList: Contributor[] = [
-    { username: 'xinshoutw', role: 'iOS' },
-    { username: 'ader0226', role: 'iOS' },
-    { username: 'yijiunchin', role: 'iOS' },
-    { username: 'slimuCS', role: 'iOS' },
-    { username: 'SamWang8891', role: 'Android' },
-    { username: 'stanleyowen', role: 'Android' },
+    { username: 'xinshoutw', roles: ['Apple', 'Android'] },
+    { username: 'SamWang8891', roles: ['Apple', 'Android'] },
+    { username: 'stanleyowen', roles: ['Apple', 'Android'] },
+    { username: 'ader0226', roles: ['Apple'] },
+    { username: 'yijiunchin', roles: ['Apple'] },
+    { username: 'slimuCS', roles: ['Apple'] },
 ];
 
 const contributors = contributorList.map((c) => ({
     name: c.username,
-    role: c.role,
+    role: c.roles.join(' · '),
     url: `https://github.com/${c.username}`,
     avatar: `https://github.com/${c.username}.png?size=120`,
 }));
