@@ -1287,6 +1287,19 @@
   color: var(--td-text);
   margin: 18px 0 6px;
 }
+.td-policy-block {
+  margin: 18px 0;
+  padding: 16px 18px;
+  background: var(--td-bg-soft);
+  border: 1px solid var(--td-border-hairline);
+  border-radius: 12px;
+}
+.td-policy-block .td-policy-subhead {
+  margin-top: 0;
+}
+.td-policy-block p:last-child {
+  margin-bottom: 0;
+}
 .td-footnote-ref {
   border-bottom: 0 !important;
   text-decoration: none;
