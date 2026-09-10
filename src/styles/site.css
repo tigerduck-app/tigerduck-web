@@ -1162,7 +1162,7 @@
   padding-left: 20px;
 }
 .td-policy-list li,
-.td-policy-steps li {
+.td-policy-steps > li {
   margin-bottom: 6px;
 }
 .td-policy-list {
@@ -1174,7 +1174,7 @@
   list-style: none;
   padding-left: 0;
 }
-.td-policy-steps li {
+.td-policy-steps > li {
   counter-increment: step;
   padding: 12px 14px 12px 44px;
   position: relative;
@@ -1182,12 +1182,13 @@
   border-radius: 12px;
   margin-bottom: 8px;
 }
-.td-policy-steps li::before {
+/* Pinned to the top rather than centred: steps now run to several lines,
+   and a vertically centred badge drifts away from the label it numbers. */
+.td-policy-steps > li::before {
   content: counter(step);
   position: absolute;
   left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 12px;
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -1198,6 +1199,9 @@
   font-weight: 700;
   display: grid;
   place-items: center;
+}
+.td-policy-substeps {
+  margin: 8px 0 0;
 }
 .td-doc-callout {
   padding: 22px 26px;
