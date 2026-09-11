@@ -146,8 +146,7 @@ interface DeleteAccountMessages {
   s1Body: string;
   s2Title: string;
   s2Intro: string;
-  s2Steps: { label: string; body: string }[];
-  s2AfterRemoval: string;
+  s2Steps: { label: string; body: string; platforms?: { label: string; body: string }[] }[];
   s3Title: string;
   s3Prefix: string;
   s3LinkLabel: string;
@@ -155,6 +154,8 @@ interface DeleteAccountMessages {
   s4Title: string;
   s4Scope: string;
   s4Push: string;
+  s4SignOut: string;
+  s4Request: string;
   s4Analytics: string;
   contactTitle: string;
   contactPrefix: string;
@@ -433,30 +434,48 @@ const zh: Messages = {
     back: '← 回首頁',
     eyebrow: '刪除帳號',
     title: '刪除帳號',
-    lede: '移除 App 即可清除裝置上的所有資料。App Store 與 Google Play 版本另會在我們的伺服器保有一個供推播與 TigerSync 使用的帳號；第 04 節說明其內容與移除方式。',
+    lede: '移除 App 即可清除裝置上的所有資料。但 TigerDuck 後端保存的帳號與同步資料不會因為登出或解除安裝而自動刪除，需要來信要求：第 02 節是完整步驟，第 04 節說明後端保有哪些資料。',
     lastUpdated: '最後更新',
     importantLabel: '重要說明',
     importantBody:
       'TigerDuck 與國立臺灣科技大學無隸屬關係。開發團隊不擁有任何帳號管理權限。',
     s1Title: '關於刪除帳號',
     s1Body:
-      'TigerDuck 透過 NTUST 的 SSO 系統驗證你的身分，但自 2.0 版起，登入也會在我們的伺服器建立一個**TigerDuck 帳號**（以學號為鍵），供推播通知與跨裝置的 TigerSync 使用。App 內目前尚無刪除該帳號的按鈕；第 04 節說明登出會移除哪些資料，以及如何申請完整刪除。',
-    s2Title: '如何清除你的資料',
-    s2Intro: '本機快取的資料都存在你自己的裝置上。請先登出（這也會同時從我們的伺服器移除該裝置），再移除 App：',
+      'TigerDuck 透過 NTUST 的 SSO 系統驗證你的身分，但自 2.0 版起，登入也會在 TigerDuck 後端建立一個**TigerDuck 帳號**（以學號為鍵），供推播通知與跨裝置同步使用。App 內目前尚無刪除該帳號的按鈕，**完整刪除必須來信要求**；第 02 節是步驟，第 04 節說明後端保有哪些資料。',
+    s2Title: '如何刪除你的資料',
+    s2Intro:
+      '本機資料存在你自己的裝置上，移除 App 就會清除；但 TigerDuck 後端保存的同步資料與帳號紀錄**不會**因為登出或解除安裝而自動刪除。請依序完成以下三個步驟：',
     s2Steps: [
-      { label: 'Apple', body: '從主畫面長按 TigerDuck → 移除 App → 刪除 App' },
-      { label: 'Android', body: '從應用程式列表長按 TigerDuck → 解除安裝' },
+      {
+        label: '在 App 內登出',
+        body: '前往「設定 → 帳號」登出。App 會順帶請後端移除這台裝置的紀錄（推播 Token、通知偏好）並撤銷其登入階段。這是一次盡力而為的請求：若當下沒有網路，該紀錄可能仍留在後端，由第 3 步一併處理。',
+      },
+      {
+        label: '移除 App',
+        body: 'App 移除後，這台裝置上的本機資料會自動一併清除。',
+        platforms: [
+          { label: 'Apple', body: '從主畫面長按 TigerDuck → 移除 App → 刪除 App' },
+          { label: 'Android', body: '從應用程式列表長按 TigerDuck → 解除安裝' },
+        ],
+      },
+      {
+        label: '來信要求刪除全部資料',
+        body: '**這一步不能省略**——登出與解除安裝都不會刪除 TigerDuck 後端保存的同步資料與帳號紀錄。請寄信到 {EMAIL}，說明你的學號並要求刪除全部資料，同時**註明是否需要我們提供刪除紀錄**（我們刪除了哪些資料、哪些裝置）。',
+      },
     ],
-    s2AfterRemoval: 'App 移除後，本機資料會自動一併清除',
     s3Title: '關於 NTUST 學校帳號',
     s3Prefix: '如果你要修改或刪除學校帳號本身，請直接聯繫',
     s3LinkLabel: '臺科大電子計算機中心',
     s3Suffix: '。TigerDuck 團隊沒有任何學校帳號的管理權限。',
-    s4Title: '伺服器端資料（帳號、TigerSync、推播）',
+    s4Title: 'TigerDuck 後端保存的資料（帳號、同步、推播）',
     s4Scope:
-      '本節適用於 App Store 與 Google Play 版本。**F-Droid 版本不會註冊推播，也不會上傳 TigerSync 資料**；但若你在連得上我們伺服器時登入，同樣會建立帳號紀錄（學號與加密的 Moodle Token），因此下方的刪除步驟亦適用。',
+      '本節適用於 App Store 與 Google Play 版本。**F-Droid 版本不會註冊推播，也不會上傳同步資料**；但若你在連得上後端時登入，同樣會建立帳號紀錄（學號與加密的 Moodle Token），因此第 02 節的來信要求亦適用。',
     s4Push:
-      '我們的伺服器（**api.tigerduck.app**）可能為你的帳號持有：學號、加密的 Moodle Token、每台裝置一筆紀錄（推播 Token、裝置識別碼、裝置類型、App 與作業系統版本、通知偏好）、TigerSync 資料（課表、手動新增或隱藏的課程、自訂顏色與名稱、作業標記、假日提醒例外，以及 30 天的變更紀錄）、公告訂閱條件，以及（Apple 裝置）用於排程通知的近 48 小時課表／作業。**登出會刪除該裝置的紀錄；當沒有任何仍登入的裝置時，所有 TigerSync 資料也會一併刪除。**未登出直接解除安裝，在推播服務回報 Token 失效後亦有相同效果。帳號紀錄本身（學號與加密的 Moodle Token）會保留到你來信要求移除為止——請透過下方信箱聯絡我們，我們會盡快清除。',
+      'TigerDuck 後端（**api.tigerduck.app**）可能為你的帳號持有：學號、加密的 Moodle Token、每台裝置一筆紀錄（推播 Token、裝置識別碼、裝置類型、App 與作業系統版本、通知偏好）、跨裝置同步的資料（課表、手動新增或隱藏的課程、自訂顏色與名稱、作業標記、假日提醒例外，以及 30 天的變更紀錄）、公告訂閱條件，以及（Apple 裝置）用於排程通知的近 48 小時課表／作業。',
+    s4SignOut:
+      '**登出只會處理登出的那一台裝置**：後端會將該裝置標記為已刪除、撤銷其登入階段，並讓其推播 Token 失效。未登出就直接解除安裝，則要等推播服務回報 Token 失效後才會停止推播。**這兩種情況都不會刪除同步資料，也不會刪除帳號紀錄（學號與加密的 Moodle Token）**——這些資料會一直保留在後端，直到你來信要求刪除為止。',
+    s4Request:
+      '要完整刪除，請寄信到 {EMAIL}，說明你的學號並要求刪除全部資料，並註明是否需要我們提供刪除紀錄（我們刪除了哪些資料、哪些裝置）。我們會盡快處理。',
     s4Analytics:
       '**Google Play 版本的 Firebase Analytics** 只在你於設定中開啟後才會運作；使用情境資料由 Google 依其隱私政策處理，我們不留副本，關閉該設定或移除 App 即停止收集。**App Store 版本的 Sentry**：Crash 與錯誤事件由 Sentry 依其隱私政策處理，我們不留副本，移除 App 即停止收集。',
     contactTitle: '聯絡我們',
@@ -754,36 +773,54 @@ const en: Messages = {
     back: '← Back to home',
     eyebrow: 'Delete Account',
     title: 'Delete Account',
-    lede: 'Removing the app erases everything stored on your device. The App Store and Google Play builds also keep an account on our server for push notifications and TigerSync; Section 04 explains what it holds and how to have it removed.',
+    lede: 'Removing the app erases everything stored on your device. The account and synced data held by the TigerDuck backend, however, are not deleted by signing out or uninstalling — you have to email us. Section 02 has the full steps; Section 04 lists what the backend holds.',
     lastUpdated: 'Last updated',
     importantLabel: 'Important',
     importantBody:
       'TigerDuck is not affiliated with National Taiwan University of Science and Technology. The dev team has no account-management privileges.',
     s1Title: 'About Account Deletion',
     s1Body:
-      'TigerDuck authenticates you through NTUST SSO, but since version 2.0 signing in also creates a **TigerDuck account on our server** (keyed by your student ID) so that push notifications and TigerSync can work across your devices. There is no in-app button to delete that account yet; Section 04 describes what signing out removes and how to request full deletion.',
-    s2Title: 'How to wipe your data',
-    s2Intro: 'Locally cached data lives on your own device. To clear it, sign out first (this also removes the device from our server), then remove the app:',
+      'TigerDuck authenticates you through NTUST SSO, but since version 2.0 signing in also creates a **TigerDuck account on our backend** (keyed by your student ID) so that push notifications and cross-device sync can work. There is no in-app button to delete that account yet — **full deletion has to be requested by email**. Section 02 has the steps; Section 04 describes what the backend holds.',
+    s2Title: 'How to delete your data',
+    s2Intro:
+      'Local data lives on your own device and is erased when you remove the app. The synced data and account record held by the TigerDuck backend, however, are **not** deleted by signing out or uninstalling. Complete all three steps below:',
     s2Steps: [
       {
-        label: 'Apple',
-        body: 'From the home screen, long-press TigerDuck → Remove App → Delete App',
+        label: 'Sign out in the app',
+        body: "Go to Settings → Account and sign out. The app also asks the backend to remove this device's record (push token, notification preferences) and revoke its sessions. This is a best-effort request: if the device is offline at the time, that record may stay on the backend — step 3 covers it.",
       },
       {
-        label: 'Android',
-        body: 'From the app drawer, long-press TigerDuck → Uninstall',
+        label: 'Remove the app',
+        body: 'Once the app is removed, all local data on that device is erased automatically.',
+        platforms: [
+          {
+            label: 'Apple',
+            body: 'From the home screen, long-press TigerDuck → Remove App → Delete App',
+          },
+          {
+            label: 'Android',
+            body: 'From the app drawer, long-press TigerDuck → Uninstall',
+          },
+        ],
+      },
+      {
+        label: 'Email us to request full deletion',
+        body: '**Do not skip this step** — neither signing out nor uninstalling deletes the synced data or account record held by the TigerDuck backend. Email {EMAIL} with your student ID, ask us to delete all of your data, and **tell us whether you want a record of the deletion** (which data and which devices we removed).',
       },
     ],
-    s2AfterRemoval: 'Once the app is removed, all local data is erased automatically.',
     s3Title: 'About your NTUST account',
     s3Prefix: 'To modify or delete your school account itself, contact',
     s3LinkLabel: 'the NTUST Electronic Computer Center',
     s3Suffix: ' directly. The TigerDuck team has no privileges over school accounts.',
-    s4Title: 'Server-side data (account, TigerSync, push)',
+    s4Title: 'Data held by the TigerDuck backend (account, sync, push)',
     s4Scope:
-      'This section applies to the App Store and Google Play builds. **The F-Droid build never registers for push or uploads cloud-sync data**, but if you signed in while our server was reachable it created the same account record (student ID and encrypted Moodle token), so the deletion steps below apply to it too.',
+      'This section applies to the App Store and Google Play builds. **The F-Droid build never registers for push or uploads synced data**, but if you signed in while the backend was reachable it created the same account record (student ID and encrypted Moodle token), so the email request in Section 02 applies to it too.',
     s4Push:
-      'Our server (**api.tigerduck.app**) may hold, for your account: your student ID, an encrypted copy of your Moodle token, one record per device (push token, device identifier, device type, app and OS version, notification preferences), your cloud-sync data (timetables, hand-added or hidden courses, custom colours and names, homework marks, holiday reminder exceptions, and a 30-day change log), your announcement subscription rules, and (Apple devices) up to 48 hours of timetable and homework entries used to schedule notifications. **Signing out deletes that device\'s record and, once no signed-in device remains, all of your cloud-sync data.** Uninstalling without signing out has the same effect once the push service reports the token as invalid. The account record itself (student ID and encrypted Moodle token) is kept until you ask us to remove it — email us below and we will purge it as soon as we can.',
+      'The TigerDuck backend (**api.tigerduck.app**) may hold, for your account: your student ID, an encrypted copy of your Moodle token, one record per device (push token, device identifier, device type, app and OS version, notification preferences), the data synced across your devices (timetables, hand-added or hidden courses, custom colours and names, homework marks, holiday reminder exceptions, and a 30-day change log), your announcement subscription rules, and (Apple devices) up to 48 hours of timetable and homework entries used to schedule notifications.',
+    s4SignOut:
+      "**Signing out only affects the device you signed out from**: the backend marks that device deleted, revokes its sessions, and invalidates its push token. Uninstalling without signing out stops delivery only once the push service reports the token as invalid. **Neither one deletes the synced data, and neither deletes the account record (student ID and encrypted Moodle token)** — those stay on the backend until you ask us to remove them.",
+    s4Request:
+      'For full deletion, email {EMAIL} with your student ID, ask us to delete all of your data, and say whether you want a record of the deletion (which data and which devices we removed). We will process it as soon as we can.',
     s4Analytics:
       '**Firebase Analytics on the Google Play build** only runs if you enabled it in Settings; usage data is processed by Google under their privacy policy, we keep no copy, and turning the setting off or removing the app stops collection. **Sentry on the App Store build**: crash and error events are processed by Sentry under their privacy policy; we keep no copy, and removing the app stops collection.',
     contactTitle: 'Contact us',

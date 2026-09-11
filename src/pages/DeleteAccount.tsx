@@ -8,8 +8,15 @@ const SUPPORT_EMAIL = 'tigerduckapp@gmail.com';
 const NTUST_CC_URL = 'https://www.cc.ntust.edu.tw/';
 
 function richText(input: string): ReactNode {
-  const parts = input.split(/(\*\*[^*]+\*\*)/g);
+  const parts = input.split(/(\*\*[^*]+\*\*|\{EMAIL\})/g);
   return parts.map((part, i) => {
+    if (part === '{EMAIL}') {
+      return (
+        <a key={i} href={`mailto:${SUPPORT_EMAIL}`} className="td-doc-mail">
+          {SUPPORT_EMAIL}
+        </a>
+      );
+    }
     if (part.startsWith('**') && part.endsWith('**')) {
       return <strong key={i}>{part.slice(2, -2)}</strong>;
     }
@@ -41,7 +48,7 @@ export function DeleteAccount() {
           </p>
           <div className="td-doc-meta">
             <span>{messages.lastUpdated}</span>
-            <time dateTime="2026-09-09">2026-09-09</time>
+            <time dateTime="2026-09-11">2026-09-11</time>
           </div>
         </div>
       </header>
@@ -66,14 +73,22 @@ export function DeleteAccount() {
           <div className="td-doc-section-num">02</div>
           <h2 className="td-doc-section-title">{messages.s2Title}</h2>
           <div className="td-doc-section-body">
-            <p>{messages.s2Intro}</p>
+            <p>{richText(messages.s2Intro)}</p>
             <ol className="td-policy-steps">
               {messages.s2Steps.map((step) => (
                 <li key={step.label}>
-                  <strong>{step.label}</strong> — {step.body}
+                  <strong>{step.label}</strong> — {richText(step.body)}
+                  {step.platforms && (
+                    <ul className="td-policy-list td-policy-substeps">
+                      {step.platforms.map((platform) => (
+                        <li key={platform.label}>
+                          <strong>{platform.label}</strong> — {platform.body}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
-              <li>{messages.s2AfterRemoval}</li>
             </ol>
           </div>
         </section>
@@ -98,6 +113,8 @@ export function DeleteAccount() {
           <div className="td-doc-section-body">
             <p>{richText(messages.s4Scope)}</p>
             <p>{richText(messages.s4Push)}</p>
+            <p>{richText(messages.s4SignOut)}</p>
+            <p>{richText(messages.s4Request)}</p>
             <p>{richText(messages.s4Analytics)}</p>
           </div>
         </section>
