@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer';
 import { HomePage } from '@/pages/HomePage';
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
 import { DeleteAccount } from '@/pages/DeleteAccount';
+import { TigerSync } from '@/pages/TigerSync';
 import { useReveal } from '@/hooks/useReveal';
 import { useRoute } from '@/hooks/useRoute';
 import { useLocale } from '@/hooks/useLocale';
@@ -38,6 +39,7 @@ export default function App() {
   const Page = useMemo(() => {
     if (path === '/privacy-policy') return PrivacyPolicy;
     if (path === '/delete-account') return DeleteAccount;
+    if (path === '/tigersync') return TigerSync;
     return HomePage;
   }, [path]);
 

@@ -85,6 +85,7 @@ interface FooterMessages {
     feedbackForm: string;
     privacy: string;
     deleteAccount: string;
+    tigersync: string;
   };
   copyright: string;
   org: string;
@@ -161,6 +162,39 @@ interface DeleteAccountMessages {
   contactPrefix: string;
 }
 
+interface TigerSyncMessages {
+  documentTitle: string;
+  back: string;
+  eyebrow: string;
+  title: string;
+  lede: string;
+  lastUpdated: string;
+  importantLabel: string;
+  importantBody: string;
+  s1Title: string;
+  s1Body: string[];
+  s2Title: string;
+  s2Intro: string;
+  s2Items: { label: string; body: string }[];
+  s3Title: string;
+  s3Intro: string;
+  s3Platforms: { title: string; body: string }[];
+  s3Note: string;
+  s4Title: string;
+  s4Intro: string;
+  s4DeviceTitle: string;
+  s4Device: string[];
+  s4AccountTitle: string;
+  s4Account: string[];
+  s4Note: string;
+  s5Title: string;
+  s5Prefix: string;
+  s5LinkLabel: string;
+  s5Suffix: string;
+  contactTitle: string;
+  contactPrefix: string;
+}
+
 interface ThemeToggleMessages {
   labels: { auto: string; light: string; dark: string };
   current: (label: string) => string;
@@ -184,6 +218,7 @@ export interface Messages {
   footer: FooterMessages;
   privacy: PrivacyMessages;
   deleteAccount: DeleteAccountMessages;
+  tigerSync: TigerSyncMessages;
   themeToggle: ThemeToggleMessages;
   localeToggle: LocaleToggleMessages;
 }
@@ -341,6 +376,7 @@ const zh: Messages = {
       feedbackForm: '回饋表單',
       privacy: '隱私政策',
       deleteAccount: '刪除帳號',
+      tigersync: 'TigerSync',
     },
     copyright: '© 2026 TigerDuck · 開源技術開發研究社',
     org: 'Google Developer Groups on Campus | NTUST',
@@ -480,6 +516,79 @@ const zh: Messages = {
       '**Google Play 版本的 Firebase Analytics** 只在你於設定中開啟後才會運作；使用情境資料由 Google 依其隱私政策處理，我們不留副本，關閉該設定或移除 App 即停止收集。**App Store 版本的 Sentry**：Crash 與錯誤事件由 Sentry 依其隱私政策處理，我們不留副本，移除 App 即停止收集。',
     contactTitle: '聯絡我們',
     contactPrefix: '其他問題歡迎來信：',
+  },
+  tigerSync: {
+    documentTitle: 'TigerSync — TigerDuck',
+    back: '← 回首頁',
+    eyebrow: 'TigerSync',
+    title: 'TigerSync',
+    lede: 'TigerSync 是 TigerDuck 自己的後端伺服器，只為 TigerDuck App 服務。這一頁說明它是什麼、哪些資料會用到它、為什麼 iPhone / iPad 與 Android 的需求不同，以及它為每台裝置保存了什麼。',
+    lastUpdated: '最後更新',
+    importantLabel: '重要說明',
+    importantBody:
+      'TigerSync 由 TigerDuck 開發團隊架設與維護，不是臺科大的系統，也不由學校代管；它只為 TigerDuck App 服務。',
+    s1Title: 'TigerSync 是什麼',
+    s1Body: [
+      'TigerSync 是 TigerDuck 的後端伺服器（**api.tigerduck.app**），也就是 App 中「設定 → TigerSync」所管理的服務。它讓你的 iPhone、iPad、Mac 與 Android 裝置共用同一份課表與作業狀態，替你準時送出通知，並提供學期日期、行事曆與公告等資訊。',
+      '它**只為 TigerDuck App 服務**，由開發團隊自行架設，不是臺科大的系統，也不由學校代管。你的校務系統密碼不會存放在這裡——密碼只留在你自己的裝置上。',
+    ],
+    s2Title: '使用 TigerSync 的三類資料',
+    s2Intro: 'App 的「設定 → TigerSync」把 TigerSync 分成三類，各自對應一個開關：',
+    s2Items: [
+      {
+        label: '取得必要資訊',
+        body: '學期日期、行事曆與公告欄。這一類永遠開啟，因為沒有它 App 就無法顯示這些內容。它主要是從伺服器下載資料；只有在你訂閱特定公告主題時，你的訂閱條件才會存到伺服器。',
+      },
+      {
+        label: '同步課程資訊',
+        body: '你的課表、自訂的課程顏色與名稱、作業清單與完成狀態、假日提醒例外，以及作業到期提醒與即時動態 / 即時更新的設定，會上傳並在你登入的裝置間同步。可以整體關閉，也可以在「同步內容」中逐項選擇。',
+      },
+      {
+        label: '接收額外伺服器推播',
+        body: '由開發者不定期推送的額外通知，不包含廣告內容與垃圾訊息。關閉後，這台裝置就不會再收到這類通知。',
+      },
+    ],
+    s3Title: '為什麼 iPhone / iPad 需要開啟「同步課程資訊」，Android 不用',
+    s3Intro:
+      'iPhone 與 iPad 上的**作業到期提醒**與**即時動態**都由 TigerSync 送出，所以關閉「同步課程資訊」後這兩項功能就無法使用；Android 則由手機自己處理，不受這個開關影響。原因在於兩個平台允許 App 在背景做的事不同：',
+    s3Platforms: [
+      {
+        title: 'iPhone / iPad',
+        body: 'iOS 不允許 App 在背景定時更新資料，App 只能在你打開它時讀取作業。因此在手機上自行排定的提醒，永遠停在「上次開啟 App」的那一刻：之後才出的作業，在你下次打開 App 之前都不會有提醒。所以改由 TigerSync 代勞——伺服器替你向 Moodle 取得最新作業，再透過 Apple 的推播服務（APNs）準時送出提醒。即時動態也是如此：要在 App 沒有開啟時啟動、更新或結束鎖定畫面與動態島上的倒數，需要由伺服器透過推播完成。這些都需要伺服器知道你的課表與作業，也就是「同步課程資訊」上傳的內容。',
+      },
+      {
+        title: 'Android',
+        body: 'Android 允許 App 在背景定期醒來，也能在指定時間觸發鬧鐘，所以作業到期提醒與即時更新都由手機自己排程與更新，不需要經過伺服器。即使關閉「同步課程資訊」，這兩項功能在 Android 上仍照常運作。',
+      },
+    ],
+    s3Note: 'Mac 版不接收通知，因此沒有這項差異。',
+    s4Title: 'TigerSync 為每台裝置保存的資料',
+    s4Intro:
+      'App Store 與 Google Play 版本在完成初次設定後，每台裝置都會在 TigerSync 留下一筆紀錄；登入後，這筆紀錄會與你的帳號連結。',
+    s4DeviceTitle: '每台裝置',
+    s4Device: [
+      '裝置 ID——也就是 App 在「TigerSync 狀態」中顯示的那一串（Apple 裝置為隨機產生的 UUID；Android 為由 Android ID 衍生、重新安裝後仍相同的識別碼）',
+      '裝置類型（手機／平板／Mac）、App 與作業系統版本，以及介面語言（用來以你的語言發送通知）',
+      '推播 Token（Apple 裝置為 APNs；Google Play 版 Android 為 FCM），以及開啟即時動態時的鎖定畫面更新 Token',
+      '這台裝置的 TigerSync 開關：「同步課程資訊」與各項「同步內容」、「接收額外伺服器推播」，以及公告推播',
+      '最近一次連線與登入的時間',
+      '（僅 Apple 裝置）未來 48 小時內的課表與作業，用來排定通知與即時動態；每次上傳都會覆蓋前一次的內容',
+    ],
+    s4AccountTitle: '你的帳號（所有裝置共用）',
+    s4Account: [
+      '學號，以及加密後的 Moodle Token（讓伺服器能代你取得課程與作業）',
+      '開啟「同步課程資訊」時上傳的資料：各學期課表、手動新增或隱藏的課程、自訂的課程顏色與名稱、作業清單與完成／忽略標記、假日提醒例外，以及作業到期提醒與即時動態 / 即時更新的設定',
+      '公告的訂閱條件（單位、標籤與篩選設定）',
+      '30 天內的變更紀錄，讓離線過的裝置能對齊',
+    ],
+    s4Note:
+      '你的校務系統密碼、圖書館帳號與歷年成績不會存放在 TigerSync，公告的已讀狀態也只留在裝置上。F-Droid 版本不會註冊推播，也不會上傳課表或作業；但若在連得上伺服器時登入，仍會建立帳號紀錄（學號與加密的 Moodle Token）。',
+    s5Title: '從 TigerSync 移除你的資料',
+    s5Prefix: '登出或解除安裝 App 都不會刪除 TigerSync 上的帳號與同步資料。若你希望移除，請依照',
+    s5LinkLabel: '刪除帳號',
+    s5Suffix: '頁面的步驟來信要求，我們會刪除你的帳號與所有同步資料。',
+    contactTitle: '聯絡我們',
+    contactPrefix: '對 TigerSync 有任何疑問，歡迎來信：',
   },
   themeToggle: {
     labels: { auto: '跟隨系統', light: '淺色模式', dark: '深色模式' },
@@ -679,6 +788,7 @@ const en: Messages = {
       feedbackForm: 'Feedback form',
       privacy: 'Privacy policy',
       deleteAccount: 'Delete account',
+      tigersync: 'TigerSync',
     },
     copyright: '© 2026 TigerDuck',
     org: 'Google Developer Groups on Campus | NTUST',
@@ -825,6 +935,79 @@ const en: Messages = {
       '**Firebase Analytics on the Google Play build** only runs if you enabled it in Settings; usage data is processed by Google under their privacy policy, we keep no copy, and turning the setting off or removing the app stops collection. **Sentry on the App Store build**: crash and error events are processed by Sentry under their privacy policy; we keep no copy, and removing the app stops collection.',
     contactTitle: 'Contact us',
     contactPrefix: 'For other questions, email us:',
+  },
+  tigerSync: {
+    documentTitle: 'TigerSync — TigerDuck',
+    back: '← Back to home',
+    eyebrow: 'TigerSync',
+    title: 'TigerSync',
+    lede: "TigerSync is TigerDuck's own backend server, and it serves the TigerDuck app only. This page covers what it is, which data uses it, why iPhone / iPad and Android need different things from it, and what it keeps for each of your devices.",
+    lastUpdated: 'Last updated',
+    importantLabel: 'Important',
+    importantBody:
+      'TigerSync is run and maintained by the TigerDuck team. It is not an NTUST system and is not hosted by the school; it serves the TigerDuck app only.',
+    s1Title: 'What TigerSync is',
+    s1Body: [
+      "TigerSync is TigerDuck's backend server (**api.tigerduck.app**) — the service you manage in the app under Settings → TigerSync. It lets your iPhone, iPad, Mac and Android devices share one timetable and one set of homework states, delivers your notifications on time, and provides semester dates, the calendar and announcements.",
+      'It **serves the TigerDuck app only**. The TigerDuck team runs it themselves; it is not an NTUST system and is not hosted by the school. Your NTUST password is never stored there — it stays on your own device.',
+    ],
+    s2Title: 'The three kinds of data that use TigerSync',
+    s2Intro: "The app's Settings → TigerSync screen splits TigerSync into three kinds, each with its own switch:",
+    s2Items: [
+      {
+        label: 'Essential information',
+        body: 'Semester dates, the calendar and announcements. This one is always on, because the app cannot show any of that without it. It is mostly downloaded from the server; the only thing stored there is your subscription rules, if you subscribe to particular announcement topics.',
+      },
+      {
+        label: 'Sync course information',
+        body: 'Your timetable, custom course colours and names, homework list and completion state, holiday reminder exceptions, and your assignment due reminder and Live Activity / Live Updates settings are uploaded and shared between your signed-in devices. Turn it off as a whole, or choose items one by one under Synced content.',
+      },
+      {
+        label: 'Receive additional server notifications',
+        body: 'Occasional extra notifications from the developers — never ads or spam. Turn it off and this device stops receiving them.',
+      },
+    ],
+    s3Title: 'Why iPhone and iPad need Sync course information on, and Android does not',
+    s3Intro:
+      'On iPhone and iPad, **assignment due reminders** and **Live Activity** are both delivered by TigerSync, so turning Sync course information off disables them. Android handles both on the phone itself, so the switch does not affect them. The reason is what each platform lets an app do in the background:',
+    s3Platforms: [
+      {
+        title: 'iPhone / iPad',
+        body: "iOS does not let an app refresh its data in the background on a schedule; the app can only read your homework while you have it open. A reminder scheduled on the phone is therefore frozen at the last time you opened the app, and homework posted after that gets no reminder until you open it again. So TigerSync does it instead: the server fetches your latest homework from Moodle on your behalf and sends the reminder on time through Apple's push service (APNs). Live Activity works the same way — starting, updating or ending the countdown on your Lock Screen and in the Dynamic Island while the app is closed has to be done by the server, through push. All of this needs the server to know your timetable and homework, which is exactly what Sync course information uploads.",
+      },
+      {
+        title: 'Android',
+        body: 'Android lets an app wake up periodically in the background and fire alarms at set times, so assignment due reminders and Live Updates are scheduled and updated by the phone itself, without the server. They keep working on Android even with Sync course information off.',
+      },
+    ],
+    s3Note: 'The Mac app does not receive notifications, so this difference does not apply to it.',
+    s4Title: 'What TigerSync keeps for each device',
+    s4Intro:
+      'On the App Store and Google Play builds, every device leaves one record on TigerSync once you finish onboarding; when you sign in, that record is linked to your account.',
+    s4DeviceTitle: 'For each device',
+    s4Device: [
+      'The device ID — the one the app shows under TigerSync Status (a random UUID on Apple devices; on Android, an identifier derived from the Android ID that stays the same across reinstalls)',
+      'Device type (phone / tablet / Mac), app and OS version, and interface language (so notifications arrive in your language)',
+      'Push tokens (APNs on Apple devices, FCM on the Google Play Android build), plus a Lock Screen update token while Live Activity is on',
+      "This device's TigerSync switches: Sync course information and each Synced content item, Receive additional server notifications, and announcement push",
+      'When it last connected and last signed in',
+      '(Apple devices only) Your timetable and homework for the next 48 hours, used to schedule notifications and Live Activity; each upload replaces the previous one',
+    ],
+    s4AccountTitle: 'For your account (shared by all your devices)',
+    s4Account: [
+      'Your student ID and an encrypted copy of your Moodle token (so the server can fetch your courses and homework on your behalf)',
+      'What Sync course information uploads: your timetable for each semester, courses you added or hid by hand, custom course colours and names, your homework list with done / ignored marks, holiday reminder exceptions, and your assignment due reminder and Live Activity / Live Updates settings',
+      'Your announcement subscription rules (organizations, tags and filters)',
+      'A 30-day change log, so devices that were offline can catch up',
+    ],
+    s4Note:
+      'Your NTUST password, library account and grade transcript are never stored on TigerSync, and which announcements you have read stays on your device. The F-Droid build never registers for push or uploads your timetable or homework, but signing in while the server is reachable still creates the account record (student ID and encrypted Moodle token).',
+    s5Title: 'Removing your data from TigerSync',
+    s5Prefix: 'Signing out or uninstalling the app does not delete your account or synced data on TigerSync. To have them removed, follow the steps on the',
+    s5LinkLabel: 'Delete Account',
+    s5Suffix: ' page and email us; we will delete your account and all of its synced data.',
+    contactTitle: 'Contact us',
+    contactPrefix: 'Questions about TigerSync? Email us:',
   },
   themeToggle: {
     labels: { auto: 'Follow system', light: 'Light mode', dark: 'Dark mode' },
