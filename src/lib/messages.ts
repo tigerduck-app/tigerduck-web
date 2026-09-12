@@ -537,7 +537,7 @@ const zh: Messages = {
     s2Items: [
       {
         label: '取得必要資訊',
-        body: '學期日期、行事曆與公告欄。這一類永遠開啟，因為沒有它 App 就無法顯示這些內容。它主要是從伺服器下載資料；只有在你訂閱特定公告主題時，你的訂閱條件才會存到伺服器。',
+        body: '學期日期、行事曆與公告欄。這一類永遠開啟，因為沒有它 App 就無法顯示這些內容，而且都是從伺服器下載，不會上傳你的資料。公告的訂閱條件屬於各台裝置自己，不會在裝置間同步。',
       },
       {
         label: '同步課程資訊',
@@ -571,6 +571,7 @@ const zh: Messages = {
       '裝置類型（手機／平板／Mac）、App 與作業系統版本，以及介面語言（用來以你的語言發送通知）',
       '推播 Token（Apple 裝置為 APNs；Google Play 版 Android 為 FCM），以及開啟即時動態時的鎖定畫面更新 Token',
       '這台裝置的 TigerSync 開關：「同步課程資訊」與各項「同步內容」、「接收額外伺服器推播」，以及公告推播',
+      '這台裝置的公告訂閱條件（單位、標籤與篩選設定），用來替這台裝置推送符合條件的公告；每台裝置各自設定，不會同步到其他裝置',
       '最近一次連線與登入的時間',
       '（僅 Apple 裝置）未來 48 小時內的課表與作業，用來排定通知與即時動態；每次上傳都會覆蓋前一次的內容',
     ],
@@ -578,7 +579,6 @@ const zh: Messages = {
     s4Account: [
       '學號，以及加密後的 Moodle Token（讓伺服器能代你取得課程與作業）',
       '開啟「同步課程資訊」時上傳的資料：各學期課表、手動新增或隱藏的課程、自訂的課程顏色與名稱、作業清單與完成／忽略標記、假日提醒例外，以及作業到期提醒與即時動態 / 即時更新的設定',
-      '公告的訂閱條件（單位、標籤與篩選設定）',
       '30 天內的變更紀錄，讓離線過的裝置能對齊',
     ],
     s4Note:
@@ -956,7 +956,7 @@ const en: Messages = {
     s2Items: [
       {
         label: 'Essential information',
-        body: 'Semester dates, the calendar and announcements. This one is always on, because the app cannot show any of that without it. It is mostly downloaded from the server; the only thing stored there is your subscription rules, if you subscribe to particular announcement topics.',
+        body: 'Semester dates, the calendar and announcements. This one is always on, because the app cannot show any of that without it, and it only downloads from the server, never uploading your data. Announcement subscription rules belong to each device and are not synced between devices.',
       },
       {
         label: 'Sync course information',
@@ -990,6 +990,7 @@ const en: Messages = {
       'Device type (phone / tablet / Mac), app and OS version, and interface language (so notifications arrive in your language)',
       'Push tokens (APNs on Apple devices, FCM on the Google Play Android build), plus a Lock Screen update token while Live Activity is on',
       "This device's TigerSync switches: Sync course information and each Synced content item, Receive additional server notifications, and announcement push",
+      "This device's announcement subscription rules (organizations, tags and filters), used to push matching announcements to it; each device has its own, and they are not synced to your other devices",
       'When it last connected and last signed in',
       '(Apple devices only) Your timetable and homework for the next 48 hours, used to schedule notifications and Live Activity; each upload replaces the previous one',
     ],
@@ -997,7 +998,6 @@ const en: Messages = {
     s4Account: [
       'Your student ID and an encrypted copy of your Moodle token (so the server can fetch your courses and homework on your behalf)',
       'What Sync course information uploads: your timetable for each semester, courses you added or hid by hand, custom course colours and names, your homework list with done / ignored marks, holiday reminder exceptions, and your assignment due reminder and Live Activity / Live Updates settings',
-      'Your announcement subscription rules (organizations, tags and filters)',
       'A 30-day change log, so devices that were offline can catch up',
     ],
     s4Note:
