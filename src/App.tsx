@@ -39,7 +39,8 @@ export default function App() {
   const Page = useMemo(() => {
     if (path === '/privacy-policy') return PrivacyPolicy;
     if (path === '/delete-account') return DeleteAccount;
-    if (path === '/tigersync') return TigerSync;
+    // Older app versions link the TigerSync page by its former address.
+    if (path === '/tigersync' || path === '/learn-more-about-backend') return TigerSync;
     return HomePage;
   }, [path]);
 
