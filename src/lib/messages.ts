@@ -530,13 +530,13 @@ const zh: Messages = {
     s1Title: 'TigerSync 是什麼',
     s1Body: [
       'TigerSync 是 TigerDuck 的後端伺服器（**api.tigerduck.app**），也就是 App 中「設定 → TigerSync」所管理的服務。它讓你的 iPhone、iPad、Mac 與 Android 裝置共用同一份課表與作業狀態，替你準時送出通知，並提供學期日期、行事曆與公告等資訊。',
-      '它**只為 TigerDuck App 服務**，由開發團隊自行架設，不是臺科大的系統，也不由學校代管。你的校務系統密碼不會存放在這裡——密碼只留在你自己的裝置上。',
+      '它**只為 TigerDuck App 服務**，由開發團隊自行架設，不是臺科大的系統，也不由學校代管。你的校務系統密碼不會存放在這裡，密碼只留在你自己的裝置上。',
     ],
     s2Title: '使用 TigerSync 的三類資料',
     s2Intro: 'App 的「設定 → TigerSync」把 TigerSync 分成三類，各自對應一個開關：',
     s2Items: [
       {
-        label: '取得必要資訊',
+        label: '取得必要資訊（無法關閉）',
         body: '學期日期、行事曆與公告欄。這一類永遠開啟，因為沒有它 App 就無法顯示這些內容，而且都是從伺服器下載，不會上傳你的資料。公告的訂閱條件屬於各台裝置自己，不會在裝置間同步。',
       },
       {
@@ -548,13 +548,13 @@ const zh: Messages = {
         body: '由開發者不定期推送的額外通知，不包含廣告內容與垃圾訊息。關閉後，這台裝置就不會再收到這類通知。',
       },
     ],
-    s3Title: '為什麼 iPhone / iPad 需要開啟「同步課程資訊」，Android 不用',
+    s3Title: '為什麼 iPhone / iPad 需要開啟「同步課程資訊」才能接收通知，而 Android 不用',
     s3Intro:
       'iPhone 與 iPad 上的**作業到期提醒**與**即時動態**都由 TigerSync 送出，所以關閉「同步課程資訊」後這兩項功能就無法使用；Android 則由手機自己處理，不受這個開關影響。原因在於兩個平台允許 App 在背景做的事不同：',
     s3Platforms: [
       {
         title: 'iPhone / iPad',
-        body: 'iOS 不允許 App 在背景定時更新資料，App 只能在你打開它時讀取作業。因此在手機上自行排定的提醒，永遠停在「上次開啟 App」的那一刻：之後才出的作業，在你下次打開 App 之前都不會有提醒。所以改由 TigerSync 代勞——伺服器替你向 Moodle 取得最新作業，再透過 Apple 的推播服務（APNs）準時送出提醒。即時動態也是如此：要在 App 沒有開啟時啟動、更新或結束鎖定畫面與動態島上的倒數，需要由伺服器透過推播完成。這些都需要伺服器知道你的課表與作業，也就是「同步課程資訊」上傳的內容。',
+        body: 'iOS 不允許 App 在背景定時更新資料，App 只能在你打開它時讀取作業。因此在手機上自行排定的提醒，永遠停在「上次開啟 App」的那一刻：之後才出的作業，在你下次打開 App 之前都不會有提醒。所以改由 TigerSync 代勞，伺服器替你向 Moodle 取得最新作業，再透過 Apple 的推播服務（APNs）準時送出提醒。即時動態也是如此：要在 App 沒有開啟時啟動、更新或結束鎖定畫面與動態島上的倒數，需要由伺服器透過推播完成。這些都需要伺服器知道你的課表與作業，也就是「同步課程資訊」上傳的內容。',
       },
       {
         title: 'Android',
@@ -955,7 +955,7 @@ const en: Messages = {
     s2Intro: "The app's Settings → TigerSync screen splits TigerSync into three kinds, each with its own switch:",
     s2Items: [
       {
-        label: 'Essential information',
+        label: 'Essential information (Cannot be turned off)',
         body: 'Semester dates, the calendar and announcements. This one is always on, because the app cannot show any of that without it, and it only downloads from the server, never uploading your data. Announcement subscription rules belong to each device and are not synced between devices.',
       },
       {
@@ -967,7 +967,7 @@ const en: Messages = {
         body: 'Occasional extra notifications from the developers — never ads or spam. Turn it off and this device stops receiving them.',
       },
     ],
-    s3Title: 'Why iPhone and iPad need Sync course information on, and Android does not',
+    s3Title: 'Why iPhone and iPad need Sync course information on to receive notifications, and Android does not',
     s3Intro:
       'On iPhone and iPad, **assignment due reminders** and **Live Activity** are both delivered by TigerSync, so turning Sync course information off disables them. Android handles both on the phone itself, so the switch does not affect them. The reason is what each platform lets an app do in the background:',
     s3Platforms: [
