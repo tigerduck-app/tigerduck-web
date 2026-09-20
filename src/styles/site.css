@@ -1375,3 +1375,97 @@ body.td-swipe-active * {
   user-select: none !important;
   -webkit-user-select: none !important;
 }
+
+/* ============ Help pages (/help/receive-mail/:platform) ============ */
+.td-help-grid {
+  display: grid;
+  gap: 14px;
+  /* Two columns of server settings side by side on a desktop width, one
+     column once the page is narrower than ~560px. */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin: 18px 0;
+}
+.td-help-grid .td-policy-block {
+  margin: 0;
+}
+.td-help-settings {
+  margin: 0;
+}
+.td-help-setting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+  padding: 7px 0;
+  border-top: 1px solid var(--td-border-hairline);
+}
+.td-help-setting:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.td-help-setting dt {
+  font-size: 14px;
+  color: var(--td-text-secondary);
+}
+.td-help-setting dd {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--td-text);
+  overflow-wrap: anywhere;
+}
+
+/* ============ Embedded pages (?embed=1) ============
+   The host app draws its own top bar, so nothing here is sticky or fixed, no
+   site chrome is rendered, and the platform's system font stack is used so the
+   page reads as part of the app rather than as the marketing site. Surface
+   colours come from the theme, or from ?bg=/?fg= (see hooks/useEmbedSurface). */
+.td-page--embed {
+  --td-font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --td-font-tc: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans CJK TC', sans-serif;
+  --td-font-mono: ui-monospace, 'SF Mono', 'Roboto Mono', monospace;
+  font-family: var(--td-font-tc);
+  min-height: 100dvh;
+}
+.td-page--embed .td-container {
+  padding: 0 16px;
+}
+.td-page--embed .td-doc-header {
+  /* Flat against the app surface — a tinted header band would show the seam. */
+  background: transparent;
+  padding: clamp(20px, 6vw, 32px) 0 clamp(20px, 5vw, 28px);
+}
+.td-page--embed .td-doc-title {
+  font-size: clamp(25px, 7vw, 32px);
+}
+.td-page--embed .td-lede {
+  font-size: 15.5px;
+}
+.td-page--embed .td-doc-body {
+  padding-top: 20px;
+  gap: 16px;
+  overflow-wrap: break-word;
+}
+.td-page--embed .td-doc-page {
+  padding-bottom: calc(clamp(32px, 8vw, 56px) + env(safe-area-inset-bottom, 0px));
+}
+.td-page--embed .td-doc-section {
+  padding: 18px 16px;
+}
+.td-page--embed .td-doc-section:hover {
+  /* Hover lift is a pointer affordance; it only misfires on touch. */
+  transform: none;
+  box-shadow: none;
+}
+.td-page--embed .td-doc-callout {
+  padding: 18px 16px;
+}
+/* 48px tap targets for the links an embedded page still shows. */
+.td-page--embed .td-doc-mail,
+.td-page--embed .td-policy-list a,
+.td-page--embed .td-policy-steps a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 2px;
+}
