@@ -5,6 +5,7 @@ import { HomePage } from '@/pages/HomePage';
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
 import { DeleteAccount } from '@/pages/DeleteAccount';
 import { TigerSync } from '@/pages/TigerSync';
+import { HelpIndex } from '@/pages/HelpIndex';
 import { HelpReceiveMail, type HelpMailPlatform } from '@/pages/HelpReceiveMail';
 import { useReveal } from '@/hooks/useReveal';
 import { useRoute } from '@/hooks/useRoute';
@@ -70,6 +71,11 @@ export default function App() {
     if (path === '/delete-account') return <DeleteAccount />;
     // Older app versions link the TigerSync page by its former address.
     if (path === '/tigersync' || path === '/learn-more-about-backend') return <TigerSync />;
+    // Registered before the receive-mail platform matcher below: '/help' is
+    // an exact match and matchSegment('/help', '/help/receive-mail') already
+    // returns null for it, but the ordering keeps the exact routes grouped
+    // together and ahead of the nested-route fallback as topics are added.
+    if (path === '/help') return <HelpIndex />;
     const helpPlatform = helpMailPlatform(path);
     if (helpPlatform) return <HelpReceiveMail platform={helpPlatform} />;
     return <HomePage />;

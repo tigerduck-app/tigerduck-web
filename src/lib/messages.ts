@@ -83,6 +83,7 @@ interface FooterMessages {
     gdg: string;
     contributors: string;
     feedbackForm: string;
+    help: string;
     privacy: string;
     deleteAccount: string;
     tigersync: string;
@@ -236,6 +237,27 @@ interface HelpReceiveMailMessages {
   };
 }
 
+interface HelpTopicCopy {
+  title: string;
+  summary: string;
+}
+
+/**
+ * `/help` — the topic index. One entry per topic; keyed by the id used in
+ * `@/lib/help`'s registry, so adding a topic is one object there plus one
+ * key here, no page markup changes.
+ */
+interface HelpIndexMessages {
+  documentTitle: string;
+  back: string;
+  eyebrow: string;
+  title: string;
+  lede: string;
+  topics: {
+    receiveMail: HelpTopicCopy;
+  };
+}
+
 interface ThemeToggleMessages {
   labels: { auto: string; light: string; dark: string };
   current: (label: string) => string;
@@ -261,6 +283,7 @@ export interface Messages {
   deleteAccount: DeleteAccountMessages;
   tigerSync: TigerSyncMessages;
   helpReceiveMail: HelpReceiveMailMessages;
+  helpIndex: HelpIndexMessages;
   themeToggle: ThemeToggleMessages;
   localeToggle: LocaleToggleMessages;
 }
@@ -416,6 +439,7 @@ const zh: Messages = {
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
       feedbackForm: '回饋表單',
+      help: '使用說明',
       privacy: '隱私政策',
       deleteAccount: '刪除帳號',
       tigersync: 'TigerSync',
@@ -762,6 +786,19 @@ const zh: Messages = {
       },
     },
   },
+  helpIndex: {
+    documentTitle: '使用說明 — TigerDuck',
+    back: '← 回首頁',
+    eyebrow: '使用說明',
+    title: '使用說明',
+    lede: '這裡收錄 TigerDuck 的操作指南，之後會陸續新增更多主題。',
+    topics: {
+      receiveMail: {
+        title: '在信件 App 收校園信箱',
+        summary: '把臺科大校園信箱加進手機或電腦上的信件 App，讓校園信箱和你其他信箱收在同一個地方。',
+      },
+    },
+  },
   themeToggle: {
     labels: { auto: '跟隨系統', light: '淺色模式', dark: '深色模式' },
     current: (label) => `目前：${label}（點擊切換）`,
@@ -958,6 +995,7 @@ const en: Messages = {
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
       feedbackForm: 'Feedback form',
+      help: 'Help',
       privacy: 'Privacy policy',
       deleteAccount: 'Delete account',
       tigersync: 'TigerSync',
@@ -1323,6 +1361,20 @@ const en: Messages = {
             body: '(Sample) Save, then send yourself a message to confirm it sends and arrives.',
           },
         ],
+      },
+    },
+  },
+  helpIndex: {
+    documentTitle: 'Help — TigerDuck',
+    back: '← Back to home',
+    eyebrow: 'Help',
+    title: 'Help',
+    lede: 'Guides for using TigerDuck. More topics will land here over time.',
+    topics: {
+      receiveMail: {
+        title: 'Read your school mail in a mail app',
+        summary:
+          'Add your NTUST school mailbox to the mail app on your phone or computer, so it arrives alongside your other mail.',
       },
     },
   },

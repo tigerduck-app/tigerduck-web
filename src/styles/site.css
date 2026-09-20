@@ -1415,6 +1415,26 @@ body.td-swipe-active * {
   overflow-wrap: anywhere;
 }
 
+/* ============ Help index (/help) ============
+   Each topic reuses .td-doc-section for its card chrome (background, border,
+   hover lift) — these rules just make the whole card a clickable block. */
+.td-help-topic-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.td-help-topic {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.td-help-topic:hover .td-doc-section-title {
+  color: var(--td-blue);
+}
+
 /* ============ Embedded pages (?embed=1) ============
    The host app draws its own top bar, so nothing here is sticky or fixed, no
    site chrome is rendered, and the platform's system font stack is used so the
