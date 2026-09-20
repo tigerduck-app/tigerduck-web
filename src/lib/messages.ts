@@ -83,6 +83,7 @@ interface FooterMessages {
     gdg: string;
     contributors: string;
     feedbackForm: string;
+    help: string;
     privacy: string;
     deleteAccount: string;
     tigersync: string;
@@ -195,6 +196,55 @@ interface TigerSyncMessages {
   contactPrefix: string;
 }
 
+interface HelpMailPlatformCopy {
+  label: string;
+  documentTitle: string;
+  lede: string;
+}
+
+interface HelpReceiveMailMessages {
+  back: string;
+  eyebrow: string;
+  title: string;
+  lastUpdated: string;
+  s1Title: string;
+  s1Intro: string;
+  /** Accessible label for the platform toggle (a `role="group"` wrapping the
+      toggle buttons). */
+  platformToggleLabel: string;
+  /** Keyed by the `/help/receive-mail/:platform` segment; `unknown` is the
+      neutral fallback for a missing or unrecognised segment, and is also used
+      to frame the page (lede/documentTitle) when the toggle has no platform
+      active. */
+  platforms: {
+    android: HelpMailPlatformCopy;
+    apple: HelpMailPlatformCopy;
+    other: HelpMailPlatformCopy;
+    unknown: HelpMailPlatformCopy;
+  };
+}
+
+interface HelpTopicCopy {
+  title: string;
+  summary: string;
+}
+
+/**
+ * `/help` — the topic index. One entry per topic; keyed by the id used in
+ * `@/lib/help`'s registry, so adding a topic is one object there plus one
+ * key here, no page markup changes.
+ */
+interface HelpIndexMessages {
+  documentTitle: string;
+  back: string;
+  eyebrow: string;
+  title: string;
+  lede: string;
+  topics: {
+    receiveMail: HelpTopicCopy;
+  };
+}
+
 interface ThemeToggleMessages {
   labels: { auto: string; light: string; dark: string };
   current: (label: string) => string;
@@ -219,6 +269,8 @@ export interface Messages {
   privacy: PrivacyMessages;
   deleteAccount: DeleteAccountMessages;
   tigerSync: TigerSyncMessages;
+  helpReceiveMail: HelpReceiveMailMessages;
+  helpIndex: HelpIndexMessages;
   themeToggle: ThemeToggleMessages;
   localeToggle: LocaleToggleMessages;
 }
@@ -374,6 +426,7 @@ const zh: Messages = {
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
       feedbackForm: '回饋表單',
+      help: '其他幫助',
       privacy: '隱私政策',
       deleteAccount: '刪除帳號',
       tigersync: 'TigerSync',
@@ -590,6 +643,50 @@ const zh: Messages = {
     contactTitle: '聯絡我們',
     contactPrefix: '對 TigerSync 有任何疑問，歡迎來信：',
   },
+  helpReceiveMail: {
+    back: '← 回首頁',
+    eyebrow: '使用說明',
+    title: '在信件 App 收校園信箱',
+    lastUpdated: '最後更新',
+    s1Title: '開始之前',
+    s1Intro: '頁面還在撰寫，敬請期待。',
+    platformToggleLabel: '選擇平台',
+    platforms: {
+      android: {
+        label: 'Android',
+        documentTitle: '在 Android 收校園信箱 — TigerDuck',
+        lede: '把臺科大校園信箱加進 Android 手機上的信件 App，就能和你其他的信箱一起收信。',
+      },
+      apple: {
+        label: 'iPhone / iPad',
+        documentTitle: '在 iPhone 收校園信箱 — TigerDuck',
+        lede: '把臺科大校園信箱加進 iPhone 或 iPad 內建的「郵件」App，就能和你其他的信箱一起收信。',
+      },
+      other: {
+        label: '其他裝置',
+        documentTitle: '在其他裝置收校園信箱 — TigerDuck',
+        lede: '把臺科大校園信箱加進其他裝置上的信件 App，就能和你其他的信箱一起收信。',
+      },
+      unknown: {
+        label: '通用步驟',
+        documentTitle: '在信件 App 收校園信箱 — TigerDuck',
+        lede: '這個網址沒有指定平台，以下是不分平台的通用步驟；實際選單名稱請以你的信件 App 為準。',
+      },
+    },
+  },
+  helpIndex: {
+    documentTitle: '其他幫助 — TigerDuck',
+    back: '← 回首頁',
+    eyebrow: '其他幫助',
+    title: '其他幫助',
+    lede: '這裡收錄了其他校園相關軟體的額外操作幫助，會陸陸續續新增更多主題。',
+    topics: {
+      receiveMail: {
+        title: '在信件 App 收校園信箱',
+        summary: '把臺科大校園信箱加進手機或電腦上的信件 App，讓校園信箱和你其他信箱收在同一個地方。',
+      },
+    },
+  },
   themeToggle: {
     labels: { auto: '跟隨系統', light: '淺色模式', dark: '深色模式' },
     current: (label) => `目前：${label}（點擊切換）`,
@@ -786,6 +883,7 @@ const en: Messages = {
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
       feedbackForm: 'Feedback form',
+      help: 'Other help',
       privacy: 'Privacy policy',
       deleteAccount: 'Delete account',
       tigersync: 'TigerSync',
@@ -1008,6 +1106,51 @@ const en: Messages = {
     s5Suffix: ' page and email us; we will delete your account and all of its synced data.',
     contactTitle: 'Contact us',
     contactPrefix: 'Questions about TigerSync? Email us:',
+  },
+  helpReceiveMail: {
+    back: '← Back to home',
+    eyebrow: 'Help',
+    title: 'Read your school mail in a mail app',
+    lastUpdated: 'Last updated',
+    s1Title: 'Before you start',
+    s1Intro: 'This page is still being written — check back soon.',
+    platformToggleLabel: 'Choose a platform',
+    platforms: {
+      android: {
+        label: 'Android',
+        documentTitle: 'School mail on Android — TigerDuck',
+        lede: 'Add your NTUST school mailbox to the mail app on your Android phone so it arrives alongside your other mail.',
+      },
+      apple: {
+        label: 'iPhone / iPad',
+        documentTitle: 'School mail on iPhone — TigerDuck',
+        lede: 'Add your NTUST school mailbox to the built-in Mail app on your iPhone or iPad so it arrives alongside your other mail.',
+      },
+      other: {
+        label: 'Other device',
+        documentTitle: 'School mail on other devices — TigerDuck',
+        lede: 'Add your NTUST school mailbox to the mail app on your other device so it arrives alongside your other mail.',
+      },
+      unknown: {
+        label: 'Generic steps',
+        documentTitle: 'School mail in a mail app — TigerDuck',
+        lede: 'This address does not name a platform, so the steps below are the generic ones — follow the wording your own mail app uses.',
+      },
+    },
+  },
+  helpIndex: {
+    documentTitle: 'Other help — TigerDuck',
+    back: '← Back to home',
+    eyebrow: 'Other help',
+    title: 'Other help',
+    lede: 'Extra guides for other campus-related apps. More topics will be added over time.',
+    topics: {
+      receiveMail: {
+        title: 'Read your school mail in a mail app',
+        summary:
+          'Add your NTUST school mailbox to the mail app on your phone or computer, so it arrives alongside your other mail.',
+      },
+    },
   },
   themeToggle: {
     labels: { auto: 'Follow system', light: 'Light mode', dark: 'Dark mode' },

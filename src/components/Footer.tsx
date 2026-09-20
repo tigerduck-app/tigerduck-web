@@ -66,6 +66,9 @@ export function Footer() {
                 <a href={SUPPORT_FORM_URL}>{messages.links.feedbackForm}</a>
               </li>
               <li>
+                <Link to="/help">{messages.links.help}</Link>
+              </li>
+              <li>
                 <Link to="/tigersync">{messages.links.tigersync}</Link>
               </li>
               <li>

@@ -54,14 +54,39 @@
   <body>
     <script>
       // No-flash theme boot — runs before React mounts.
+      // Also honours the in-app WebView overrides (?theme=, ?bg=, ?fg=) so an
+      // embedded page never flashes the site's own colours first. React applies
+      // the same values again, plus the derived surface tokens, once mounted.
       (function () {
+        var params = null;
         try {
-          var t = localStorage.getItem('td-theme');
-          if (t !== 'auto' && t !== 'light' && t !== 'dark') t = 'auto';
-          document.documentElement.setAttribute('data-theme', t);
+          params = new URLSearchParams(window.location.search);
         } catch (_e) {
-          document.documentElement.setAttribute('data-theme', 'auto');
+          params = null;
         }
+        var forced = params ? params.get('theme') : null;
+        var t = forced;
+        if (t !== 'auto' && t !== 'light' && t !== 'dark') {
+          try {
+            t = localStorage.getItem('td-theme');
+          } catch (_e) {
+            t = null;
+          }
+        }
+        if (t !== 'auto' && t !== 'light' && t !== 'dark') t = 'auto';
+        document.documentElement.setAttribute('data-theme', t);
+        if (!params) return;
+        var hex = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
+        [
+          ['bg', '--td-bg'],
+          ['fg', '--td-text'],
+        ].forEach(function (pair) {
+          var v = params.get(pair[0]);
+          if (!v) return;
+          if (v.charAt(0) !== '#') v = '#' + v;
+          if (!hex.test(v)) return;
+          document.documentElement.style.setProperty(pair[1], v);
+        });
       })();
     </script>
     <div id="root"></div>
