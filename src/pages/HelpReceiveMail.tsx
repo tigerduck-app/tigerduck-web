@@ -150,37 +150,24 @@ export function HelpReceiveMail({ platform }: { platform: HelpMailPlatform }) {
           <div className="td-doc-section-num">02</div>
           <h2 className="td-doc-section-title">{messages.s2Title}</h2>
           <div className="td-doc-section-body">
-            {selected === null
-              ? // Neither toggle active: both platforms' steps, stacked, each
-                // under its own heading so the two sets can't be confused.
-                KNOWN_PLATFORMS.map((p) => {
-                  const platformCopy = messages.platforms[p];
-                  return (
-                    <div key={p} className="td-policy-block">
-                      <h3 className="td-policy-subhead">{platformCopy.label}</h3>
-                      <p>{platformCopy.appHint}</p>
-                      <ol className="td-policy-steps">
-                        {platformCopy.steps.map((step) => (
-                          <li key={step.label}>
-                            <strong>{step.label}</strong> — {step.body}
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-                  );
-                })
-              : (
-                  <>
-                    <p>{copy.appHint}</p>
-                    <ol className="td-policy-steps">
-                      {copy.steps.map((step) => (
-                        <li key={step.label}>
-                          <strong>{step.label}</strong> — {step.body}
-                        </li>
-                      ))}
-                    </ol>
-                  </>
-                )}
+            {selected === null ? (
+              // No platform picked: keep the toggle as the only thing to act on
+              // and say the steps aren't written yet. Stacking both platforms
+              // here would make the page enormous once screenshots land — each
+              // platform is meant to fill the page on its own.
+              <p>{messages.s2Pending}</p>
+            ) : (
+              <>
+                <p>{copy.appHint}</p>
+                <ol className="td-policy-steps">
+                  {copy.steps.map((step) => (
+                    <li key={step.label}>
+                      <strong>{step.label}</strong> — {step.body}
+                    </li>
+                  ))}
+                </ol>
+              </>
+            )}
           </div>
         </section>
 

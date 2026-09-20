@@ -215,6 +215,8 @@ interface HelpReceiveMailMessages {
   s1Intro: string;
   s1Items: string[];
   s2Title: string;
+  /** Shown in place of the steps while no platform is picked. */
+  s2Pending: string;
   s3Title: string;
   s3Intro: string;
   s3ImapTitle: string;
@@ -676,6 +678,7 @@ const zh: Messages = {
       '（範例）可以連上網路的環境；在校外可能需要先連上學校 VPN',
     ],
     s2Title: '新增帳號的步驟',
+    s2Pending: '頁面正在撰寫中，敬請期待。',
     s3Title: '伺服器設定',
     s3Intro: '（範例）下列數值僅供版面測試，請勿照著填寫。',
     s3ImapTitle: '收信（IMAP）',
@@ -1238,6 +1241,7 @@ const en: Messages = {
       '(Sample) A working internet connection; off campus you may need the school VPN first',
     ],
     s2Title: 'Adding the account',
+    s2Pending: 'This page is still being written — check back soon.',
     s3Title: 'Server settings',
     s3Intro: '(Sample) The values below are placeholders for layout testing — do not type them in.',
     s3ImapTitle: 'Incoming (IMAP)',
