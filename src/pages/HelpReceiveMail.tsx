@@ -98,6 +98,11 @@ export function HelpReceiveMail({ platform }: { platform: HelpMailPlatform }) {
             {copy.lede}
           </p>
 
+          <div className="td-doc-meta">
+            <span>{messages.lastUpdated}</span>
+            <time dateTime={LAST_UPDATED}>{LAST_UPDATED}</time>
+          </div>
+
           {/* Selects which platform's section 02 shows. Stays visible in the
               embed — an Android-app user may still want to set up an iPad. */}
           <div
@@ -116,11 +121,6 @@ export function HelpReceiveMail({ platform }: { platform: HelpMailPlatform }) {
                 {messages.platforms[p].label}
               </button>
             ))}
-          </div>
-
-          <div className="td-doc-meta">
-            <span>{messages.lastUpdated}</span>
-            <time dateTime={LAST_UPDATED}>{LAST_UPDATED}</time>
           </div>
         </div>
       </header>
