@@ -1109,9 +1109,13 @@
    section 02, pressing one shows that platform only, and pressing the
    already-pressed one releases back to neither. */
 .td-platform-toggle {
-  display: inline-flex;
+  /* Block-level (not inline-flex) so it starts its own line: the
+     `.td-doc-meta` line above it is inline-flex, and two inline boxes would
+     otherwise sit side by side with margin-top having no effect. */
+  display: flex;
+  width: fit-content;
   gap: 4px;
-  margin-top: 20px;
+  margin-top: 28px;
   padding: 4px;
   background: var(--td-bg-card);
   border: 1px solid var(--td-border-hairline);
