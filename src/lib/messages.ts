@@ -200,8 +200,6 @@ interface HelpMailPlatformCopy {
   label: string;
   documentTitle: string;
   lede: string;
-  appHint: string;
-  steps: { label: string; body: string }[];
 }
 
 interface HelpReceiveMailMessages {
@@ -209,35 +207,19 @@ interface HelpReceiveMailMessages {
   eyebrow: string;
   title: string;
   lastUpdated: string;
-  draftLabel: string;
-  draftBody: string;
   s1Title: string;
   s1Intro: string;
-  s1Items: string[];
-  s2Title: string;
-  /** Shown in place of the steps while no platform is picked. */
-  s2Pending: string;
-  s3Title: string;
-  s3Intro: string;
-  s3ImapTitle: string;
-  s3Imap: { label: string; value: string }[];
-  s3SmtpTitle: string;
-  s3Smtp: { label: string; value: string }[];
-  s3Note: string;
-  s4Title: string;
-  s4Items: { label: string; body: string }[];
-  contactTitle: string;
-  contactPrefix: string;
-  /** Accessible label for the Android/Apple toggle (a `role="group"` wrapping
-      the two toggle buttons). */
+  /** Accessible label for the platform toggle (a `role="group"` wrapping the
+      toggle buttons). */
   platformToggleLabel: string;
   /** Keyed by the `/help/receive-mail/:platform` segment; `unknown` is the
       neutral fallback for a missing or unrecognised segment, and is also used
-      to frame the page (lede/documentTitle) when the toggle has neither
-      platform active. */
+      to frame the page (lede/documentTitle) when the toggle has no platform
+      active. */
   platforms: {
     android: HelpMailPlatformCopy;
     apple: HelpMailPlatformCopy;
+    other: HelpMailPlatformCopy;
     unknown: HelpMailPlatformCopy;
   };
 }
@@ -666,128 +648,29 @@ const zh: Messages = {
     eyebrow: '使用說明',
     title: '在信件 App 收校園信箱',
     lastUpdated: '最後更新',
-    draftLabel: '範例內容（尚未定稿）',
-    draftBody:
-      '這一頁的步驟與伺服器設定目前都是示範用的假資料，正式說明稍後補上。版面與完成後的頁面相同，可以先用來測試 App 內嵌顯示的效果。',
     s1Title: '開始之前',
-    s1Intro: '（範例）動手之前，先準備好這些：',
-    s1Items: [
-      '（範例）你的學號與校務系統密碼',
-      '（範例）校園信箱位址，格式為「學號@mail.example.edu」',
-      '（範例）一個支援 IMAP 的信件 App',
-      '（範例）可以連上網路的環境；在校外可能需要先連上學校 VPN',
-    ],
-    s2Title: '新增帳號的步驟',
-    s2Pending: '頁面正在撰寫中，敬請期待。',
-    s3Title: '伺服器設定',
-    s3Intro: '（範例）下列數值僅供版面測試，請勿照著填寫。',
-    s3ImapTitle: '收信（IMAP）',
-    s3Imap: [
-      { label: '主機', value: 'imap.example.edu' },
-      { label: '連接埠', value: '993' },
-      { label: '加密方式', value: 'SSL / TLS' },
-      { label: '使用者名稱', value: '學號@mail.example.edu' },
-    ],
-    s3SmtpTitle: '寄信（SMTP）',
-    s3Smtp: [
-      { label: '主機', value: 'smtp.example.edu' },
-      { label: '連接埠', value: '587' },
-      { label: '加密方式', value: 'STARTTLS' },
-      { label: '驗證方式', value: '與收信相同的帳號密碼' },
-    ],
-    s3Note: '（範例）如果 App 問你「安全性類型」，選擇與上表相同的項目即可。',
-    s4Title: '收不到信時',
-    s4Items: [
-      {
-        label: '密碼一直被拒絕',
-        body: '（範例）確認校務系統密碼最近是否變更過，並重新輸入一次。',
-      },
-      {
-        label: '卡在「驗證中」',
-        body: '（範例）改用行動網路再試一次，或確認連接埠沒有被目前的網路擋掉。',
-      },
-      {
-        label: '收得到但寄不出去',
-        body: '（範例）多半是 SMTP 的連接埠或加密方式填錯，回到上一節對照一次。',
-      },
-    ],
-    contactTitle: '聯絡我們',
-    contactPrefix: '照著做還是設定不起來？歡迎來信：',
+    s1Intro: '頁面還在撰寫，敬請期待。',
     platformToggleLabel: '選擇平台',
     platforms: {
       android: {
         label: 'Android',
         documentTitle: '在 Android 收校園信箱 — TigerDuck',
         lede: '（範例）把臺科大校園信箱加進 Android 手機上的信件 App，就能和你其他的信箱一起收信。',
-        appHint: '（範例）以下以 Gmail App 為例，其他信件 App 的選單名稱可能略有不同。',
-        steps: [
-          { label: '打開 Gmail App', body: '（範例）點右上角的頭像，選「新增其他帳戶」。' },
-          {
-            label: '選擇帳戶類型',
-            body: '（範例）在清單中選「其他」，輸入你的校園信箱位址後按「下一步」。',
-          },
-          {
-            label: '選「個人 (IMAP)」',
-            body: '（範例）出現帳戶類型時選 IMAP，接著輸入校務系統密碼。',
-          },
-          {
-            label: '填寫收信伺服器',
-            body: '（範例）依下一節「伺服器設定」填入 IMAP 主機、連接埠與加密方式。',
-          },
-          {
-            label: '填寫寄信伺服器',
-            body: '（範例）同樣依下一節填入 SMTP 設定，並勾選「需要登入」。',
-          },
-          {
-            label: '完成設定',
-            body: '（範例）設定同步頻率與通知後按「完成」，App 就會開始收信。',
-          },
-        ],
       },
       apple: {
         label: 'iPhone / iPad',
         documentTitle: '在 iPhone 收校園信箱 — TigerDuck',
         lede: '（範例）把臺科大校園信箱加進 iPhone 或 iPad 內建的「郵件」App，就能和你其他的信箱一起收信。',
-        appHint: '（範例）以下以內建的「郵件」App 為例，第三方信件 App 的選單名稱可能略有不同。',
-        steps: [
-          { label: '打開「設定」', body: '（範例）進入「應用程式 → 郵件 → 郵件帳號」。' },
-          {
-            label: '加入帳號',
-            body: '（範例）點「加入帳號」，在清單最下方選「其他」。',
-          },
-          {
-            label: '選「加入郵件帳號」',
-            body: '（範例）填入姓名、校園信箱位址與校務系統密碼。',
-          },
-          { label: '選擇 IMAP', body: '（範例）在上方分頁選 IMAP，不要選 POP。' },
-          {
-            label: '填寫收信與寄信伺服器',
-            body: '（範例）依下一節「伺服器設定」填入 IMAP 與 SMTP 的主機與帳號密碼。',
-          },
-          { label: '儲存', body: '（範例）按「儲存」，驗證通過後就會開始收信。' },
-        ],
+      },
+      other: {
+        label: '其他裝置',
+        documentTitle: '在其他裝置收校園信箱 — TigerDuck',
+        lede: '（範例）把臺科大校園信箱加進其他裝置上的信件 App，就能和你其他的信箱一起收信。',
       },
       unknown: {
         label: '通用步驟',
         documentTitle: '在信件 App 收校園信箱 — TigerDuck',
         lede: '（範例）這個網址沒有指定平台，以下是不分平台的通用步驟；實際選單名稱請以你的信件 App 為準。',
-        appHint: '（範例）各家信件 App 的用詞不同，但流程大致相同。',
-        steps: [
-          {
-            label: '在信件 App 中新增帳號',
-            body: '（範例）選擇「其他」或「其他郵件帳號」這類選項。',
-          },
-          {
-            label: '輸入校園信箱與密碼',
-            body: '（範例）帳號為你的校園信箱位址，密碼為校務系統密碼。',
-          },
-          { label: '選擇 IMAP', body: '（範例）若問你要 IMAP 還是 POP，選 IMAP。' },
-          { label: '填寫伺服器設定', body: '（範例）依下一節填入收信與寄信伺服器。' },
-          {
-            label: '完成並測試',
-            body: '（範例）儲存後寄一封信給自己，確認可以正常收發。',
-          },
-        ],
       },
     },
   },
@@ -1229,143 +1112,29 @@ const en: Messages = {
     eyebrow: 'Help',
     title: 'Read your school mail in a mail app',
     lastUpdated: 'Last updated',
-    draftLabel: 'Sample content (not final)',
-    draftBody:
-      'The steps and server settings on this page are placeholder text for now; the real instructions are coming later. The layout matches the finished page, so it can already be used to check how the page looks inside the app.',
     s1Title: 'Before you start',
-    s1Intro: '(Sample) Have these ready:',
-    s1Items: [
-      '(Sample) Your student ID and NTUST portal password',
-      '(Sample) Your school mail address, in the form student-id@mail.example.edu',
-      '(Sample) A mail app that supports IMAP',
-      '(Sample) A working internet connection; off campus you may need the school VPN first',
-    ],
-    s2Title: 'Adding the account',
-    s2Pending: 'This page is still being written — check back soon.',
-    s3Title: 'Server settings',
-    s3Intro: '(Sample) The values below are placeholders for layout testing — do not type them in.',
-    s3ImapTitle: 'Incoming (IMAP)',
-    s3Imap: [
-      { label: 'Host', value: 'imap.example.edu' },
-      { label: 'Port', value: '993' },
-      { label: 'Encryption', value: 'SSL / TLS' },
-      { label: 'Username', value: 'student-id@mail.example.edu' },
-    ],
-    s3SmtpTitle: 'Outgoing (SMTP)',
-    s3Smtp: [
-      { label: 'Host', value: 'smtp.example.edu' },
-      { label: 'Port', value: '587' },
-      { label: 'Encryption', value: 'STARTTLS' },
-      { label: 'Authentication', value: 'Same username and password as incoming' },
-    ],
-    s3Note:
-      '(Sample) If the app asks for a "security type", pick the same option as in the table above.',
-    s4Title: 'If mail does not arrive',
-    s4Items: [
-      {
-        label: 'The password keeps being rejected',
-        body: '(Sample) Check whether your portal password changed recently, then type it again.',
-      },
-      {
-        label: 'Stuck on "verifying"',
-        body: '(Sample) Try again on mobile data, or check that the port is not blocked on your current network.',
-      },
-      {
-        label: 'Mail arrives but will not send',
-        body: '(Sample) Usually the SMTP port or encryption is wrong — go back to the previous section and compare.',
-      },
-    ],
-    contactTitle: 'Contact us',
-    contactPrefix: 'Followed the steps and it still will not connect? Email us:',
+    s1Intro: 'This page is still being written — check back soon.',
     platformToggleLabel: 'Choose a platform',
     platforms: {
       android: {
         label: 'Android',
         documentTitle: 'School mail on Android — TigerDuck',
         lede: '(Sample) Add your NTUST school mailbox to the mail app on your Android phone so it arrives alongside your other mail.',
-        appHint:
-          '(Sample) The steps below use the Gmail app; other mail apps name their menus slightly differently.',
-        steps: [
-          {
-            label: 'Open the Gmail app',
-            body: '(Sample) Tap your avatar in the top right, then "Add another account".',
-          },
-          {
-            label: 'Pick the account type',
-            body: '(Sample) Choose "Other" from the list, enter your school mail address and tap Next.',
-          },
-          {
-            label: 'Choose "Personal (IMAP)"',
-            body: '(Sample) Pick IMAP when asked for the account type, then enter your portal password.',
-          },
-          {
-            label: 'Fill in the incoming server',
-            body: '(Sample) Use the IMAP host, port and encryption from the Server settings section below.',
-          },
-          {
-            label: 'Fill in the outgoing server',
-            body: '(Sample) Use the SMTP values from the same section and tick "require sign-in".',
-          },
-          {
-            label: 'Finish',
-            body: '(Sample) Choose a sync frequency and notification settings, tap Done, and mail starts arriving.',
-          },
-        ],
       },
       apple: {
         label: 'iPhone / iPad',
         documentTitle: 'School mail on iPhone — TigerDuck',
         lede: '(Sample) Add your NTUST school mailbox to the built-in Mail app on your iPhone or iPad so it arrives alongside your other mail.',
-        appHint:
-          '(Sample) The steps below use the built-in Mail app; third-party mail apps name their menus slightly differently.',
-        steps: [
-          { label: 'Open Settings', body: '(Sample) Go to Apps → Mail → Mail Accounts.' },
-          {
-            label: 'Add the account',
-            body: '(Sample) Tap "Add Account" and choose "Other" at the bottom of the list.',
-          },
-          {
-            label: 'Choose "Add Mail Account"',
-            body: '(Sample) Enter your name, school mail address and portal password.',
-          },
-          { label: 'Select IMAP', body: '(Sample) Pick the IMAP tab at the top, not POP.' },
-          {
-            label: 'Fill in both servers',
-            body: '(Sample) Use the IMAP and SMTP hosts and credentials from the Server settings section below.',
-          },
-          {
-            label: 'Save',
-            body: '(Sample) Tap Save; once verification passes, mail starts arriving.',
-          },
-        ],
+      },
+      other: {
+        label: 'Other device',
+        documentTitle: 'School mail on other devices — TigerDuck',
+        lede: '(Sample) Add your NTUST school mailbox to the mail app on your other device so it arrives alongside your other mail.',
       },
       unknown: {
         label: 'Generic steps',
         documentTitle: 'School mail in a mail app — TigerDuck',
         lede: '(Sample) This address does not name a platform, so the steps below are the generic ones — follow the wording your own mail app uses.',
-        appHint: '(Sample) Mail apps word things differently, but the flow is the same everywhere.',
-        steps: [
-          {
-            label: 'Add an account in your mail app',
-            body: '(Sample) Choose "Other" or "Other mail account".',
-          },
-          {
-            label: 'Enter your school mail and password',
-            body: '(Sample) The username is your school mail address; the password is your portal password.',
-          },
-          {
-            label: 'Select IMAP',
-            body: '(Sample) When asked for IMAP or POP, choose IMAP.',
-          },
-          {
-            label: 'Fill in the server settings',
-            body: '(Sample) Use the incoming and outgoing values from the section below.',
-          },
-          {
-            label: 'Finish and test',
-            body: '(Sample) Save, then send yourself a message to confirm it sends and arrives.',
-          },
-        ],
       },
     },
   },

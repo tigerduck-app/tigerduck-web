@@ -33,7 +33,7 @@ const HELP_RECEIVE_MAIL = '/help/receive-mail';
 function helpMailPlatform(path: string): HelpMailPlatform | null {
   const segment = matchSegment(path, HELP_RECEIVE_MAIL);
   if (segment === null) return null;
-  if (segment === 'android' || segment === 'apple') return segment;
+  if (segment === 'android' || segment === 'apple' || segment === 'other') return segment;
   return 'unknown';
 }
 

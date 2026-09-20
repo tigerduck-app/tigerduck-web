@@ -10,16 +10,17 @@ import { navigate } from '@/lib/router';
  * third-party mail app. Linked from the apps, and opened inside the Android
  * app's WebView with `?embed=1&theme=…&lang=…` (see `@/lib/embed`).
  *
- * NOTE: the copy is placeholder text while the real instructions are written;
- * the structure is the finished one, so the embed can be tested as-is.
+ * NOTE: this is a stub while the real instructions (with screenshots) are
+ * written. Only the header and the platform toggle, plus a placeholder
+ * notice below them, are shown; the numbered steps/server-settings/
+ * troubleshooting sections come back once that content exists.
  */
-export type HelpMailPlatform = 'android' | 'apple' | 'unknown';
+export type HelpMailPlatform = 'android' | 'apple' | 'other' | 'unknown';
 
-/** The platform a toggle can actually select; `null` means neither — both
-    platforms' steps are shown. */
-type SelectedPlatform = 'android' | 'apple' | null;
+/** The platform a toggle can actually select; `null` means none — the
+    neutral/unknown copy is shown. */
+type SelectedPlatform = 'android' | 'apple' | 'other' | null;
 
-const SUPPORT_EMAIL = 'tigerduckapp@gmail.com';
 const LAST_UPDATED = '2026-09-20';
 
 /**
@@ -30,10 +31,12 @@ const LAST_UPDATED = '2026-09-20';
 const RECEIVE_MAIL_PATH = '/help/receive-mail';
 
 /** Real platforms, in toggle/display order. */
-const KNOWN_PLATFORMS = ['android', 'apple'] as const;
+const KNOWN_PLATFORMS = ['android', 'apple', 'other'] as const;
 
 function selectedFromPlatform(platform: HelpMailPlatform): SelectedPlatform {
-  return platform === 'android' || platform === 'apple' ? platform : null;
+  return platform === 'android' || platform === 'apple' || platform === 'other'
+    ? platform
+    : null;
 }
 
 export function HelpReceiveMail({ platform }: { platform: HelpMailPlatform }) {
@@ -67,7 +70,7 @@ export function HelpReceiveMail({ platform }: { platform: HelpMailPlatform }) {
    * router's event, `path` changes, and App.tsx's `key={path}` remounts this
    * component with the right initial `selected` value.
    */
-  function toggle(target: 'android' | 'apple') {
+  function toggle(target: 'android' | 'apple' | 'other') {
     const next = selected === target ? null : target;
     if (embedded) {
       setSelected(next);
@@ -103,7 +106,10 @@ export function HelpReceiveMail({ platform }: { platform: HelpMailPlatform }) {
             <time dateTime={LAST_UPDATED}>{LAST_UPDATED}</time>
           </div>
 
-          {/* Selects which platform's section 02 shows. Stays visible in the
+          {/* Selects which platform's copy (lede/documentTitle) is shown
+              above. Kept working even while the page below is just a
+              placeholder notice, since the real per-platform steps will read
+              this same selection once they exist. Stays visible in the
               embed — an Android-app user may still want to set up an iPad. */}
           <div
             className="td-platform-toggle"
@@ -126,106 +132,12 @@ export function HelpReceiveMail({ platform }: { platform: HelpMailPlatform }) {
       </header>
 
       <main className="td-container td-doc-body">
-        <section className="td-doc-callout td-reveal">
-          <div className="td-eyebrow" style={{ marginBottom: 8, color: 'var(--td-orange)' }}>
-            {messages.draftLabel}
-          </div>
-          <p>{messages.draftBody}</p>
-        </section>
-
         <section className="td-doc-section td-reveal">
           <div className="td-doc-section-num">01</div>
           <h2 className="td-doc-section-title">{messages.s1Title}</h2>
           <div className="td-doc-section-body">
             <p>{messages.s1Intro}</p>
-            <ul className="td-policy-list">
-              {messages.s1Items.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
           </div>
-        </section>
-
-        <section className="td-doc-section td-reveal">
-          <div className="td-doc-section-num">02</div>
-          <h2 className="td-doc-section-title">{messages.s2Title}</h2>
-          <div className="td-doc-section-body">
-            {selected === null ? (
-              // No platform picked: keep the toggle as the only thing to act on
-              // and say the steps aren't written yet. Stacking both platforms
-              // here would make the page enormous once screenshots land — each
-              // platform is meant to fill the page on its own.
-              <p>{messages.s2Pending}</p>
-            ) : (
-              <>
-                <p>{copy.appHint}</p>
-                <ol className="td-policy-steps">
-                  {copy.steps.map((step) => (
-                    <li key={step.label}>
-                      <strong>{step.label}</strong> — {step.body}
-                    </li>
-                  ))}
-                </ol>
-              </>
-            )}
-          </div>
-        </section>
-
-        <section className="td-doc-section td-reveal">
-          <div className="td-doc-section-num">03</div>
-          <h2 className="td-doc-section-title">{messages.s3Title}</h2>
-          <div className="td-doc-section-body">
-            <p>{messages.s3Intro}</p>
-            <div className="td-help-grid">
-              <div className="td-policy-block">
-                <h3 className="td-policy-subhead">{messages.s3ImapTitle}</h3>
-                <dl className="td-help-settings">
-                  {messages.s3Imap.map((row) => (
-                    <div key={row.label} className="td-help-setting">
-                      <dt>{row.label}</dt>
-                      <dd className="td-mono">{row.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-              <div className="td-policy-block">
-                <h3 className="td-policy-subhead">{messages.s3SmtpTitle}</h3>
-                <dl className="td-help-settings">
-                  {messages.s3Smtp.map((row) => (
-                    <div key={row.label} className="td-help-setting">
-                      <dt>{row.label}</dt>
-                      <dd className="td-mono">{row.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-            <p>{messages.s3Note}</p>
-          </div>
-        </section>
-
-        <section className="td-doc-section td-reveal">
-          <div className="td-doc-section-num">04</div>
-          <h2 className="td-doc-section-title">{messages.s4Title}</h2>
-          <div className="td-doc-section-body">
-            <ul className="td-policy-list">
-              {messages.s4Items.map((item) => (
-                <li key={item.label}>
-                  <strong>{item.label}</strong> — {item.body}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section className="td-doc-section td-doc-contact td-reveal">
-          <h2 className="td-doc-section-title">{messages.contactTitle}</h2>
-          <p>
-            {messages.contactPrefix}{' '}
-            <a href={`mailto:${SUPPORT_EMAIL}`} className="td-doc-mail">
-              {SUPPORT_EMAIL}
-            </a>
-          </p>
         </section>
       </main>
     </article>
