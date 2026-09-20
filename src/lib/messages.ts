@@ -439,7 +439,7 @@ const zh: Messages = {
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
       feedbackForm: '回饋表單',
-      help: '使用說明',
+      help: '其他幫助',
       privacy: '隱私政策',
       deleteAccount: '刪除帳號',
       tigersync: 'TigerSync',
@@ -787,11 +787,11 @@ const zh: Messages = {
     },
   },
   helpIndex: {
-    documentTitle: '使用說明 — TigerDuck',
+    documentTitle: '其他幫助 — TigerDuck',
     back: '← 回首頁',
-    eyebrow: '使用說明',
-    title: '使用說明',
-    lede: '這裡收錄 TigerDuck 的操作指南，之後會陸續新增更多主題。',
+    eyebrow: '其他幫助',
+    title: '其他幫助',
+    lede: '這裡收錄了其他校園相關軟體的額外操作幫助，會陸陸續續新增更多主題。',
     topics: {
       receiveMail: {
         title: '在信件 App 收校園信箱',
@@ -995,7 +995,7 @@ const en: Messages = {
       gdg: 'GDG on Campus | NTUST',
       contributors: 'Contributors',
       feedbackForm: 'Feedback form',
-      help: 'Help',
+      help: 'Other help',
       privacy: 'Privacy policy',
       deleteAccount: 'Delete account',
       tigersync: 'TigerSync',
@@ -1365,11 +1365,11 @@ const en: Messages = {
     },
   },
   helpIndex: {
-    documentTitle: 'Help — TigerDuck',
+    documentTitle: 'Other help — TigerDuck',
     back: '← Back to home',
-    eyebrow: 'Help',
-    title: 'Help',
-    lede: 'Guides for using TigerDuck. More topics will land here over time.',
+    eyebrow: 'Other help',
+    title: 'Other help',
+    lede: 'Extra guides for other campus-related apps. More topics will be added over time.',
     topics: {
       receiveMail: {
         title: 'Read your school mail in a mail app',
