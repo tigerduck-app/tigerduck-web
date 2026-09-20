@@ -224,12 +224,15 @@ interface HelpReceiveMailMessages {
   s3Note: string;
   s4Title: string;
   s4Items: { label: string; body: string }[];
-  s5Title: string;
-  s5Intro: string;
   contactTitle: string;
   contactPrefix: string;
+  /** Accessible label for the Android/Apple toggle (a `role="group"` wrapping
+      the two toggle buttons). */
+  platformToggleLabel: string;
   /** Keyed by the `/help/receive-mail/:platform` segment; `unknown` is the
-      neutral fallback for a missing or unrecognised segment. */
+      neutral fallback for a missing or unrecognised segment, and is also used
+      to frame the page (lede/documentTitle) when the toggle has neither
+      platform active. */
   platforms: {
     android: HelpMailPlatformCopy;
     apple: HelpMailPlatformCopy;
@@ -705,10 +708,9 @@ const zh: Messages = {
         body: '（範例）多半是 SMTP 的連接埠或加密方式填錯，回到上一節對照一次。',
       },
     ],
-    s5Title: '其他平台',
-    s5Intro: '步驟依平台而不同，也可以看：',
     contactTitle: '聯絡我們',
     contactPrefix: '照著做還是設定不起來？歡迎來信：',
+    platformToggleLabel: '選擇平台',
     platforms: {
       android: {
         label: 'Android',
@@ -1269,10 +1271,9 @@ const en: Messages = {
         body: '(Sample) Usually the SMTP port or encryption is wrong — go back to the previous section and compare.',
       },
     ],
-    s5Title: 'Other platforms',
-    s5Intro: 'The steps differ per platform. You can also read:',
     contactTitle: 'Contact us',
     contactPrefix: 'Followed the steps and it still will not connect? Email us:',
+    platformToggleLabel: 'Choose a platform',
     platforms: {
       android: {
         label: 'Android',

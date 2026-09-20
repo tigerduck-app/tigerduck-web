@@ -1103,6 +1103,52 @@
 .td-doc-meta time {
   color: var(--td-text-secondary);
 }
+
+/* ============ Platform toggle (/help/receive-mail) ============
+   Segmented control: neither button pressed shows both platforms' steps in
+   section 02, pressing one shows that platform only, and pressing the
+   already-pressed one releases back to neither. */
+.td-platform-toggle {
+  display: inline-flex;
+  gap: 4px;
+  margin-top: 20px;
+  padding: 4px;
+  background: var(--td-bg-card);
+  border: 1px solid var(--td-border-hairline);
+  border-radius: 980px;
+}
+.td-platform-toggle-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--td-text-secondary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  padding: 9px 18px;
+  min-height: 40px;
+  border-radius: 980px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    transform 0.12s ease;
+}
+.td-platform-toggle-btn:hover {
+  color: var(--td-text);
+}
+.td-platform-toggle-btn:active {
+  transform: scale(0.97);
+}
+.td-platform-toggle-btn:focus-visible {
+  outline: 2px solid var(--td-blue);
+  outline-offset: 2px;
+}
+.td-platform-toggle-btn[aria-pressed='true'] {
+  background: var(--td-blue);
+  color: #fff;
+}
 .td-doc-body {
   padding-top: clamp(40px, 6vw, 72px);
   display: flex;
