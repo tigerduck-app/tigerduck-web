@@ -655,22 +655,22 @@ const zh: Messages = {
       android: {
         label: 'Android',
         documentTitle: '在 Android 收校園信箱 — TigerDuck',
-        lede: '（範例）把臺科大校園信箱加進 Android 手機上的信件 App，就能和你其他的信箱一起收信。',
+        lede: '把臺科大校園信箱加進 Android 手機上的信件 App，就能和你其他的信箱一起收信。',
       },
       apple: {
         label: 'iPhone / iPad',
         documentTitle: '在 iPhone 收校園信箱 — TigerDuck',
-        lede: '（範例）把臺科大校園信箱加進 iPhone 或 iPad 內建的「郵件」App，就能和你其他的信箱一起收信。',
+        lede: '把臺科大校園信箱加進 iPhone 或 iPad 內建的「郵件」App，就能和你其他的信箱一起收信。',
       },
       other: {
         label: '其他裝置',
         documentTitle: '在其他裝置收校園信箱 — TigerDuck',
-        lede: '（範例）把臺科大校園信箱加進其他裝置上的信件 App，就能和你其他的信箱一起收信。',
+        lede: '把臺科大校園信箱加進其他裝置上的信件 App，就能和你其他的信箱一起收信。',
       },
       unknown: {
         label: '通用步驟',
         documentTitle: '在信件 App 收校園信箱 — TigerDuck',
-        lede: '（範例）這個網址沒有指定平台，以下是不分平台的通用步驟；實際選單名稱請以你的信件 App 為準。',
+        lede: '這個網址沒有指定平台，以下是不分平台的通用步驟；實際選單名稱請以你的信件 App 為準。',
       },
     },
   },
@@ -1119,22 +1119,22 @@ const en: Messages = {
       android: {
         label: 'Android',
         documentTitle: 'School mail on Android — TigerDuck',
-        lede: '(Sample) Add your NTUST school mailbox to the mail app on your Android phone so it arrives alongside your other mail.',
+        lede: 'Add your NTUST school mailbox to the mail app on your Android phone so it arrives alongside your other mail.',
       },
       apple: {
         label: 'iPhone / iPad',
         documentTitle: 'School mail on iPhone — TigerDuck',
-        lede: '(Sample) Add your NTUST school mailbox to the built-in Mail app on your iPhone or iPad so it arrives alongside your other mail.',
+        lede: 'Add your NTUST school mailbox to the built-in Mail app on your iPhone or iPad so it arrives alongside your other mail.',
       },
       other: {
         label: 'Other device',
         documentTitle: 'School mail on other devices — TigerDuck',
-        lede: '(Sample) Add your NTUST school mailbox to the mail app on your other device so it arrives alongside your other mail.',
+        lede: 'Add your NTUST school mailbox to the mail app on your other device so it arrives alongside your other mail.',
       },
       unknown: {
         label: 'Generic steps',
         documentTitle: 'School mail in a mail app — TigerDuck',
-        lede: '(Sample) This address does not name a platform, so the steps below are the generic ones — follow the wording your own mail app uses.',
+        lede: 'This address does not name a platform, so the steps below are the generic ones — follow the wording your own mail app uses.',
       },
     },
   },
