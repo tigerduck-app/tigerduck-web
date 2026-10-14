@@ -2,6 +2,15 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // A shared class table link (/T/...) carries a student ID and courses: no Referer leaves it.
+      if (/^\/t\//i.test(location.pathname)) {
+        var referrer = document.createElement('meta');
+        referrer.name = 'referrer';
+        referrer.content = 'no-referrer';
+        document.head.appendChild(referrer);
+      }
+    </script>
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="apple-touch-icon" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -36,6 +45,8 @@
       (function () {
         var id = '%VITE_GA_MEASUREMENT_ID%';
         if (!id || id === '%' + 'VITE_GA_MEASUREMENT_ID%') return;
+        // Nothing about a shared class table link (/T/...) may reach analytics.
+        if (/^\/t\//i.test(location.pathname)) return;
         var s = document.createElement('script');
         s.async = true;
         s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
