@@ -536,7 +536,7 @@ const zh: Messages = {
     s2Steps: [
       {
         label: '在 App 內登出',
-        body: '前往「設定 → 帳號」登出。App 會順帶請後端移除這台裝置的紀錄（推播 Token、通知偏好）並撤銷其登入階段。這是一次盡力而為的請求：若當下沒有網路，該紀錄可能仍留在後端，由第 3 步一併處理。',
+        body: '前往「設定 → 帳號」登出。App 會順帶請後端將這台裝置標記為已刪除、讓它的推播 Token 失效並撤銷其登入階段；若這是你最後一台登入的裝置，後端也會刪除加密的 Moodle Token。這是一次盡力而為的請求：若當下沒有網路，該紀錄可能仍留在後端，由第 3 步一併處理。',
       },
       {
         label: '移除 App',
@@ -557,15 +557,15 @@ const zh: Messages = {
     s3Suffix: '。TigerDuck 團隊沒有任何學校帳號的管理權限。',
     s4Title: 'TigerDuck 後端保存的資料（帳號、同步、推播）',
     s4Scope:
-      '本節適用於 App Store 與 Google Play 版本。**F-Droid 版本不會註冊推播，也不會上傳同步資料**；但若你在連得上後端時登入，同樣會建立帳號紀錄（學號與加密的 Moodle Token），因此第 02 節的來信要求亦適用。',
+      '本節適用於 App Store 與 Google Play 版本。**F-Droid 版本不會註冊推播，也不會上傳同步資料**；但若你在連得上後端時登入，同樣會建立帳號紀錄（學號、加密的 Moodle Token 與裝置紀錄），因此第 02 節的來信要求亦適用。',
     s4Push:
-      'TigerDuck 後端（**api.tigerduck.app**）可能為你的帳號持有：學號、加密的 Moodle Token、每台裝置一筆紀錄（推播 Token、裝置識別碼、裝置類型、App 與作業系統版本、通知偏好）、跨裝置同步的資料（課表、手動新增或隱藏的課程、自訂顏色與名稱、作業標記、假日提醒例外，以及 30 天的變更紀錄）、公告訂閱條件，以及（Apple 裝置）用於排程通知的近 48 小時課表／作業。',
+      'TigerDuck 後端（**api.tigerduck.app**）可能為你的帳號持有：學號、加密的 Moodle Token、每台裝置一筆紀錄（推播與即時動態 Token、裝置識別碼、裝置類型與型號、App 與作業系統版本、介面語言、通知偏好、最近一次連線與登入的時間）、跨裝置同步的資料（課表、手動新增或隱藏的課程、自訂顏色與名稱、作業與其標記、假日提醒例外、提醒設定，以及 30 天的變更紀錄）、同步活動紀錄、公告訂閱條件與推送紀錄，以及（Apple 裝置）用於排程通知的近 48 小時課表／作業。',
     s4SignOut:
-      '**登出只會處理登出的那一台裝置**：後端會將該裝置標記為已刪除、撤銷其登入階段，並讓其推播 Token 失效。未登出就直接解除安裝，則要等推播服務回報 Token 失效後才會停止推播。**這兩種情況都不會刪除同步資料，也不會刪除帳號紀錄（學號與加密的 Moodle Token）**——這些資料會一直保留在後端，直到你來信要求刪除為止。',
+      '**登出只會處理登出的那一台裝置**：後端會將該裝置標記為已刪除、撤銷其登入階段，並讓其推播 Token 失效；你最後一台裝置也登出後，後端會刪除加密的 Moodle Token。未登出就直接解除安裝，則要等推播服務回報 Token 失效後才會停止推播。**這兩種情況都不會刪除同步資料，也不會刪除帳號紀錄（學號）**——這些資料會一直保留在後端，直到你來信要求刪除為止。',
     s4Request:
-      '要完整刪除，請寄信到 {EMAIL}，說明你的學號並要求刪除全部資料，並註明是否需要我們提供刪除紀錄（我們刪除了哪些資料、哪些裝置）。我們會盡快處理。',
+      '要完整刪除，請寄信到 {EMAIL}，說明你的學號並要求刪除全部資料，並註明是否需要我們提供刪除紀錄（我們刪除了哪些資料、哪些裝置）。我們會盡快處理；伺服器的加密備份保留 30 天，刪除的資料最晚 30 天後也會從備份中消失。',
     s4Analytics:
-      '**Google Play 版本的 Firebase Analytics** 只在你於設定中開啟後才會運作；使用情境資料由 Google 依其隱私政策處理，我們不留副本，關閉該設定或移除 App 即停止收集。**App Store 版本的 Sentry**：Crash 與錯誤事件由 Sentry 依其隱私政策處理，我們不留副本，移除 App 即停止收集。',
+      '**Google Play 版本的 Firebase Analytics** 只在你於設定中開啟後才會運作；使用情境資料由 Google 依其隱私政策處理，我們不留副本，關閉該設定或移除 App 即停止收集。**App Store 與 F-Droid 版本**不含任何分析或當機回報 SDK。',
     contactTitle: '聯絡我們',
     contactPrefix: '其他問題歡迎來信：',
   },
@@ -993,7 +993,7 @@ const en: Messages = {
     s2Steps: [
       {
         label: 'Sign out in the app',
-        body: "Go to Settings → Account and sign out. The app also asks the backend to remove this device's record (push token, notification preferences) and revoke its sessions. This is a best-effort request: if the device is offline at the time, that record may stay on the backend — step 3 covers it.",
+        body: "Go to Settings → Account and sign out. The app also asks the backend to mark this device deleted, invalidate its push token and revoke its sessions; if it is the last device you are signed in on, the backend also deletes the encrypted Moodle token. This is a best-effort request: if the device is offline at the time, that record may stay on the backend — step 3 covers it.",
       },
       {
         label: 'Remove the app',
@@ -1020,15 +1020,15 @@ const en: Messages = {
     s3Suffix: ' directly. The TigerDuck team has no privileges over school accounts.',
     s4Title: 'Data held by the TigerDuck backend (account, sync, push)',
     s4Scope:
-      'This section applies to the App Store and Google Play builds. **The F-Droid build never registers for push or uploads synced data**, but if you signed in while the backend was reachable it created the same account record (student ID and encrypted Moodle token), so the email request in Section 02 applies to it too.',
+      'This section applies to the App Store and Google Play builds. **The F-Droid build never registers for push or uploads synced data**, but if you signed in while the backend was reachable it created the same account record (student ID, encrypted Moodle token and a device record), so the email request in Section 02 applies to it too.',
     s4Push:
-      'The TigerDuck backend (**api.tigerduck.app**) may hold, for your account: your student ID, an encrypted copy of your Moodle token, one record per device (push token, device identifier, device type, app and OS version, notification preferences), the data synced across your devices (timetables, hand-added or hidden courses, custom colours and names, homework marks, holiday reminder exceptions, and a 30-day change log), your announcement subscription rules, and (Apple devices) up to 48 hours of timetable and homework entries used to schedule notifications.',
+      'The TigerDuck backend (**api.tigerduck.app**) may hold, for your account: your student ID, an encrypted copy of your Moodle token, one record per device (push and Live Activity tokens, device identifier, device type and model, app and OS version, interface language, notification preferences, and when it last connected and signed in), the data synced across your devices (timetables, hand-added or hidden courses, custom colours and names, homework and your marks, holiday reminder exceptions, reminder settings, and a 30-day change log), a sync activity log, your announcement subscription rules and push records, and (Apple devices) up to 48 hours of timetable and homework entries used to schedule notifications.',
     s4SignOut:
-      "**Signing out only affects the device you signed out from**: the backend marks that device deleted, revokes its sessions, and invalidates its push token. Uninstalling without signing out stops delivery only once the push service reports the token as invalid. **Neither one deletes the synced data, and neither deletes the account record (student ID and encrypted Moodle token)** — those stay on the backend until you ask us to remove them.",
+      "**Signing out only affects the device you signed out from**: the backend marks that device deleted, revokes its sessions, and invalidates its push token; once your last device has signed out, the backend deletes the encrypted Moodle token. Uninstalling without signing out stops delivery only once the push service reports the token as invalid. **Neither one deletes the synced data, and neither deletes the account record (your student ID)** — those stay on the backend until you ask us to remove them.",
     s4Request:
-      'For full deletion, email {EMAIL} with your student ID, ask us to delete all of your data, and say whether you want a record of the deletion (which data and which devices we removed). We will process it as soon as we can.',
+      'For full deletion, email {EMAIL} with your student ID, ask us to delete all of your data, and say whether you want a record of the deletion (which data and which devices we removed). We will process it as soon as we can; the server\'s encrypted backups are kept for 30 days, so deleted data is gone from them within 30 days too.',
     s4Analytics:
-      '**Firebase Analytics on the Google Play build** only runs if you enabled it in Settings; usage data is processed by Google under their privacy policy, we keep no copy, and turning the setting off or removing the app stops collection. **Sentry on the App Store build**: crash and error events are processed by Sentry under their privacy policy; we keep no copy, and removing the app stops collection.',
+      '**Firebase Analytics on the Google Play build** only runs if you enabled it in Settings; usage data is processed by Google under their privacy policy, we keep no copy, and turning the setting off or removing the app stops collection. **The App Store and F-Droid builds** contain no analytics or crash-reporting SDK.',
     contactTitle: 'Contact us',
     contactPrefix: 'For other questions, email us:',
   },
