@@ -120,7 +120,7 @@ export function PrivacyPolicy() {
         <h3 className="td-policy-subhead">{messages.bodies.pushAppleDevicesTitle}</h3>
         <p key="pushSchedule">{richText(messages.bodies.pushAnalyticsSchedule)}</p>
         <p key="pushLiveActivity">{richText(messages.bodies.pushAnalyticsLiveActivity)}</p>
-        <p key="pushSentry">{richText(messages.bodies.pushAnalyticsSentry)}</p>
+        <p key="pushDiagnostics">{richText(messages.bodies.pushAnalyticsDiagnostics)}</p>
       </div>
       <div key="pushAndroid" className="td-policy-block">
         <h3 className="td-policy-subhead">{messages.bodies.pushAndroidDevicesTitle}</h3>
@@ -147,7 +147,7 @@ export function PrivacyPolicy() {
           </p>
           <div className="td-doc-meta">
             <span>{messages.lastUpdated}</span>
-            <time dateTime="2026-09-09">2026-09-09</time>
+            <time dateTime="2026-10-26">2026-10-26</time>
           </div>
         </div>
       </header>
