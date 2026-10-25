@@ -16,7 +16,7 @@ export function RoadmapSection() {
             <p className="td-lede">{messages.lede}</p>
           </div>
           <a
-            href="https://github.com/tigerduck-app/tigerduck-app#%E9%96%8B%E7%99%BC%E8%A6%8F%E5%8A%83"
+            href="https://github.com/tigerduck-app/tigerduck-app/milestones"
             target="_blank"
             className="td-btn td-btn--secondary td-block-cta"
           >
