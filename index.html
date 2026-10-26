@@ -47,6 +47,8 @@
         if (!id || id === '%' + 'VITE_GA_MEASUREMENT_ID%') return;
         // Nothing about a shared class table link (/T/...) may reach analytics.
         if (/^\/t\//i.test(location.pathname)) return;
+        // Pages the apps show in their own web view (?embed=1) carry no analytics either.
+        if (/[?&]embed=(1|true|yes)(&|$)/i.test(location.search)) return;
         var s = document.createElement('script');
         s.async = true;
         s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
