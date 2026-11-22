@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { domMin, LazyMotion } from 'motion/react';
 import type { Locale } from '@/lib/locale';
 import { LocaleContext, translator, usePhoneLocale, type PhoneLocale } from './lib/i18n';
 import { useNow } from './lib/time';
@@ -42,17 +41,14 @@ function useSiteIsDark(): boolean {
 export default function PhoneApp({ locale }: { locale: Locale }) {
   const dark = useSiteIsDark();
   const value = useMemo<PhoneLocale>(() => ({ locale, t: translator(locale) }), [locale]);
-  // `m` components need a renderer; domMin is the smallest feature bundle that has one.
   return (
-    <LazyMotion features={domMin} strict>
-      <LocaleContext.Provider value={value}>
-        <div className={dark ? 'td-ph-app td-ph-app--dark' : 'td-ph-app'} lang={locale === 'zh' ? 'zh-Hant' : 'en'}>
-          <MenuHost>
-            <Tabs />
-          </MenuHost>
-        </div>
-      </LocaleContext.Provider>
-    </LazyMotion>
+    <LocaleContext.Provider value={value}>
+      <div className={dark ? 'td-ph-app td-ph-app--dark' : 'td-ph-app'} lang={locale === 'zh' ? 'zh-Hant' : 'en'}>
+        <MenuHost>
+          <Tabs />
+        </MenuHost>
+      </div>
+    </LocaleContext.Provider>
   );
 }
 

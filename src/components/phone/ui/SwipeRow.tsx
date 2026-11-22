@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { JSAnimation, useMotionValue, useTransform } from 'motion/react';
-import * as m from 'motion/react-m';
 import { phoneScale, swallowNextClick, usePan } from '../lib/gesture';
 import { rubberBand, animateTo, spring } from '../lib/springs';
 import { Icon, type IconName } from './Icon';
+import { Motion } from './Motion';
 
 export interface SwipeAction {
   label: string;
@@ -145,7 +145,7 @@ export function SwipeRow({
   });
 
   const actions = (list: SwipeAction[], side: 'leading' | 'trailing') => (
-    <m.div
+    <Motion
       className={`td-ph-swipe-actions td-ph-swipe-actions--${side}`}
       style={{ width: side === 'trailing' ? trailingWidth : leadingWidth }}
     >
@@ -166,14 +166,14 @@ export function SwipeRow({
           <Icon name={action.icon} />
         </button>
       ))}
-    </m.div>
+    </Motion>
   );
 
   return (
     <div ref={rowRef} className={className ? `td-ph-swipe ${className}` : 'td-ph-swipe'}>
       {leading.length ? actions(leading, 'leading') : null}
       {trailing.length ? actions(trailing, 'trailing') : null}
-      <m.div
+      <Motion
         className="td-ph-swipe-face"
         style={{ x }}
         onClickCapture={(event) => {
@@ -184,7 +184,7 @@ export function SwipeRow({
         }}
       >
         {children}
-      </m.div>
+      </Motion>
     </div>
   );
 }

@@ -9,10 +9,10 @@ import {
   type ReactNode,
 } from 'react';
 import { useMotionValue, useTransform } from 'motion/react';
-import * as m from 'motion/react-m';
 import { usePan, type PanHandlers } from '../lib/gesture';
 import { animateTo, spring } from '../lib/springs';
 import { useInSheet } from './sheetContext';
+import { Motion } from './Motion';
 
 export interface NavApi {
   push: (page: ReactNode) => void;
@@ -169,7 +169,7 @@ export function NavStack({ root }: { root: ReactNode }) {
         const isTop = index === count - 1;
         const isBelow = index === count - 2;
         return (
-          <m.div
+          <Motion
             key={entry.key}
             ref={(element: HTMLDivElement | null) => {
               if (!element) {
@@ -185,8 +185,8 @@ export function NavStack({ root }: { root: ReactNode }) {
             style={{ x: isTop && count > 1 ? topX : isBelow ? belowX : 0 }}
           >
             <NavContext.Provider value={apis[index]}>{index === 0 ? root : entry.page}</NavContext.Provider>
-            {isBelow ? <m.div className="td-ph-navdim" style={{ opacity: dim }} /> : null}
-          </m.div>
+            {isBelow ? <Motion className="td-ph-navdim" style={{ opacity: dim }} /> : null}
+          </Motion>
         );
       })}
     </div>

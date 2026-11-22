@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { useMotionValue, useTransform } from 'motion/react';
-import * as m from 'motion/react-m';
 import { animateTo, spring } from '../lib/springs';
 import { Icon, type IconName } from './Icon';
+import { Motion } from './Motion';
 
 export function GlassButton({
   icon,
@@ -69,7 +69,7 @@ export function Segmented<T extends string>({
   }, [index, position]);
   return (
     <div className="td-ph-segmented" role="group" aria-label={label}>
-      <m.div
+      <Motion
         className="td-ph-segmented-thumb"
         style={{ width: `calc((100% - 6px) / ${options.length})`, x }}
       />

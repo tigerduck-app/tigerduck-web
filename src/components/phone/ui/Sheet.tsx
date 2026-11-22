@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useMotionValue, useTransform } from 'motion/react';
-import * as m from 'motion/react-m';
 import { phoneScale, usePan } from '../lib/gesture';
 import { rubberBand, animateTo, spring } from '../lib/springs';
 import {
@@ -11,6 +10,7 @@ import {
   type Presenter,
   type SheetOptions,
 } from './sheetContext';
+import { Motion } from './Motion';
 
 const SCREEN_HEIGHT = 874;
 const DETENT_Y: Record<Detent, number> = { large: 64, medium: SCREEN_HEIGHT / 2 };
@@ -134,17 +134,17 @@ export function SheetHost({ children }: { children: ReactNode }) {
 
   return (
     <PresenterContext.Provider value={useMemo(() => ({ present }), [present])}>
-      <m.div
+      <Motion
         ref={stageRef}
         className="td-ph-stage"
         style={{ scale: stageScale, borderRadius: stageRadius, y: stageY }}
       >
         {children}
-      </m.div>
+      </Motion>
       {shown ? (
         <>
-          <m.div className="td-ph-backdrop" style={{ opacity: backdrop }} onClick={() => settle(CLOSED_Y)} />
-          <m.div
+          <Motion className="td-ph-backdrop" style={{ opacity: backdrop }} onClick={() => settle(CLOSED_Y)} />
+          <Motion
             ref={sheetRef}
             className="td-ph-sheet"
             role="dialog"
@@ -168,7 +168,7 @@ export function SheetHost({ children }: { children: ReactNode }) {
             <InSheetContext.Provider key={shown.key} value={inSheet}>
               {shown.content}
             </InSheetContext.Provider>
-          </m.div>
+          </Motion>
         </>
       ) : null}
     </PresenterContext.Provider>

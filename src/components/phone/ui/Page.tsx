@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useMotionValue, useTransform, type MotionValue } from 'motion/react';
-import * as m from 'motion/react-m';
 import { usePhoneLocale } from '../lib/i18n';
 import { phoneScale, usePan } from '../lib/gesture';
 import { animateTo, decay, prefersReducedMotion, rubberBand, spring } from '../lib/springs';
 import { useNav } from './NavStack';
 import { useInSheet } from './sheetContext';
 import { GlassButton } from './controls';
+import { Motion } from './Motion';
 
 /**
  * `large`: iOS's large title, collapsing into the bar's inline title.
@@ -199,9 +199,9 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
         {trailing}
       </div>
     ) : titleMode === 'large' ? (
-      <m.div className="td-ph-large-title" role="heading" aria-level={1} style={{ scale: largeScale }}>
+      <Motion className="td-ph-large-title" role="heading" aria-level={1} style={{ scale: largeScale }}>
         {title}
-      </m.div>
+      </Motion>
     ) : null;
 
   return (
@@ -212,13 +212,13 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
         onScroll={(event) => scrollY.set(event.currentTarget.scrollTop)}
       >
         {onRefresh ? <RefreshSpinner pull={pull} spinning={refreshing} inSheet={inSheet !== null} /> : null}
-        <m.div className="td-ph-content" style={{ y: pull }}>
+        <Motion className="td-ph-content" style={{ y: pull }}>
           {heading}
           {children}
-        </m.div>
+        </Motion>
       </div>
       <div className="td-ph-bar">
-        <m.div className="td-ph-bar-bg" style={{ opacity: barOpacity }} />
+        <Motion className="td-ph-bar-bg" style={{ opacity: barOpacity }} />
         {leading}
         {showsBack ? <GlassButton icon="back" label={t('action_back')} onClick={nav.pop} /> : null}
         {titleMode === 'bar' ? (
@@ -226,9 +226,9 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
             {title}
           </span>
         ) : (
-          <m.span className="td-ph-bar-title" style={{ opacity: inlineOpacity }} aria-hidden="true">
+          <Motion as="span" className="td-ph-bar-title" style={{ opacity: inlineOpacity }} aria-hidden="true">
             {title}
-          </m.span>
+          </Motion>
         )}
         <span className="td-ph-bar-spacer" />
         {titleMode === 'app' ? null : <span className="td-ph-bar-tools">{trailing}</span>}
@@ -244,7 +244,7 @@ function RefreshSpinner({ pull, spinning, inSheet }: { pull: MotionValue<number>
   const y = useTransform(pull, (p) => Math.max(0, p / 2 - 15) - (inSheet ? 48 : 0));
   const rotate = useTransform(pull, [0, REFRESH_AT], [-90, 0]);
   return (
-    <m.div
+    <Motion
       className={spinning ? 'td-ph-refresh td-ph-refresh--spinning' : 'td-ph-refresh'}
       style={{ opacity, y, rotate: spinning ? undefined : rotate }}
       aria-hidden="true"
@@ -252,6 +252,6 @@ function RefreshSpinner({ pull, spinning, inSheet }: { pull: MotionValue<number>
       {Array.from({ length: 8 }, (_, i) => (
         <span key={i} style={{ transform: `rotate(${i * 45}deg)`, opacity: 1 - i * 0.1 }} />
       ))}
-    </m.div>
+    </Motion>
   );
 }

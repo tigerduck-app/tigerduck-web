@@ -1,10 +1,10 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useMotionValue } from 'motion/react';
-import * as m from 'motion/react-m';
 import { phoneScale, usePan } from '../lib/gesture';
 import { animateTo, spring } from '../lib/springs';
 import { Icon, type IconName } from './Icon';
 import { useLongPress } from './Menu';
+import { Motion } from './Motion';
 
 export interface TabItem<T extends string> {
   id: T;
@@ -96,7 +96,7 @@ export function TabBar<T extends string>({
         barRef.current?.querySelectorAll<HTMLElement>('[role="tab"]')[next]?.focus();
       }}
     >
-      <m.div
+      <Motion
         className={lifted ? 'td-ph-tabbar-lens td-ph-tabbar-lens--lifted' : 'td-ph-tabbar-lens'}
         style={{ x: lensX, scale: lensScale, width: itemWidth, left: BAR_PADDING }}
       />

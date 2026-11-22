@@ -1,12 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
 import { useMotionValue } from 'motion/react';
-import * as m from 'motion/react-m';
 import { demo, demoTime } from '../../lib/demo';
 import { phoneScale, usePan } from '../../lib/gesture';
 import { k, usePhoneLocale } from '../../lib/i18n';
 import { animateTo, spring } from '../../lib/springs';
 import { DAY_MS, hhmm, startOfTaipeiDay, taipei } from '../../lib/time';
 import { Icon } from '../../ui/Icon';
+import { Motion } from '../../ui/Motion';
 import { Page } from '../../ui/Page';
 import { assignmentItems } from '../assignments';
 
@@ -118,7 +118,7 @@ export function CalendarPage({ now }: { now: number }) {
           ))}
         </div>
         <div ref={gridRef} className="td-ph-cal-clip">
-          <m.div className="td-ph-cal-grid" style={{ x }}>
+          <Motion className="td-ph-cal-grid" style={{ x }}>
             {cells.map((day, i) =>
               day === null ? (
                 <span key={`e${i}`} />
@@ -146,7 +146,7 @@ export function CalendarPage({ now }: { now: number }) {
                 </button>
               )
             )}
-          </m.div>
+          </Motion>
         </div>
       </div>
       <div className="td-ph-section">
