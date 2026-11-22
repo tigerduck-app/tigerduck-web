@@ -5,6 +5,7 @@ import { useNow } from './lib/time';
 import { useMenu, MenuHost } from './ui/Menu';
 import { NavStack } from './ui/NavStack';
 import { SheetHost } from './ui/Sheet';
+import { ConfirmHost } from './ui/Confirm';
 import { StatusBar } from './ui/StatusBar';
 import { TabBar, type TabItem } from './ui/TabBar';
 import { HomeScreen } from './screens/home/HomeScreen';
@@ -45,7 +46,9 @@ export default function PhoneApp({ locale }: { locale: Locale }) {
     <LocaleContext.Provider value={value}>
       <div className={dark ? 'td-ph-app td-ph-app--dark' : 'td-ph-app'} lang={locale === 'zh' ? 'zh-Hant' : 'en'}>
         <MenuHost>
-          <Tabs />
+          <ConfirmHost>
+            <Tabs />
+          </ConfirmHost>
         </MenuHost>
       </div>
     </LocaleContext.Provider>

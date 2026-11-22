@@ -555,6 +555,93 @@
   color: var(--ph-red);
 }
 
+.td-ph-confirm-layer {
+  position: absolute;
+  z-index: 40;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 10px 28px;
+  background: var(--ph-dim);
+  animation: td-ph-dim-in 0.3s ease-out;
+}
+.td-ph-confirm-layer--closing {
+  animation: td-ph-dim-out 0.22s ease-in forwards;
+}
+.td-ph-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  outline: none;
+  animation: td-ph-confirm-in 0.36s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.td-ph-confirm-layer--closing .td-ph-confirm {
+  animation: td-ph-confirm-out 0.22s ease-in forwards;
+}
+.td-ph-confirm-group {
+  overflow: hidden;
+  border-radius: 26px;
+  background: var(--ph-glass-strong);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0.5px var(--ph-glass-edge),
+    0 18px 50px rgba(0, 0, 0, 0.22);
+}
+.td-ph-confirm-head {
+  margin: 0;
+  padding: 16px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ph-text-2);
+  border-bottom: 0.5px solid var(--ph-sep);
+}
+.td-ph-confirm-head b {
+  font-weight: 600;
+}
+.td-ph-confirm-action {
+  display: block;
+  width: 100%;
+  text-align: center;
+  min-height: 56px;
+  font-size: 18px;
+  color: var(--ph-accent);
+}
+.td-ph-confirm-action:focus-visible {
+  background: var(--ph-fill);
+  outline: none;
+}
+.td-ph-confirm-action--destructive {
+  color: var(--ph-red);
+}
+.td-ph-confirm-cancel {
+  font-weight: 600;
+}
+@keyframes td-ph-dim-in {
+  from {
+    background-color: transparent;
+  }
+}
+@keyframes td-ph-dim-out {
+  to {
+    background-color: transparent;
+  }
+}
+@keyframes td-ph-confirm-in {
+  from {
+    transform: translateY(calc(100% + 28px));
+  }
+}
+@keyframes td-ph-confirm-out {
+  to {
+    transform: translateY(calc(100% + 28px));
+  }
+}
+
 /* ---------- Building blocks ---------- */
 .td-ph-section {
   margin-top: 24px;

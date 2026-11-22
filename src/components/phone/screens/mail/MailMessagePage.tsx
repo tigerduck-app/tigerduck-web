@@ -14,7 +14,16 @@ const PASSWORD_BAIT = /驗證|重新登入|密碼|password|verify your account|m
 const REMOTE_IMAGE = /<img\b[^>]*>/gi;
 const HAS_IMAGE = /<img\b/i;
 
-export function MailMessagePage({ mail, onDelete }: { mail: Mail; onDelete: () => void }) {
+/** `then` pops this page, once the message has left the mailbox it was opened from. */
+export function MailMessagePage({
+  mail,
+  onDelete,
+  onMove,
+}: {
+  mail: Mail;
+  onDelete: (then: () => void) => void;
+  onMove: (then: () => void) => void;
+}) {
   const { t, locale } = usePhoneLocale();
   const nav = useNav();
   const presenter = usePresenter();
@@ -38,14 +47,11 @@ export function MailMessagePage({ mail, onDelete }: { mail: Mail; onDelete: () =
           <button
             type="button"
             aria-label={t('school_mail_delete')}
-            onClick={() => {
-              onDelete();
-              nav.pop();
-            }}
+            onClick={() => onDelete(nav.pop)}
           >
             <Icon name="trash" />
           </button>
-          <button type="button" aria-label={t('school_mail_move_to')}>
+          <button type="button" aria-label={t('school_mail_move_to')} onClick={() => onMove(nav.pop)}>
             <Icon name="folder" />
           </button>
           <button type="button" aria-label={t('school_mail_reply')} onClick={reply}>

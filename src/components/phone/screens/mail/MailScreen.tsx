@@ -9,27 +9,33 @@ import { Page } from '../../ui/Page';
 import { usePresenter } from '../../ui/sheetContext';
 import { SwipeRow } from '../../ui/SwipeRow';
 import { EmptyState, SyncDot } from '../../ui/controls';
+import { useConfirm } from '../../ui/Confirm';
 import { useRefresh } from '../useRefresh';
 import { ComposeSheet } from './ComposeSheet';
 import { MailMessagePage } from './MailMessagePage';
+import { MoveSheet } from './MoveSheet';
 
-type Folder = 'all' | 'inbox' | 'sent' | 'drafts';
+type Folder = 'all' | Mailbox;
+export type Mailbox = 'inbox' | 'sent' | 'drafts' | 'junk' | 'trash';
 
 export interface Mail {
   id: number;
-  folder: Exclude<Folder, 'all'>;
+  folder: Mailbox;
   message: DemoMail;
   date: number;
   seen: boolean;
   flagged: boolean;
 }
 
-const FOLDERS: { id: Folder; key: string }[] = [
-  { id: 'all', key: k('school_mail_folder_all') },
+/** The app's MailFolderRole.listOrder, every one of which the demo mailbox has. */
+export const MAILBOXES: { id: Mailbox; key: string }[] = [
   { id: 'inbox', key: k('school_mail_folder_inbox') },
   { id: 'sent', key: k('school_mail_folder_sent') },
   { id: 'drafts', key: k('school_mail_folder_drafts') },
+  { id: 'junk', key: k('school_mail_folder_junk') },
+  { id: 'trash', key: k('school_mail_folder_trash') },
 ];
+const FOLDERS: { id: Folder; key: string }[] = [{ id: 'all', key: k('school_mail_folder_all') }, ...MAILBOXES];
 
 /** Mail from outside the school's domains, which the app badges. */
 export function isExternal(address: string): boolean {
@@ -40,7 +46,7 @@ export function isExternal(address: string): boolean {
 function initialMail(): Mail[] {
   return (demo.mail?.messages ?? []).map((message, id) => ({
     id,
-    folder: message.folder === 'sent' || message.folder === 'drafts' ? message.folder : 'inbox',
+    folder: MAILBOXES.some((box) => box.id === message.folder) ? (message.folder as Mailbox) : 'inbox',
     message,
     date: demoTime(message.date) ?? 0,
     seen: message.seen ?? true,
@@ -52,22 +58,56 @@ export function MailScreen({ now }: { now: number }) {
   const { t } = usePhoneLocale();
   const nav = useNav();
   const presenter = usePresenter();
+  const confirm = useConfirm();
   const { busy, refresh } = useRefresh();
   const [folder, setFolder] = useState<Folder>('all');
   const [mail, setMail] = useState(initialMail);
   const shown = useMemo(
     () =>
       mail
-        .filter((item) => (folder === 'all' ? item.folder !== 'drafts' : item.folder === folder))
+        .filter((item) => (folder === 'all' ? item.folder === 'inbox' || item.folder === 'sent' : item.folder === folder))
         .sort((a, b) => b.date - a.date),
     [mail, folder]
   );
   const update = (id: number, change: Partial<Mail>) =>
     setMail((list) => list.map((item) => (item.id === id ? { ...item, ...change } : item)));
-  const remove = (id: number) => setMail((list) => list.filter((item) => item.id !== id));
+  // The app's MailMessageActions.delete: a message goes to Trash, and only one in Trash, once
+  // confirmed, is gone.
+  const trash = (item: Mail, then?: () => void) => {
+    if (item.folder !== 'trash') {
+      update(item.id, { folder: 'trash' });
+      then?.();
+      return;
+    }
+    confirm({
+      title: t('school_mail_delete_forever_title'),
+      message: t('school_mail_delete_forever_message'),
+      action: t('school_mail_delete'),
+      onConfirm: () => {
+        setMail((list) => list.filter((other) => other.id !== item.id));
+        then?.();
+      },
+    });
+  };
   const open = (item: Mail) => {
     update(item.id, { seen: true });
-    nav.push(<MailMessagePage mail={item} onDelete={() => remove(item.id)} />);
+    nav.push(
+      <MailMessagePage
+        mail={item}
+        onDelete={(then) => trash(item, then)}
+        onMove={(then) =>
+          presenter.present(
+            <MoveSheet
+              from={item.folder}
+              onMove={(folder) => {
+                update(item.id, { folder });
+                then();
+              }}
+            />
+          )
+        }
+      />
+    );
   };
 
   return (
@@ -133,7 +173,7 @@ export function MailScreen({ now }: { now: number }) {
                   onOpen={() => open(item)}
                   onToggleRead={() => update(item.id, { seen: !item.seen })}
                   onToggleFlag={() => update(item.id, { flagged: !item.flagged })}
-                  onDelete={() => remove(item.id)}
+                  onDelete={() => trash(item)}
                 />
         ))}
         {shown.length === 0 ? <EmptyState icon="envelopeOpen" title={t('school_mail_empty_title')} /> : null}
@@ -158,10 +198,11 @@ function MailRow({
   onDelete: () => void;
 }) {
   const { t, locale } = usePhoneLocale();
+  const inTrash = item.folder === 'trash';
   const openMenu = useMenu();
   const { message } = item;
   const sender =
-    item.folder === 'inbox' ? message.from.name || message.from.address : message.to?.[0]?.name ?? message.from.name;
+    item.folder !== 'sent' && item.folder !== 'drafts' ? message.from.name || message.from.address : message.to?.[0]?.name ?? message.from.name;
   const readLabel = item.seen ? t('school_mail_mark_unread') : t('school_mail_mark_read');
   const flagLabel = item.flagged ? t('school_mail_unflag') : t('school_mail_flag');
   const entries: MenuEntry[] = [
@@ -186,7 +227,7 @@ function MailRow({
         },
       ]}
       trailing={[
-        { label: t('school_mail_delete'), icon: 'trashFill', color: 'var(--ph-red)', removes: true, onTrigger: onDelete },
+        { label: t('school_mail_delete'), icon: 'trashFill', color: 'var(--ph-red)', removes: !inTrash, onTrigger: onDelete },
         { label: flagLabel, icon: 'flag', color: 'var(--ph-orange)', onTrigger: onToggleFlag },
         { label: t('school_mail_message_actions'), icon: 'dotsCircle', color: 'var(--ph-gray)', onTrigger: () => {} },
       ]}
