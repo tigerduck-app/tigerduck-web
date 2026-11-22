@@ -7,11 +7,12 @@ import { Page } from '../../ui/Page';
 import { DemoHtml, Group, Row } from '../../ui/controls';
 import { FileRows } from './FileRows';
 
+/** The app's MoodleMemberSection.Placement order: auditors come before students. */
 const ROLE_ORDER: { roles: string[]; key: string }[] = [
   { roles: ['editingteacher'], key: k('course_detail_instructor_label') },
   { roles: ['teacher'], key: k('course_members_tas') },
+  { roles: ['auditor_student'], key: k('course_members_auditors') },
   { roles: ['student'], key: k('course_members_students') },
-  { roles: ['guest', 'auditor'], key: k('course_members_auditors') },
 ];
 
 /** Moodle writes a student as `ID @ Name`; the list shows the name. */
@@ -35,7 +36,10 @@ export function MembersPage({ course }: { course: MoodleCourse }) {
   return (
     <Page title={t('course_detail_members_label')}>
       {ROLE_ORDER.map(({ roles, key }) => {
-        const members = (course.members ?? []).filter((m) => roles.includes(m.role ?? 'student'));
+        // Sorted by the full name, which leads with the student ID for students, the visitor first.
+        const members = (course.members ?? [])
+          .filter((m) => roles.includes(m.role ?? 'student'))
+          .sort((a, b) => Number(b.id === me) - Number(a.id === me) || text(a.name, locale).localeCompare(text(b.name, locale)));
         if (!members.length) return null;
         return (
           <Group key={key} header={`${t(key)} · ${members.length}`}>
