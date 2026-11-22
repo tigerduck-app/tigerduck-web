@@ -1,0 +1,228 @@
+/* ---------- Scores ---------- */
+.td-ph-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.td-ph-scores .td-ph-card {
+  padding: 12px;
+}
+.td-ph-score-student {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.td-ph-score-student strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.td-ph-score-cap {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  color: var(--ph-accent);
+  background: color-mix(in srgb, var(--ph-accent) 15%, transparent);
+}
+.td-ph-score-credits {
+  display: flex;
+  gap: 8px;
+  margin: 0 16px;
+}
+.td-ph-score-credits .td-ph-card {
+  flex: 1;
+  margin: 0;
+}
+.td-ph-score-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.td-ph-score-tile-value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.td-ph-score-tile-value b {
+  font-family: ui-rounded, var(--ph-font);
+  font-size: 34px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.td-ph-score-tile-value small {
+  font-size: 11px;
+  color: var(--ph-text-2);
+}
+.td-ph-score-trend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.td-ph-score-trend-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.td-ph-score-trend-head strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.td-ph-score-scope {
+  flex: none;
+  width: 140px;
+}
+.td-ph-score-scope .td-ph-segmented {
+  margin: 0;
+  padding: 2px;
+}
+.td-ph-score-scope .td-ph-segmented button {
+  height: 28px;
+  font-size: 13px;
+}
+.td-ph-score-scope .td-ph-segmented-thumb {
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+}
+.td-ph-score-chart {
+  display: block;
+  border-radius: 8px;
+  width: 100%;
+  touch-action: pan-y;
+  overflow: visible;
+}
+.td-ph-score-grid {
+  stroke: var(--ph-sep);
+  stroke-width: 0.5;
+}
+.td-ph-score-axis {
+  font-size: 10px;
+  fill: var(--ph-text-2);
+}
+.td-ph-score-rule {
+  stroke: var(--ph-text-2);
+  stroke-opacity: 0.6;
+  stroke-dasharray: 3 3;
+}
+.td-ph-score-line {
+  fill: none;
+  stroke: var(--ph-accent);
+  stroke-width: 2.5;
+}
+.td-ph-score-dot {
+  fill: var(--ph-accent);
+}
+.td-ph-score-picked {
+  fill: var(--ph-text);
+}
+.td-ph-score-summary {
+  display: flex;
+  gap: 16px;
+}
+.td-ph-score-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.td-ph-score-cell small {
+  font-size: 11px;
+  color: var(--ph-text-2);
+}
+.td-ph-score-cell b {
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.td-ph-score-none {
+  padding: 16px 0;
+  text-align: center;
+}
+.td-ph-scores .td-ph-score-term {
+  padding: 0;
+  overflow: hidden;
+}
+.td-ph-score-term-head {
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: start;
+}
+.td-ph-score-term-head strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.td-ph-score-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  font-size: 11px;
+  color: var(--ph-text-2);
+}
+.td-ph-score-pills > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.td-ph-score-fold {
+  flex: none;
+  font-size: 12px;
+  color: var(--ph-text-2);
+}
+.td-ph-score-fold--open {
+  transform: rotate(180deg);
+}
+.td-ph-score-courses {
+  border-top: 0.5px solid var(--ph-sep);
+}
+.td-ph-score-course {
+  position: relative;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.td-ph-score-course + .td-ph-score-course::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 0;
+  height: 0.5px;
+  background: var(--ph-sep);
+}
+.td-ph-score-course .td-ph-row-main {
+  gap: 4px;
+}
+.td-ph-score-course b {
+  font-size: 17px;
+  font-weight: 600;
+}
+.td-ph-score-course code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+/* The app's GradeChip. */
+.td-ph-score-grade {
+  flex: none;
+  min-width: 64px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: ui-rounded, var(--ph-font);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--grade);
+  background: color-mix(in srgb, var(--grade) 15%, transparent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.td-ph-score-grade .td-ph-icon {
+  font-size: 11px;
+}

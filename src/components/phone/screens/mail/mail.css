@@ -1,0 +1,177 @@
+/* ---------- Mail ---------- */
+.td-ph-mail-row {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.td-ph-mail-row:active {
+  filter: brightness(0.96);
+}
+.td-ph-mail-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.td-ph-mail-dot {
+  width: 7px;
+  height: 7px;
+}
+.td-ph-mail-sender {
+  min-width: 0;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.td-ph-mail-sender--unread {
+  font-weight: 600;
+}
+.td-ph-external {
+  flex: none;
+  padding: 2px 6px;
+  border-radius: 9px;
+  background: rgba(255, 149, 0, 0.18);
+  color: var(--ph-orange);
+  font-size: 11px;
+}
+.td-ph-mail-flag {
+  color: var(--ph-orange);
+  font-size: 12px;
+}
+.td-ph-mail-clip {
+  color: var(--ph-text-2);
+  font-size: 13px;
+}
+.td-ph-mail-date {
+  margin-left: auto;
+  flex: none;
+  font-size: 12px;
+  color: var(--ph-text-2);
+  font-variant-numeric: tabular-nums;
+}
+.td-ph-mail-subject {
+  color: var(--ph-text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.td-ph-mail-subject--unread {
+  color: var(--ph-text);
+}
+.td-ph-fab {
+  position: absolute;
+  z-index: 6;
+  right: 20px;
+  bottom: 104px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ph-accent);
+  color: #fff;
+  font-size: 26px;
+  box-shadow: 0 8px 22px rgba(0, 122, 255, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+}
+.td-ph-fab:active {
+  transform: scale(0.92);
+}
+.td-ph-mail-from {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 0 16px 14px;
+}
+.td-ph-mail-from-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.td-ph-mail-body {
+  margin-bottom: 8px;
+}
+.td-ph-plain {
+  white-space: pre-wrap;
+}
+.td-ph-mail-toolbar {
+  position: absolute;
+  z-index: 6;
+  left: 21px;
+  right: 21px;
+  bottom: 104px;
+  height: 52px;
+  border-radius: 26px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.td-ph-mail-toolbar button {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--ph-accent);
+}
+.td-ph-mail-toolbar button:active {
+  background: var(--ph-fill);
+}
+.td-ph-send {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ph-accent);
+  color: #fff;
+  font-size: 20px;
+  box-shadow: 0 4px 14px rgba(0, 122, 255, 0.35);
+}
+.td-ph-compose {
+  margin: 0 16px;
+  border-radius: 22px;
+  background: var(--ph-card);
+  overflow: hidden;
+}
+.td-ph-compose label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--ph-sep);
+  color: var(--ph-text-2);
+}
+.td-ph-compose input,
+.td-ph-compose textarea {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ph-text);
+  font: inherit;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.td-ph-compose textarea {
+  display: block;
+  width: 100%;
+  min-height: 300px;
+  padding: 14px 16px;
+  resize: none;
+}
+.td-ph-compose-error {
+  padding: 6px 16px;
+  color: var(--ph-red-text);
+  font-size: 13px;
+}

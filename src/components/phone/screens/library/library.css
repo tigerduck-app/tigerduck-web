@@ -1,0 +1,34 @@
+/* ---------- Library ---------- */
+.td-ph-library {
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 14px;
+}
+.td-ph-library-head {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 12px 0;
+  font-size: 17px;
+  flex-wrap: wrap;
+}
+.td-ph-library-head span {
+  color: var(--ph-text-3);
+}
+.td-ph-qr {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1;
+  margin-bottom: 14px;
+  border-radius: 8px;
+}
+.td-ph-library-countdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ph-text-2);
+  font-variant-numeric: tabular-nums;
+}

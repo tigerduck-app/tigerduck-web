@@ -1,0 +1,300 @@
+/* ---------- Building blocks ---------- */
+.td-ph-section {
+  margin-top: 24px;
+}
+.td-ph-section-title {
+  padding: 0 16px 8px;
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.td-ph-section-title > span:first-child {
+  flex: 1;
+}
+.td-ph-card {
+  margin: 0 16px;
+  border-radius: 18px;
+  background: var(--ph-card);
+  box-shadow: var(--ph-card-shadow);
+}
+.td-ph-group {
+  margin: 0 16px;
+  border-radius: 26px;
+  background: var(--ph-grouped);
+  overflow: hidden;
+}
+.td-ph-group-footer {
+  padding: 7px 32px 0;
+  font-size: 13px;
+  color: var(--ph-text-2);
+}
+.td-ph-group-header {
+  padding: 0 32px 7px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.td-ph-row {
+  position: relative;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  font-size: 17px;
+}
+button.td-ph-row:active,
+.td-ph-row--pressable:active {
+  background: var(--ph-fill);
+}
+.td-ph-row + .td-ph-row::before,
+.td-ph-row-wrap + .td-ph-row-wrap::before,
+.td-ph-swipe + .td-ph-swipe > .td-ph-swipe-face > .td-ph-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--ph-sep-inset, 18px);
+  right: 0;
+  height: 0.5px;
+  background: var(--ph-sep);
+}
+.td-ph-row-wrap {
+  position: relative;
+}
+.td-ph-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-wrap: anywhere;
+}
+.td-ph-row-value {
+  color: var(--ph-text-2);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.td-ph-row-icon {
+  font-size: 22px;
+  color: var(--ph-accent);
+}
+.td-ph-row-chevron {
+  font-size: 13px;
+  color: var(--ph-text-3);
+}
+.td-ph-sub {
+  font-size: 13px;
+  color: var(--ph-text-2);
+}
+.td-ph-caption {
+  font-size: 12px;
+  color: var(--ph-text-2);
+}
+.td-ph-badge {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--ph-red);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.td-ph-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ph-accent);
+  flex: none;
+}
+.td-ph-sync-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ph-green);
+  opacity: 0.85;
+}
+.td-ph-sync-dot--busy {
+  background: var(--ph-orange);
+  animation: td-ph-pulse 0.9s ease-in-out infinite alternate;
+}
+@keyframes td-ph-pulse {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.td-ph-segmented {
+  position: relative;
+  display: flex;
+  margin: 0 16px;
+  padding: 3px;
+  border-radius: 20px;
+  background: var(--ph-fill);
+}
+.td-ph-segmented-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  border-radius: 17px;
+  background: var(--ph-card);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.td-ph-app--dark .td-ph-segmented-thumb {
+  background: #636366;
+}
+.td-ph-segmented button {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 34px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 17px;
+}
+.td-ph-segmented button[aria-pressed='true'] {
+  font-weight: 600;
+}
+.td-ph-chips {
+  display: flex;
+  gap: 8px;
+  padding: 2px 16px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  touch-action: pan-x pan-y;
+}
+.td-ph-chips::-webkit-scrollbar {
+  display: none;
+}
+.td-ph-chip {
+  flex: none;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 19px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ph-text-2);
+}
+.td-ph-chip[aria-pressed='true'] {
+  background: var(--ph-accent);
+  color: #fff;
+  box-shadow: none;
+}
+.td-ph-empty {
+  padding: 48px 32px;
+  text-align: center;
+  color: var(--ph-text-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+.td-ph-empty-title {
+  color: var(--ph-text);
+  font-size: 17px;
+  font-weight: 600;
+}
+.td-ph-empty .td-ph-icon {
+  font-size: 34px;
+  opacity: 0.5;
+}
+.td-ph-html {
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.td-ph-html p,
+.td-ph-html ul,
+.td-ph-html ol,
+.td-ph-html table,
+.td-ph-html h2,
+.td-ph-html h4 {
+  margin: 0 0 10px;
+}
+.td-ph-html ul,
+.td-ph-html ol {
+  padding-left: 22px;
+}
+.td-ph-html h2 {
+  font-size: 20px;
+}
+.td-ph-html h4 {
+  font-size: 17px;
+}
+.td-ph-html a {
+  color: var(--ph-accent);
+}
+.td-ph-html table {
+  border-collapse: collapse;
+}
+.td-ph-html th,
+.td-ph-html td {
+  border: 1px solid var(--ph-sep);
+  padding: 4px;
+}
+
+/* ---------- Swipe rows ---------- */
+.td-ph-swipe {
+  position: relative;
+  touch-action: pan-y;
+}
+.td-ph-swipe-face {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+}
+.td-ph-swipe-actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.td-ph-swipe-actions--trailing {
+  right: 0;
+  flex-direction: row-reverse;
+}
+.td-ph-swipe-actions--leading {
+  left: 0;
+}
+.td-ph-swipe-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 22px;
+  overflow: hidden;
+  will-change: width;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The site shortens every transition to 0.01ms here, which would also start one for each
+     inherited visibility change and keep a newly shown tab hidden for a few frames. */
+  .td-ph-app * {
+    transition-property: none !important;
+  }
+  .td-ph-refresh--spinning,
+  .td-ph-sync-dot--busy {
+    animation-duration: 2.4s;
+  }
+}

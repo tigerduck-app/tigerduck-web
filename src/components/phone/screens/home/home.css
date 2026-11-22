@@ -1,0 +1,151 @@
+/* ---------- Home: time machine ---------- */
+.td-ph-tm {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.td-ph-tm-cards {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.td-ph-tm-card {
+  flex: 1;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.45), 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.25s ease, transform 0.2s ease;
+}
+.td-ph-tm-card:active {
+  transform: scale(0.98);
+}
+.td-ph-tm-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ph-text-2);
+}
+.td-ph-tm-card-top b {
+  color: var(--ph-text);
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+.td-ph-tm-card strong {
+  font-size: 17px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.td-ph-tm-card-sub {
+  font-size: 12px;
+  color: var(--ph-text);
+  opacity: 0.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.td-ph-tm-time {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+}
+.td-ph-tm-track {
+  position: relative;
+  height: 36px;
+  border-radius: 18px;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  box-shadow: inset 0 1px 0.5px var(--ph-glass-edge), inset 0 0 0 0.5px var(--ph-sep);
+}
+.td-ph-tm-track:active {
+  cursor: grabbing;
+}
+.td-ph-tm-tick {
+  position: absolute;
+  top: 16.5px;
+  width: 3px;
+  height: 3px;
+  margin-left: -1.5px;
+  border-radius: 50%;
+  background: var(--ph-text);
+  opacity: 0.1;
+}
+.td-ph-tm-tick--major {
+  top: 11px;
+  width: 1px;
+  height: 14px;
+  margin-left: -0.5px;
+  border-radius: 0;
+  opacity: 0.15;
+}
+.td-ph-tm-seg {
+  position: absolute;
+  top: 8px;
+  height: 20px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+.td-ph-tm-thumb {
+  position: absolute;
+  left: 184px;
+  top: 4px;
+  width: 2px;
+  height: 28px;
+  border-radius: 1px;
+  background: var(--ph-text);
+  opacity: 0.7;
+}
+.td-ph-tm-glow {
+  position: absolute;
+  left: 181px;
+  top: 14px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.td-ph-tm-now {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  animation: td-ph-toast 0.2s ease-out;
+}
+
+/* ---------- Home: assignments ---------- */
+.td-ph-assignment {
+  width: 100%;
+  min-height: 64px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.td-ph-assignment:active {
+  filter: brightness(0.96);
+}
+.td-ph-assignment-status {
+  flex: none;
+  max-width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--ph-text-2);
+  text-align: right;
+}
+.td-ph-assignment-status b {
+  font-weight: 700;
+}

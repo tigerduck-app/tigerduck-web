@@ -1,0 +1,152 @@
+/* ---------- More ---------- */
+.td-ph-more-section {
+  margin-top: 16px;
+}
+.td-ph-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 16px;
+}
+.td-ph-feature-grid .td-ph-card {
+  margin: 0;
+}
+.td-ph-feature {
+  min-height: 76px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  transition: transform 0.18s ease;
+}
+.td-ph-feature:active {
+  transform: scale(0.97);
+}
+.td-ph-feature .td-ph-icon {
+  font-size: 26px;
+  color: var(--ph-accent);
+}
+.td-ph-feature span {
+  font-size: 17px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.td-ph-feature small {
+  font-size: 12px;
+  color: var(--ph-text-2);
+}
+.td-ph-swatch {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ph-accent);
+}
+
+/* ---------- Calendar ---------- */
+.td-ph-cal {
+  padding: 12px 8px 8px;
+}
+.td-ph-cal-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px 8px;
+  font-size: 17px;
+}
+.td-ph-cal-head button {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ph-accent);
+}
+.td-ph-cal-head button:active {
+  background: var(--ph-fill);
+}
+.td-ph-cal-week,
+.td-ph-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.td-ph-cal-week span {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ph-text-2);
+  padding-bottom: 4px;
+}
+.td-ph-cal-clip {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.td-ph-cal-day {
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 24px;
+  text-align: center;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+.td-ph-cal-day--today {
+  color: var(--ph-accent);
+  font-weight: 700;
+}
+.td-ph-cal-day--selected {
+  background: var(--ph-fill-2);
+}
+.td-ph-cal-day--today.td-ph-cal-day--selected {
+  background: var(--ph-accent);
+  color: #fff;
+}
+.td-ph-cal-dots {
+  display: flex;
+  gap: 2px;
+  height: 5px;
+}
+.td-ph-cal-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.td-ph-cal-mark {
+  flex: none;
+  width: 4px;
+  align-self: stretch;
+  border-radius: 2px;
+}
+
+/* ---------- Empty classroom ---------- */
+.td-ph-period-chips .td-ph-chip {
+  height: 46px;
+  padding: 0 14px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  line-height: 1.1;
+}
+.td-ph-period-chips small {
+  font-size: 10px;
+  opacity: 0.8;
+}
+.td-ph-status {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--ph-fill);
+  color: var(--ph-text-2);
+}
+.td-ph-status--free {
+  background: rgba(52, 199, 89, 0.16);
+  color: var(--ph-green);
+}

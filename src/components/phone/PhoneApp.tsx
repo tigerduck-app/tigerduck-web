@@ -13,8 +13,18 @@ import { ClassTableScreen, useTableChoice } from './screens/classtable/ClassTabl
 import { MailScreen } from './screens/mail/MailScreen';
 import { LibraryScreen } from './screens/library/LibraryScreen';
 import { MoreScreen } from './screens/more/MoreScreen';
+// One place, in this order: later files' rules win ties over earlier ones.
 import './phone.css';
-import './screens.css';
+import './ui/blocks.css';
+import './screens/shared.css';
+import './screens/home/home.css';
+import './screens/moodle/posts.css';
+import './screens/course/course.css';
+import './screens/classtable/classtable.css';
+import './screens/mail/mail.css';
+import './screens/library/library.css';
+import './screens/more/more.css';
+import './screens/more/scores.css';
 
 type TabId = 'home' | 'classTable' | 'mail' | 'library' | 'more';
 
