@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { JSAnimation, useMotionValue, useTransform } from 'motion/react';
 import * as m from 'motion/react-m';
-import { phoneScale, usePan } from '../lib/gesture';
+import { phoneScale, swallowNextClick, usePan } from '../lib/gesture';
 import { rubberBand, animateTo, spring } from '../lib/springs';
 import { Icon, type IconName } from './Icon';
 
@@ -68,6 +68,19 @@ export function SwipeRow({
       openListeners.delete(listener);
     };
   }, [x]);
+
+  // A tap anywhere else in the phone closes the open row and does nothing more, as in UITableView.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (event: PointerEvent) => {
+      const target = event.target as Element;
+      if (rowRef.current?.contains(target)) return;
+      if (target.closest?.('.td-ph-app')) swallowNextClick(event);
+      settle(0);
+    };
+    window.addEventListener('pointerdown', onDown, true);
+    return () => window.removeEventListener('pointerdown', onDown, true);
+  }, [open]);
 
   const run = (action: SwipeAction) => {
     if (!action.removes) {

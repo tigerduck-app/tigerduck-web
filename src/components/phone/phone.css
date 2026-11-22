@@ -43,6 +43,7 @@
   text-align: left;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   font-feature-settings: normal;
 }

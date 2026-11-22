@@ -96,6 +96,12 @@ function onEnd(event: PointerEvent) {
   entry.owner.onEnd(info(entry), event.type === 'pointercancel');
 }
 
+/** Drops the click that ends the tap `event` starts, as a tap that only closes something. */
+export function swallowNextClick(event: Event): void {
+  listen();
+  swallowClickUntil = event.timeStamp + 1000;
+}
+
 function onClick(event: MouseEvent) {
   if (event.timeStamp > swallowClickUntil) return;
   swallowClickUntil = 0;

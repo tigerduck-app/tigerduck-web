@@ -137,21 +137,29 @@ export function MenuHost({ children }: { children: ReactNode }) {
 }
 
 /** Opens a menu from a long press, as the tab bar and list rows do. */
+/** How far a finger may drift during a long press, in screen pixels, before it counts as a drag. */
+const LONG_PRESS_SLOP = 8;
+
 export function useLongPress(onLongPress: (target: HTMLElement) => void, ms = 450) {
   const timer = useRef(0);
   const fired = useRef(false);
+  const start = useRef({ x: 0, y: 0 });
   return useMemo(() => {
     const cancel = () => window.clearTimeout(timer.current);
     return {
       handlers: {
         onPointerDown: (event: React.PointerEvent<HTMLElement>) => {
           fired.current = false;
+          start.current = { x: event.clientX, y: event.clientY };
           const target = event.currentTarget;
           cancel();
           timer.current = window.setTimeout(() => {
             fired.current = true;
             onLongPress(target);
           }, ms);
+        },
+        onPointerMove: (event: React.PointerEvent<HTMLElement>) => {
+          if (Math.hypot(event.clientX - start.current.x, event.clientY - start.current.y) > LONG_PRESS_SLOP) cancel();
         },
         onPointerUp: cancel,
         onPointerLeave: cancel,
