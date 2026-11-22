@@ -541,11 +541,13 @@
   font-size: 19px;
 }
 .td-ph-menu-item > .td-ph-check {
+  flex: none;
   width: 19px;
   font-size: 15px;
 }
-.td-ph-menu-item > span:not(.td-ph-icon) {
+.td-ph-menu-item > span:not(.td-ph-icon, .td-ph-check) {
   flex: 1;
+  text-align: start;
   overflow-wrap: anywhere;
 }
 .td-ph-menu-item--destructive {

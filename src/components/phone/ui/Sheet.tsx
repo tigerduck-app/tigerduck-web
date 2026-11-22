@@ -125,7 +125,7 @@ export function SheetHost({ children }: { children: ReactNode }) {
     onStart: () => inSheet.drag.start(),
     onMove: (info) => move(info.dy / phoneScale(sheetRef.current!)),
     onEnd: (info) => release(info.vy / phoneScale(sheetRef.current!)),
-  });
+  }, { enabled: shown !== null });
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -145,7 +145,6 @@ export function SheetHost({ children }: { children: ReactNode }) {
         <>
           <m.div className="td-ph-backdrop" style={{ opacity: backdrop }} onClick={() => settle(CLOSED_Y)} />
           <m.div
-            key={shown.key}
             ref={sheetRef}
             className="td-ph-sheet"
             role="dialog"
@@ -166,7 +165,9 @@ export function SheetHost({ children }: { children: ReactNode }) {
             }}
           >
             {shown.detents.length > 1 ? <div className="td-ph-sheet-grabber" aria-hidden="true" /> : null}
-            <InSheetContext.Provider value={inSheet}>{shown.content}</InSheetContext.Provider>
+            <InSheetContext.Provider key={shown.key} value={inSheet}>
+              {shown.content}
+            </InSheetContext.Provider>
           </m.div>
         </>
       ) : null}
