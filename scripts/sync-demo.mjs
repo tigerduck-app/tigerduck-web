@@ -5,20 +5,16 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import qrcode from 'qrcode-generator';
-import { cleanHtml } from './demo-html.mjs';
+import { stripDemo } from './demo-html.mjs';
 
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PHONE_SRC = path.join(SITE, 'src/components/phone');
 const OUT_DIR = path.join(PHONE_SRC, 'data');
 
-// Sign-in secrets and file bodies are not needed to draw the screens.
-const DROPPED_KEYS = new Set(['school-password', 'library-password', 'password', 'base64']);
-
 function fail(message) {
   console.error(message);
   process.exit(1);
 }
-
 
 function readJson(file) {
   try {
@@ -26,24 +22,6 @@ function readJson(file) {
   } catch (error) {
     fail(`Cannot read ${file}: ${error.message}`);
   }
-}
-
-const isLocalized = (value) =>
-  value && typeof value === 'object' && !Array.isArray(value) && Object.values(value).every((inner) => typeof inner === 'string');
-
-/** Copies the demo without secrets; an object whose HTML held images is marked `remoteImages`. */
-function strip(value, where = 'demo', found = { images: 0 }) {
-  if (typeof value === 'string') return cleanHtml(value, where, found);
-  if (Array.isArray(value)) return value.map((inner, index) => strip(inner, `${where}[${index}]`, found));
-  if (!value || typeof value !== 'object') return value;
-  // A localized text's images count for the object that holds it.
-  const own = isLocalized(value) ? found : { images: 0 };
-  const copy = Object.fromEntries(
-    Object.entries(value)
-      .filter(([key]) => !DROPPED_KEYS.has(key))
-      .map(([key, inner]) => [key, strip(inner, `${where}.${key}`, own)])
-  );
-  return own !== found && own.images ? { ...copy, remoteImages: true } : copy;
 }
 
 function qrModules(content) {
@@ -89,7 +67,7 @@ const en = readJson(path.join(repo, 'app-translation/source/en.json'));
 
 let data;
 try {
-  data = strip(demo);
+  data = stripDemo(demo);
 } catch (error) {
   fail(`demo.json: ${error.message}; allow it in scripts/demo-html.mjs once reviewed`);
 }

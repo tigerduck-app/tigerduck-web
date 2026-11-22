@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { cleanHtml } from './demo-html.mjs';
+import { cleanHtml, stripDemo } from './demo-html.mjs';
 
 test('keeps allowed tags without attributes', () => {
   const html = '<h2 style="color:#1a4f8b">Hi</h2><p><a href="https://x.example">a &amp; b</a></p><table><tr><td style="border:1px">1</td></tr></table>';
@@ -36,4 +36,39 @@ for (const html of [
 
 test('keeps no link target, encoded or not', () => {
   assert.equal(cleanHtml('<a href="jav&#x61;script:alert(1)">x</a><a href="data:text/html,x">y</a>'), '<a>x</a><a>y</a>');
+});
+
+test('cleans HTML fields and leaves plain text as it is', () => {
+  const demo = {
+    password: 'secret',
+    mail: {
+      messages: [
+        {
+          subject: 'a < b',
+          from: { name: 'Wang <wang@example.com>' },
+          plain: { zh: 'a < b <name@x>', en: 'a < b <name@x>' },
+          html: { zh: '<p>a</p><img src="https://x.example/a.png">', en: '<p>a &lt; b</p>' },
+        },
+        { plain: 'x' },
+      ],
+    },
+  };
+  assert.deepEqual(stripDemo(demo), {
+    mail: {
+      messages: [
+        {
+          subject: 'a < b',
+          from: { name: 'Wang <wang@example.com>' },
+          plain: { zh: 'a < b <name@x>', en: 'a < b <name@x>' },
+          html: { zh: '<p>a</p>', en: '<p>a &lt; b</p>' },
+          remoteImages: true,
+        },
+        { plain: 'x' },
+      ],
+    },
+  });
+});
+
+test('refuses a script in an HTML field', () => {
+  assert.throws(() => stripDemo({ moodle: { courses: [{ summary: '<script>x</script>' }] } }), /moodle\.courses\[0\]\.summary: <script>/);
 });
