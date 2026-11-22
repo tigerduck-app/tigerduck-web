@@ -93,6 +93,11 @@ export function PhoneHero() {
     setFull(true);
   };
 
+  // Past the preview width the phone sits in the page again, so a full-screen phone closes.
+  useEffect(() => {
+    if (full && !narrow) close();
+  }, [full, narrow]);
+
   useLayoutEffect(() => {
     if (!full) return;
     const host = hostRef.current!;
