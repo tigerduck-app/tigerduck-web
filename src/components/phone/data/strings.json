@@ -2,6 +2,8 @@
  "zh": {
   "a11y_calendar_nav_next": "下個月",
   "a11y_calendar_nav_prev": "上個月",
+  "a11y_rankings_trend_chart": "學期 GPA 趨勢",
+  "a11y_rankings_trend_point": "%1$@ GPA %2$@",
   "action_back": "返回",
   "action_cancel": "取消",
   "action_close": "關閉",
@@ -220,6 +222,8 @@
  "en": {
   "a11y_calendar_nav_next": "Next month",
   "a11y_calendar_nav_prev": "Previous month",
+  "a11y_rankings_trend_chart": "GPA trend by semester",
+  "a11y_rankings_trend_point": "%1$@ GPA %2$@",
   "action_back": "Back",
   "action_cancel": "Cancel",
   "action_close": "Close",

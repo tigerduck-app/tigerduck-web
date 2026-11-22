@@ -219,8 +219,20 @@ function TrendCard({ terms }: { terms: ScoredTerm[] }) {
             ref={plot}
             className="td-ph-score-chart"
             height={CHART_HEIGHT}
-            role="img"
-            aria-label={t('score_gpa_trend_title')}
+            role="slider"
+            tabIndex={0}
+            aria-label={t('a11y_rankings_trend_chart')}
+            aria-valuemin={0}
+            aria-valuemax={points.length - 1}
+            aria-valuenow={points.indexOf(selected)}
+            aria-valuetext={t('a11y_rankings_trend_point', selected.code, selected[scope].gpa!.toFixed(2))}
+            onKeyDown={(event) => {
+              const step = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1 }[event.key];
+              if (!step) return;
+              event.preventDefault();
+              const next = points[Math.min(points.length - 1, Math.max(0, points.indexOf(selected) + step))];
+              setPicked(next.code);
+            }}
             onPointerDown={(event) => pick(event.clientX)}
             onPointerMove={(event) => {
               if (event.buttons) pick(event.clientX);
