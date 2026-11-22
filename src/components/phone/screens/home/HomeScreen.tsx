@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import type { SwipeAction } from '../../ui/SwipeRow';
 import { k, usePhoneLocale } from '../../lib/i18n';
 import { dueLabel } from '../../lib/format';
 import { taipei } from '../../lib/time';
@@ -14,7 +15,27 @@ import { AssignmentPage } from '../moodle/AssignmentPage';
 import { TimeMachine } from './TimeMachine';
 import { useRefresh } from '../useRefresh';
 
-type Filter = 'incomplete' | 'all';
+type Filter = 'incomplete' | 'all' | 'ignored';
+/** What the visitor did to an assignment: the app's local completion or its ignore. */
+type Mark = 'done' | 'ignored';
+
+/** The app's `upcomingSorted`, `allCandidates` and `ignoredSorted` in Array+Assignments.swift. */
+function inFilter(filter: Filter, item: AssignmentItem, mark: Mark | undefined): boolean {
+  switch (filter) {
+    case 'incomplete':
+      return !item.submitted && mark === undefined;
+    case 'all':
+      return mark !== 'ignored' || item.submitted;
+    case 'ignored':
+      return mark === 'ignored';
+  }
+}
+
+const EMPTY_MESSAGE: Record<Filter, string> = {
+  incomplete: k('home_assignments_none_incomplete'),
+  all: k('home_assignments_none'),
+  ignored: k('home_assignments_no_ignored'),
+};
 
 function greeting(now: number): string {
   const hour = taipei(now).hour;
@@ -31,13 +52,39 @@ export function HomeScreen({ now }: { now: number }) {
   const menuButton = useRef<HTMLButtonElement>(null);
   const { busy, refresh } = useRefresh();
   const [filter, setFilter] = useState<Filter>('incomplete');
-  const [done, setDone] = useState<ReadonlySet<string>>(new Set());
-  const [ignored, setIgnored] = useState<ReadonlySet<string>>(new Set());
+  const [marks, setMarks] = useState<ReadonlyMap<string, Mark>>(new Map());
   const [reminders, setReminders] = useState({ assignments: true, liveActivity: true });
   const items = useMemo(() => assignmentItems(locale), [locale]);
-  const shown = items.filter((item) =>
-    filter === 'incomplete' ? !item.submitted && !done.has(item.id) && !ignored.has(item.id) : !ignored.has(item.id)
-  );
+  const hasIgnored = [...marks.values()].includes('ignored');
+  // The app's HomeAssignmentList.recompute: the ignored filter goes with the last ignored assignment.
+  if (filter === 'ignored' && !hasIgnored) setFilter('all');
+  const shown = items.filter((item) => inFilter(filter, item, marks.get(item.id)));
+  const actions = (item: AssignmentItem): { leading: SwipeAction; trailing: SwipeAction } => {
+    const mark = marks.get(item.id);
+    const action = (label: string, icon: SwipeAction['icon'], color: string, next: Mark | undefined): SwipeAction => ({
+      label: t(label),
+      icon,
+      color,
+      removes: !inFilter(filter, item, next),
+      onTrigger: () =>
+        setMarks((current) => {
+          const changed = new Map(current);
+          if (next) changed.set(item.id, next);
+          else changed.delete(item.id);
+          return changed;
+        }),
+    });
+    return {
+      leading:
+        mark === 'done'
+          ? action(k('assignment_mark_complete_undo'), 'undo', 'var(--ph-gray)', undefined)
+          : action(k('assignment_mark_complete'), 'checkCircle', 'var(--ph-green)', 'done'),
+      trailing:
+        mark === 'ignored'
+          ? action(k('assignment_ignore_undo'), 'undo', 'var(--ph-gray)', undefined)
+          : action(k('assignment_ignore'), 'archive', 'var(--ph-gray)', 'ignored'),
+    };
+  };
 
   return (
     <Page
@@ -84,42 +131,26 @@ export function HomeScreen({ now }: { now: number }) {
           options={[
             { value: 'incomplete', label: t('assignment_filter_incomplete') },
             { value: 'all', label: t('assignment_filter_all') },
+            { value: 'ignored', label: t('assignment_filter_ignored'), hidden: !hasIgnored },
           ]}
         />
         <div className="td-ph-list" style={{ marginTop: 12 }}>
-          {shown.map((item) => (
-                  <SwipeRow
-                    key={item.id}
-                    className="td-ph-list-item"
-                    fullSwipe
-                    leading={[
-                      {
-                        label: t('assignment_mark_complete'),
-                        icon: 'checkCircle',
-                        color: 'var(--ph-green)',
-                        removes: filter === 'incomplete',
-                        onTrigger: () => setDone((s) => new Set(s).add(item.id)),
-                      },
-                    ]}
-                    trailing={[
-                      {
-                        label: t('assignment_ignore'),
-                        icon: 'archive',
-                        color: 'var(--ph-gray)',
-                        removes: true,
-                        onTrigger: () => setIgnored((s) => new Set(s).add(item.id)),
-                      },
-                    ]}
-                  >
-                    <AssignmentRow
-                      item={item}
-                      now={now}
-                      markedDone={done.has(item.id)}
-                      onOpen={() => nav.push(<AssignmentPage item={item} />)}
-                    />
-                  </SwipeRow>
-          ))}
-          {shown.length === 0 ? <EmptyState icon="checkCircle" title={t('home_assignments_none_incomplete')} /> : null}
+          {shown.map((item) => {
+            const { leading, trailing } = actions(item);
+            return (
+              <SwipeRow key={item.id} className="td-ph-list-item" fullSwipe leading={[leading]} trailing={[trailing]}>
+                <AssignmentRow
+                  item={item}
+                  now={now}
+                  mark={marks.get(item.id)}
+                  onOpen={() => nav.push(<AssignmentPage item={item} />)}
+                />
+              </SwipeRow>
+            );
+          })}
+          {shown.length === 0 ? (
+            <EmptyState icon="checkCircle" title={t('home_assignments_all_good')} message={t(EMPTY_MESSAGE[filter])} />
+          ) : null}
         </div>
       </section>
     </Page>
@@ -129,23 +160,41 @@ export function HomeScreen({ now }: { now: number }) {
 function AssignmentRow({
   item,
   now,
-  markedDone,
+  mark,
   onOpen,
 }: {
   item: AssignmentItem;
   now: number;
-  markedDone: boolean;
+  mark: Mark | undefined;
   onOpen: () => void;
 }) {
   const { t } = usePhoneLocale();
-  const overdue = !item.submitted && !markedDone && item.due <= now;
+  const pastDue = item.due <= now;
+  const overdue = !item.submitted && mark === undefined && pastDue;
+  const ignoredLabel = { label: t('assignment_filter_ignored'), color: 'var(--ph-text-2)' };
+  const doneLabel = { label: t('assignment_mark_complete'), color: 'var(--ph-green)' };
+  const overdueLabel = { label: t('assignment_status_overdue'), color: 'var(--ph-red-text)' };
+  // The app's UpcomingAssignmentRow: a submitted row keeps the visitor's mark as a second badge,
+  // and a marked row past due keeps its lateness.
   const status = item.submitted
     ? { label: t('assignment_status_submitted'), color: 'var(--ph-green)' }
-    : markedDone
-      ? { label: t('assignment_mark_complete'), color: 'var(--ph-green)' }
-      : overdue
-        ? { label: t('assignment_status_overdue'), color: 'var(--ph-red-text)' }
-        : null;
+    : mark === 'ignored'
+      ? ignoredLabel
+      : mark === 'done'
+        ? doneLabel
+        : overdue
+          ? overdueLabel
+          : null;
+  const extra = item.submitted
+    ? mark === 'done'
+      ? doneLabel
+      : mark === 'ignored'
+        ? ignoredLabel
+        : null
+    : mark !== undefined && pastDue
+      ? overdueLabel
+      : null;
+  const timeColor = overdue || (!item.submitted && mark !== undefined) ? 'var(--ph-red-text)' : undefined;
   return (
     <button type="button" className="td-ph-card td-ph-assignment" onClick={onOpen}>
       <span className="td-ph-row-main">
@@ -153,8 +202,9 @@ function AssignmentRow({
         <span className="td-ph-caption">{courseLine(item)}</span>
       </span>
       <span className="td-ph-assignment-status">
+        {extra ? <b style={{ color: extra.color }}>{extra.label}</b> : null}
         {status ? <b style={{ color: status.color }}>{status.label}</b> : null}
-        <span style={overdue ? { color: 'var(--ph-red-text)', fontWeight: 700 } : undefined}>
+        <span style={timeColor ? { color: timeColor, fontWeight: overdue ? 700 : undefined } : undefined}>
           {dueLabel(item.due, now, t)}
         </span>
       </span>

@@ -4,8 +4,8 @@ import {
   useCallback,
   useLayoutEffect,
   useRef,
+  type ButtonHTMLAttributes,
   type CSSProperties,
-  type HTMLAttributes,
   type ReactNode,
 } from 'react';
 import { isMotionValue, type MotionValue } from 'motion/react';
@@ -14,7 +14,7 @@ type Value = string | number | MotionValue<number> | MotionValue<string>;
 type MotionStyle = { [key: string]: Value | undefined };
 
 const TRANSFORM_KEYS = ['x', 'y', 'scale', 'rotate'];
-const UNITLESS = new Set(['opacity', 'scale', 'zIndex']);
+const UNITLESS = new Set(['opacity', 'scale', 'zIndex', 'flexGrow']);
 
 const read = (value: Value | undefined) => (isMotionValue(value) ? value.get() : value);
 const withUnit = (key: string, value: string | number) =>
@@ -46,13 +46,13 @@ function apply(element: HTMLElement, style: MotionStyle) {
 }
 
 /**
- * A div or span whose style may hold motion values, which update the element without a React
+ * A div, span or button whose style may hold motion values, which update the element without a React
  * render. Motion's own `m` components do this too, but bring a renderer three times this
  * library's size.
  */
 export const Motion = forwardRef<
   HTMLElement,
-  Omit<HTMLAttributes<HTMLElement>, 'style'> & { as?: 'div' | 'span'; style?: MotionStyle; children?: ReactNode }
+  Omit<ButtonHTMLAttributes<HTMLElement>, 'style'> & { as?: 'div' | 'span' | 'button'; style?: MotionStyle; children?: ReactNode }
 >(function Motion({ as = 'div', style = {}, ...props }, ref) {
   const element = useRef<HTMLElement | null>(null);
   const styleRef = useRef(style);

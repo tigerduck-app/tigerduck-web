@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { JSAnimation, useMotionValue, useTransform } from 'motion/react';
 import { phoneScale, swallowNextClick, usePan } from '../lib/gesture';
 import { rubberBand, animateTo, spring } from '../lib/springs';
@@ -50,6 +50,7 @@ export function SwipeRow({
   const dragFrom = useRef(0);
   const [armed, setArmed] = useState(false);
   const [open, setOpen] = useState(false);
+  const folded = useRef(false);
   const trailingWidth = useTransform(x, (v) => Math.max(0, -v - ACTION_GAP));
   const leadingWidth = useTransform(x, (v) => Math.max(0, v - ACTION_GAP));
 
@@ -82,6 +83,16 @@ export function SwipeRow({
     return () => window.removeEventListener('pointerdown', onDown, true);
   }, [open]);
 
+  // A folded row that its list keeps, as one a filter change brings back, opens up again closed.
+  useLayoutEffect(() => {
+    if (!folded.current) return;
+    folded.current = false;
+    const row = rowRef.current!;
+    row.style.height = row.style.opacity = row.style.overflow = '';
+    x.set(0);
+    setOpen(false);
+  });
+
   const run = (action: SwipeAction) => {
     if (!action.removes) {
       settle(0);
@@ -98,7 +109,10 @@ export function SwipeRow({
         row.style.height = `${height * p}px`;
         row.style.opacity = String(p);
       },
-      onComplete: action.onTrigger,
+      onComplete: () => {
+        folded.current = true;
+        action.onTrigger();
+      },
     });
   };
 

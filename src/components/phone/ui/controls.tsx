@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
-import { useMotionValue, useTransform } from 'motion/react';
+import { useMotionValue, useTransform, type MotionValue } from 'motion/react';
 import { animateTo, spring } from '../lib/springs';
 import { Icon, type IconName } from './Icon';
 import { Motion } from './Motion';
@@ -45,20 +45,27 @@ export function SyncDot({ busy, label }: { busy: boolean; label: string }) {
   );
 }
 
+/**
+ * A segmented control. A hidden option, which must come after every shown one, folds away and grows
+ * back the way the selection moves.
+ */
 export function Segmented<T extends string>({
   options,
   value,
   onChange,
   label,
 }: {
-  options: { value: T; label: string }[];
+  options: { value: T; label: string; hidden?: boolean }[];
   value: T;
   onChange: (value: T) => void;
   label: string;
 }) {
   const index = Math.max(0, options.findIndex((o) => o.value === value));
+  const shown = options.filter((o) => !o.hidden).length;
   const position = useMotionValue(index);
+  const count = useMotionValue(shown);
   const x = useTransform(position, (p) => `${p * 100}%`);
+  const width = useTransform(count, (c) => `calc((100% - 6px) / ${c})`);
   const first = useRef(true);
   useLayoutEffect(() => {
     if (first.current) {
@@ -66,24 +73,55 @@ export function Segmented<T extends string>({
       return;
     }
     animateTo(position, index, spring('smooth'));
-  }, [index, position]);
+    animateTo(count, shown, spring('smooth'));
+  }, [index, shown, position, count]);
   return (
     <div className="td-ph-segmented" role="group" aria-label={label}>
-      <Motion
-        className="td-ph-segmented-thumb"
-        style={{ width: `calc((100% - 6px) / ${options.length})`, x }}
-      />
-      {options.map((option) => (
-        <button
+      <Motion className="td-ph-segmented-thumb" style={{ width, x }} />
+      {options.map((option, i) => (
+        <Segment
           key={option.value}
-          type="button"
-          aria-pressed={option.value === value}
+          count={count}
+          index={i}
+          hidden={option.hidden ?? false}
+          pressed={option.value === value}
           onClick={() => onChange(option.value)}
         >
           {option.label}
-        </button>
+        </Segment>
       ))}
     </div>
+  );
+}
+
+function Segment({
+  count,
+  index,
+  hidden,
+  pressed,
+  onClick,
+  children,
+}: {
+  count: MotionValue<number>;
+  index: number;
+  hidden: boolean;
+  pressed: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  const share = useTransform(count, (c) => Math.min(1, Math.max(0, c - index)));
+  return (
+    <Motion
+      as="button"
+      type="button"
+      aria-pressed={pressed}
+      aria-hidden={hidden || undefined}
+      disabled={hidden}
+      onClick={onClick}
+      style={{ flexGrow: share, opacity: share }}
+    >
+      {children}
+    </Motion>
   );
 }
 
@@ -150,11 +188,12 @@ export function Group({ header, footer, children }: { header?: ReactNode; footer
   );
 }
 
-export function EmptyState({ icon, title }: { icon: IconName; title: string }) {
+export function EmptyState({ icon, title, message }: { icon: IconName; title: string; message?: string }) {
   return (
     <div className="td-ph-empty">
       <Icon name={icon} />
-      <span>{title}</span>
+      <span className={message ? 'td-ph-empty-title' : undefined}>{title}</span>
+      {message ? <span>{message}</span> : null}
     </div>
   );
 }

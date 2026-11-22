@@ -711,6 +711,10 @@ button.td-ph-row:active,
 .td-ph-segmented button {
   position: relative;
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   height: 34px;
   text-align: center;
   font-size: 14px;
@@ -756,6 +760,11 @@ button.td-ph-row:active,
   align-items: center;
   gap: 8px;
   font-size: 15px;
+}
+.td-ph-empty-title {
+  color: var(--ph-text);
+  font-size: 17px;
+  font-weight: 600;
 }
 .td-ph-empty .td-ph-icon {
   font-size: 34px;

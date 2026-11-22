@@ -53,8 +53,9 @@ import filePdf from '@phosphor-icons/core/assets/regular/file-pdf.svg?raw';
 import fileZip from '@phosphor-icons/core/assets/regular/file-zip.svg?raw';
 import fileDoc from '@phosphor-icons/core/assets/regular/file-doc.svg?raw';
 import archive from '@phosphor-icons/core/assets/fill/archive-fill.svg?raw';
+import undo from '@phosphor-icons/core/assets/bold/arrow-u-up-left-bold.svg?raw';
 import sparkle from '@phosphor-icons/core/assets/fill/sparkle-fill.svg?raw';
 
-export const ICONS = { house, classTable, envelope, books, more, calendar, megaphone, megaphoneLine, chart, chartLine, bank, buildings, gear, back, chevron, chevronDown, search, compose, trash, trashFill, flag, envelopeOpen, envelopeBadge, dots, dotsCircle, reply, replyAll, forward, paperclip, doc, folder, people, chats, plus, check, close, filter, help, clock, qr, link, external, pin, person, copy, mapPin, send, pencil, checkCircle, eyeSlash, filePdf, fileZip, fileDoc, sparkle, archive };
+export const ICONS = { house, classTable, envelope, books, more, calendar, megaphone, megaphoneLine, chart, chartLine, bank, buildings, gear, back, chevron, chevronDown, search, compose, trash, trashFill, flag, envelopeOpen, envelopeBadge, dots, dotsCircle, reply, replyAll, forward, paperclip, doc, folder, people, chats, plus, check, close, filter, help, clock, qr, link, external, pin, person, copy, mapPin, send, pencil, checkCircle, eyeSlash, filePdf, fileZip, fileDoc, sparkle, archive, undo };
 
 export type IconName = keyof typeof ICONS;
