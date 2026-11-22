@@ -54,8 +54,15 @@ import fileZip from '@phosphor-icons/core/assets/regular/file-zip.svg?raw';
 import fileDoc from '@phosphor-icons/core/assets/regular/file-doc.svg?raw';
 import archive from '@phosphor-icons/core/assets/fill/archive-fill.svg?raw';
 import undo from '@phosphor-icons/core/assets/bold/arrow-u-up-left-bold.svg?raw';
+import swap from '@phosphor-icons/core/assets/bold/arrows-left-right-bold.svg?raw';
+import bubble from '@phosphor-icons/core/assets/fill/chat-circle-fill.svg?raw';
+import minusCircle from '@phosphor-icons/core/assets/fill/minus-circle-fill.svg?raw';
+import plusCircle from '@phosphor-icons/core/assets/regular/plus-circle.svg?raw';
+import list from '@phosphor-icons/core/assets/bold/list-bold.svg?raw';
+import graduation from '@phosphor-icons/core/assets/fill/graduation-cap-fill.svg?raw';
+import hash from '@phosphor-icons/core/assets/bold/hash-bold.svg?raw';
 import sparkle from '@phosphor-icons/core/assets/fill/sparkle-fill.svg?raw';
 
-export const ICONS = { house, classTable, envelope, books, more, calendar, megaphone, megaphoneLine, chart, chartLine, bank, buildings, gear, back, chevron, chevronDown, search, compose, trash, trashFill, flag, envelopeOpen, envelopeBadge, dots, dotsCircle, reply, replyAll, forward, paperclip, doc, folder, people, chats, plus, check, close, filter, help, clock, qr, link, external, pin, person, copy, mapPin, send, pencil, checkCircle, eyeSlash, filePdf, fileZip, fileDoc, sparkle, archive, undo };
+export const ICONS = { house, classTable, envelope, books, more, calendar, megaphone, megaphoneLine, chart, chartLine, bank, buildings, gear, back, chevron, chevronDown, search, compose, trash, trashFill, flag, envelopeOpen, envelopeBadge, dots, dotsCircle, reply, replyAll, forward, paperclip, doc, folder, people, chats, plus, check, close, filter, help, clock, qr, link, external, pin, person, copy, mapPin, send, pencil, checkCircle, eyeSlash, filePdf, fileZip, fileDoc, sparkle, archive, undo, swap, bubble, minusCircle, plusCircle, list, graduation, hash };
 
 export type IconName = keyof typeof ICONS;

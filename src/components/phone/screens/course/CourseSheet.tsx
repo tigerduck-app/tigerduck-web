@@ -1,8 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import { moodleCourse, text, type DemoCourse, type MoodleCourse } from '../../lib/demo';
-import { usePhoneLocale } from '../../lib/i18n';
-import { courseColor, type Meeting } from '../../lib/schedule';
-import { hhmm } from '../../lib/time';
+import type { Locale } from '@/lib/locale';
+import { usePhoneLocale, type Translate } from '../../lib/i18n';
+import { changeDays, changedRoom, courseColor, meetingsOn, type CourseChange, type Meeting } from '../../lib/schedule';
+import { hhmm, startOfTaipeiDay, taipei } from '../../lib/time';
 import { Icon, type IconName } from '../../ui/Icon';
 import { NavStack, useNav } from '../../ui/NavStack';
 import { Page } from '../../ui/Page';
@@ -24,13 +25,14 @@ function CourseDetail({ course, meeting }: { course: DemoCourse; meeting?: Meeti
   const moodle = moodleCourse(course.courseNo);
   const open = assignmentItems(locale).filter((a) => a.courseNo === course.courseNo && !a.submitted);
   const color = courseColor(course);
-  const room = meeting?.room ?? course.classroom ?? '';
+  const moved = meeting ? changedRoom(meeting.changes, t) : null;
+  const room = moved ?? meeting?.room ?? course.classroom ?? '';
 
   return (
     <Page title={text(course.name, locale)}>
       <div className="td-ph-course-bar" style={{ background: color }} />
       <div className="td-ph-course-facts">
-        {room ? <Fact label={t('course_detail_classroom_label')} value={room} /> : null}
+        {room ? <Fact label={t('course_detail_classroom_label')} value={room} changed={moved !== null} /> : null}
         {meeting ? (
           <Fact label={t('course_detail_time_label')} value={`${hhmm(meeting.start)} - ${hhmm(meeting.end)}`} />
         ) : null}
@@ -54,6 +56,7 @@ function CourseDetail({ course, meeting }: { course: DemoCourse; meeting?: Meeti
         </InfoRow>
         {course.credits !== undefined ? <InfoRow label={t('course_detail_credits_label')}>{course.credits}</InfoRow> : null}
       </dl>
+      {meeting ? <CourseChanges course={course} onCards={meeting} /> : null}
       {copied ? (
         <div className="td-ph-toast td-ph-glass" role="status">
           {t('course_detail_code_copied')}
@@ -77,16 +80,98 @@ function CourseDetail({ course, meeting }: { course: DemoCourse; meeting?: Meeti
   );
 }
 
-function Fact({ label, value }: { label: string; value: string }) {
+/** A course name; for a class with an assessment, the app's dashed underline in assessment ink. */
+export function CourseName({ name, assessment }: { name: string; assessment: boolean }) {
+  const { t } = usePhoneLocale();
+  if (!assessment) return <>{name}</>;
+  return (
+    <span className="td-ph-assessment" aria-label={`${name}, ${t('course_change_assessment')}`}>
+      {name}
+    </span>
+  );
+}
+
+export function Fact({ label, value, changed = false }: { label: string; value: string; changed?: boolean }) {
   return (
     <div className="td-ph-card td-ph-fact">
       <span className="td-ph-caption">{label}</span>
-      <strong>{value}</strong>
+      <strong style={changed ? { color: 'var(--ph-change)' } : undefined}>{value}</strong>
     </div>
   );
 }
 
-function InfoRow({ label, children }: { label: string; children: ReactNode }) {
+/** The app's CourseDetailChanges: the course's coming days with a change, up to eight. */
+function CourseChanges({ course, onCards }: { course: DemoCourse; onCards: Meeting }) {
+  const { t, locale } = usePhoneLocale();
+  const rows = changeDays(course.courseNo, Date.now())
+    .map((day) => ({ day, summary: changeSummary(meetingsOn([course], day, locale), onCards, t, locale) }))
+    .filter((row) => row.summary)
+    .slice(0, 8);
+  if (!rows.length) return null;
+  return (
+    <section className="td-ph-course-changes">
+      <hr className="td-ph-divider" />
+      <h3>{t('course_detail_changes')}</h3>
+      <dl>
+        {rows.map((row) => (
+          <div key={row.day}>
+            <dt>{dayWeekday(row.day, locale)}</dt>
+            <dd>{row.summary}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+/** `M/d (narrow weekday)`, as the app's Date.dayWeekdayFormatter. */
+function dayWeekday(day: number, locale: Locale): string {
+  const { month, day: date } = taipei(day);
+  const weekday = new Intl.DateTimeFormat(locale === 'zh' ? 'zh-Hant' : 'en', {
+    weekday: 'narrow',
+    timeZone: 'Asia/Taipei',
+  }).format(day);
+  return `${month}/${date} (${weekday})`;
+}
+
+/** The app's CourseChange.listedText. */
+function listedText(change: CourseChange, t: Translate, locale: Locale): string | null {
+  const note = text(change.note, locale) || null;
+  if (change.kind === 'assessment') return note && `${t('course_change_assessment')} · ${note}`;
+  if (change.kind === 'online') return [t('course_change_online'), note].filter(Boolean).join(' · ');
+  return note;
+}
+
+/**
+ * The app's CourseDetailChanges.changeSummary: a day's changed rooms and listed changes. The class
+ * on the sheet's cards, which show its own room, lists only rooms of its other periods.
+ */
+function changeSummary(meetings: Meeting[], onCards: Meeting, t: Translate, locale: Locale): string {
+  const parts: string[] = [];
+  for (const meeting of meetings) {
+    const rooms = meeting.changes.filter((c) => c.kind === 'room' && c.room);
+    const onCard =
+      startOfTaipeiDay(meeting.start) === startOfTaipeiDay(onCards.start) &&
+      meeting.periods.some((p) => onCards.periods.includes(p));
+    parts.push(
+      ...rooms
+        .filter((c) => !onCard || !onCards.periods.some((p) => !c.periods || c.periods.includes(p)))
+        .map((c) => c.room!)
+    );
+  }
+  const held = meetings.flatMap((m) => m.changes);
+  const listed = ['assessment', 'online', 'note'].flatMap((kind) => held.filter((c) => c.kind === kind));
+  const seenIds = new Set<number>();
+  for (const change of listed) {
+    if (seenIds.has(change.id)) continue;
+    seenIds.add(change.id);
+    const line = listedText(change, t, locale);
+    if (line) parts.push(line);
+  }
+  return [...new Set(parts)].join(' · ');
+}
+
+export function InfoRow({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
       <dt>{label}</dt>

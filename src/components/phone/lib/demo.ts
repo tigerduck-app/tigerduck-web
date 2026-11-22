@@ -162,6 +162,53 @@ export interface MoodleCourse {
   assignments?: MoodleAssignment[];
 }
 
+/** A change of the school's course feed on the coming `weekday` (1 is Monday), counted from today. */
+export interface DemoCourseChange {
+  id: number;
+  courseNo: string;
+  kind: 'cancelled' | 'room' | 'start' | 'end' | 'note' | 'assessment' | 'online';
+  weekday: number;
+  periods?: string[];
+  room?: string;
+  note?: DemoText;
+}
+
+/** A club of the club directory; its activities fall on the coming `weekday`, as course changes do. */
+export interface DemoClub {
+  id: number;
+  name: DemoText;
+  attribute?: string;
+  tagline?: DemoText | null;
+  subscribed?: boolean;
+  activities?: {
+    id: number;
+    name: DemoText;
+    weekday: number;
+    start: string;
+    end: string;
+    location?: DemoText;
+    type?: string;
+    content?: DemoText | null;
+  }[];
+}
+
+/** The transcript of the regular terms before the current one, `termsAgo` counting back from it. */
+export interface DemoScores {
+  student?: DemoText;
+  terms?: {
+    termsAgo: number;
+    semester?: DemoRank;
+    cumulative?: DemoRank;
+    courses?: { code: string; name: DemoText; credits?: number; grade: string; status?: string }[];
+  }[];
+}
+
+export interface DemoRank {
+  classRank?: number;
+  deptRank?: number;
+  gpa?: number;
+}
+
 export interface DemoPortalEntry {
   category: string;
   name: DemoText;
@@ -186,6 +233,9 @@ export interface DemoData {
     rooms?: Record<string, Record<string, string>>;
   };
   informationSystem?: DemoPortalEntry[];
+  courseChanges?: DemoCourseChange[];
+  scores?: DemoScores;
+  clubs?: DemoClub[];
 }
 
 const DAY_PREFIX = /^\d{4}-\d{2}-\d{2}/;

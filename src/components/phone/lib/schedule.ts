@@ -1,5 +1,6 @@
 import type { Locale } from '@/lib/locale';
-import { text, type DemoCourse } from './demo';
+import { demo, text, type DemoCourse } from './demo';
+import type { Translate } from './i18n';
 import { DAY_MS, MINUTE_MS, minutesOf, startOfTaipeiDay, taipei } from './time';
 
 /** NTUST's periods, as the app's `AppConstants.PeriodTimes`. */
@@ -23,12 +24,12 @@ export const PERIODS: { id: string; start: string; end: string }[] = [
 const PERIOD_INDEX = new Map(PERIODS.map((p, i) => [p.id, i]));
 
 /** The app's 20-colour course palette, `TigerDuckTheme.coursePaletteHexes`. */
-const PALETTE = [
+export const PALETTE = [
   '#FF6B6B', '#4ECDC4', '#45B7D1', '#F39C12', '#DDA0DD', '#2ECC71', '#E74C3C', '#3498DB', '#F7DC6F', '#9B59B6',
   '#1ABC9C', '#E67E22', '#85C1E9', '#D35400', '#27AE60', '#C0392B', '#8E44AD', '#16A085', '#F1C40F', '#2980B9',
 ];
 
-function fnv1a(value: string): number {
+export function fnv1a(value: string): number {
   let hash = 2166136261;
   for (const char of value) hash = Math.imul(hash ^ char.codePointAt(0)!, 16777619) >>> 0;
   return hash;
@@ -44,6 +45,58 @@ export function tint(hex: string, alpha: number): string {
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
 }
 
+/** A regular term: the ROC school year and its semester. */
+export interface Term {
+  year: number;
+  semester: 1 | 2;
+}
+
+/** The term `now` falls in, as the app's AcademicTerm.estimated: the first from August, the second from February. */
+export function currentTerm(now: number): Term {
+  const { year, month } = taipei(now);
+  if (month >= 8) return { year: year - 1911, semester: 1 };
+  return month === 1 ? { year: year - 1912, semester: 1 } : { year: year - 1912, semester: 2 };
+}
+
+/** The regular term `count` before `term`, as the app's AcademicTerm.previousRegular. */
+export function termsBefore(term: Term, count: number): Term {
+  const index = term.year * 2 + term.semester - 1 - count;
+  return { year: Math.floor(index / 2), semester: ((index % 2) + 1) as 1 | 2 };
+}
+
+/** The coming `weekday` from today, today included: the app's ClassTableViewModel.nextDate. */
+export function comingDay(weekday: number, now: number): number {
+  const today = startOfTaipeiDay(now);
+  return today + ((weekday - taipei(today).weekday + 7) % 7) * DAY_MS;
+}
+
+// Placed once a load, as the app places them when the demo account signs in.
+const CHANGES = (demo.courseChanges ?? []).map((change) => ({ ...change, day: comingDay(change.weekday, Date.now()) }));
+
+export type CourseChange = (typeof CHANGES)[number];
+
+/** The changes to a course on the Taipei day `day` that cover any of `periods`. */
+export function changesOn(courseNo: string, day: number, periods: string[]): CourseChange[] {
+  return CHANGES.filter(
+    (c) => c.courseNo === courseNo && c.day === day && (!c.periods || c.periods.some((p) => periods.includes(p)))
+  );
+}
+
+/** Each day from `from` on with a change to the course, in order. */
+export function changeDays(courseNo: string, from: number): number[] {
+  const days = CHANGES.filter((c) => c.courseNo === courseNo && c.day >= startOfTaipeiDay(from)).map((c) => c.day);
+  return [...new Set(days)].sort((a, b) => a - b);
+}
+
+export const isAssessment = (changes: CourseChange[]) => changes.some((c) => c.kind === 'assessment');
+
+/** The app's CourseChange.changedRoom: a room change's room, or Online for a class held online. */
+export function changedRoom(changes: CourseChange[], t: Translate): string | null {
+  const change = changes.find((c) => (c.kind === 'room' && c.room) || c.kind === 'online');
+  if (!change) return null;
+  return change.kind === 'room' ? change.room! : t('course_change_online');
+}
+
 export interface Meeting {
   id: string;
   course: DemoCourse;
@@ -56,6 +109,7 @@ export interface Meeting {
   /** Epoch milliseconds. */
   start: number;
   end: number;
+  changes: CourseChange[];
 }
 
 /** A course's periods on one weekday, joined into runs of back-to-back periods. */
@@ -94,6 +148,7 @@ export function meetingsOn(courses: DemoCourse[], dayMs: number, locale: Locale)
           periods: run,
           start: midnight + minutesOf(first.start) * MINUTE_MS,
           end: midnight + minutesOf(last.end) * MINUTE_MS,
+          changes: changesOn(course.courseNo, midnight, run),
         };
       })
     )

@@ -1,26 +1,33 @@
 import { useMemo, useRef, useState } from 'react';
 import { JSAnimation } from 'motion/react';
+import { clubOccurrences, useSubscribedClubs, type ClubOccurrence } from '../../lib/clubs';
 import { demo } from '../../lib/demo';
 import { phoneScale, usePan } from '../../lib/gesture';
 import { usePhoneLocale } from '../../lib/i18n';
-import { meetingsAround, tint, type Meeting } from '../../lib/schedule';
+import { changedRoom, isAssessment, meetingsAround, tint, type Meeting } from '../../lib/schedule';
 import { spring } from '../../lib/springs';
 import { hhmm, monthDay, monthDayTime, startOfTaipeiDay, taipei } from '../../lib/time';
 import { POINTS_PER_MINUTE, timeFor, timelineAnchors, xFor } from '../../lib/timeline';
 import { Icon } from '../../ui/Icon';
 import { SectionTitle } from '../../ui/controls';
+import { CourseName } from '../course/CourseSheet';
+
+/** A class, or an activity of a subscribed club, as the app's TimeSliderItem. */
+export type TimeItem = Meeting | ClubOccurrence;
+const isClub = (item: TimeItem): item is ClubOccurrence => 'clubId' in item;
+const keyOf = (item: TimeItem) => (isClub(item) ? `club-${item.id}` : item.id);
 
 const TRACK_WIDTH = 370;
 const TICK_MS = 15 * 60_000;
 const KEY_STEP_MS = 15 * 60_000;
 
 type CardState =
-  | { kind: 'in'; meetings: Meeting[] }
-  | { kind: 'between'; prev: Meeting; next: Meeting }
-  | { kind: 'before'; next: Meeting }
-  | { kind: 'after'; prev: Meeting };
+  | { kind: 'in'; meetings: TimeItem[] }
+  | { kind: 'between'; prev: TimeItem; next: TimeItem }
+  | { kind: 'before'; next: TimeItem }
+  | { kind: 'after'; prev: TimeItem };
 
-function stateAt(meetings: Meeting[], at: number): CardState | null {
+function stateAt(meetings: TimeItem[], at: number): CardState | null {
   if (!meetings.length) return null;
   const current = meetings.filter((m) => m.start <= at && at < m.end);
   if (current.length) return { kind: 'in', meetings: current };
@@ -31,9 +38,16 @@ function stateAt(meetings: Meeting[], at: number): CardState | null {
 }
 
 /** Home's time machine: the class at a moment, and a track to drag through the week. */
-export function TimeMachine({ now, onOpen }: { now: number; onOpen: (meeting: Meeting) => void }) {
+export function TimeMachine({ now, onOpen }: { now: number; onOpen: (item: TimeItem) => void }) {
   const { t, locale } = usePhoneLocale();
-  const meetings = useMemo(() => meetingsAround(demo.courses ?? [], now, locale), [now, locale]);
+  const clubIds = useSubscribedClubs();
+  const meetings = useMemo(
+    () =>
+      [...meetingsAround(demo.courses ?? [], now, locale), ...clubOccurrences(clubIds, now, locale)].sort(
+        (a, b) => a.start - b.start
+      ),
+    [now, locale, clubIds]
+  );
   const anchors = useMemo(() => timelineAnchors(meetings), [meetings]);
   const [picked, setPicked] = useState<number | null>(null);
   const selected = picked ?? now;
@@ -91,7 +105,7 @@ export function TimeMachine({ now, onOpen }: { now: number; onOpen: (meeting: Me
         <div className="td-ph-tm">
           <div className="td-ph-tm-cards">
             {state.kind === 'in'
-              ? state.meetings.map((m) => <CourseCard key={m.id} meeting={m} now={now} dim={false} onOpen={onOpen} />)
+              ? state.meetings.map((m) => <CourseCard key={keyOf(m)} meeting={m} now={now} dim={false} onOpen={onOpen} />)
               : null}
             {state.kind === 'between' ? (
               <>
@@ -135,7 +149,7 @@ export function TimeMachine({ now, onOpen }: { now: number; onOpen: (meeting: Me
               const on = m.start <= selected && selected < m.end;
               return (
                 <span
-                  key={m.id}
+                  key={keyOf(m)}
                   className="td-ph-tm-seg"
                   style={{ left, width, background: tint(m.color, on ? 0.5 : 0.3) }}
                 />
@@ -164,12 +178,31 @@ function CourseCard({
   dim,
   onOpen,
 }: {
-  meeting: Meeting;
+  meeting: TimeItem;
   now: number;
   dim: boolean;
-  onOpen: (meeting: Meeting) => void;
+  onOpen: (item: TimeItem) => void;
 }) {
-  const subtitle = [meeting.room, meeting.instructor].filter(Boolean).join(' · ');
+  const { t } = usePhoneLocale();
+  const moved = isClub(meeting) ? null : changedRoom(meeting.changes, t);
+  const room = isClub(meeting) ? '' : moved ?? meeting.room;
+  const instructor = isClub(meeting) ? '' : meeting.instructor;
+  // The app's CourseTimeCard.subtitle, and for a club its name when the activity has one, and its place.
+  const subtitle = isClub(meeting) ? (
+    [meeting.name ? meeting.clubName : '', meeting.location].filter(Boolean).join(' · ')
+  ) : (
+    <>
+      {moved ? (
+        <b className="td-ph-changed">
+          <Icon name="swap" /> {room}
+        </b>
+      ) : (
+        room
+      )}
+      {room && instructor ? ' · ' : ''}
+      {instructor}
+    </>
+  );
   const otherDay = startOfTaipeiDay(meeting.start) !== startOfTaipeiDay(now);
   return (
     <button
@@ -184,7 +217,13 @@ function CourseCard({
         </b>
         {otherDay ? <small>{monthDay(meeting.start)}</small> : null}
       </span>
-      <strong>{meeting.title}</strong>
+      <strong>
+        {isClub(meeting) ? (
+          meeting.name || meeting.clubName
+        ) : (
+          <CourseName name={meeting.title} assessment={isAssessment(meeting.changes)} />
+        )}
+      </strong>
       <span className="td-ph-tm-card-sub">{subtitle}</span>
     </button>
   );

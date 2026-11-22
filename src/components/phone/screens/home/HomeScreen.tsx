@@ -10,6 +10,7 @@ import { usePresenter } from '../../ui/sheetContext';
 import { SwipeRow } from '../../ui/SwipeRow';
 import { EmptyState, GlassButton, Segmented, SectionTitle, SyncDot } from '../../ui/controls';
 import { assignmentItems, courseLine, type AssignmentItem } from '../assignments';
+import { ClubSheet } from '../course/ClubSheet';
 import { CourseSheet } from '../course/CourseSheet';
 import { AssignmentPage } from '../moodle/AssignmentPage';
 import { TimeMachine } from './TimeMachine';
@@ -120,7 +121,11 @@ export function HomeScreen({ now }: { now: number }) {
     >
       <TimeMachine
         now={now}
-        onOpen={(meeting) => presenter.present(<CourseSheet course={meeting.course} meeting={meeting} />)}
+        onOpen={(item) =>
+          presenter.present(
+            'clubId' in item ? <ClubSheet club={item} /> : <CourseSheet course={item.course} meeting={item} />
+          )
+        }
       />
       <section className="td-ph-section">
         <SectionTitle>{t('live_activity_status_assignment_short')}</SectionTitle>
