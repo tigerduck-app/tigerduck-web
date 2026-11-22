@@ -19,8 +19,10 @@ export const SPRINGS = {
   smooth: swiftSpring(0.35, 0.8),
   /** The app's `Animation.quickSpring`. */
   quick: swiftSpring(0.25, 0.7),
-  /** UIKit's push and pop: critically damped, about half a second. */
-  navigation: swiftSpring(0.5, 1),
+  /** A push or a tapped back button: critically damped, a little quicker than UIKit's. */
+  navigation: swiftSpring(0.4, 1),
+  /** A released swipe back, finishing or returning from the finger's speed. */
+  swipeBack: swiftSpring(0.5, 1),
   /** Sheet presentation and detent changes. */
   sheet: swiftSpring(0.48, 0.86),
   /** The tab bar's glass lens sliding between tabs. */

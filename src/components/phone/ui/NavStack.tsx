@@ -135,10 +135,10 @@ export function NavStack({ root }: { root: ReactNode }) {
       const velocity = info.vx / width;
       const completes = !cancelled && (velocity > 0.5 || (progress.get() > 0.45 && velocity > -0.2));
       if (completes) {
-        animateTo(progress, 1, { ...spring('navigation'), velocity, onComplete: finishPop });
+        animateTo(progress, 1, { ...spring('swipeBack'), velocity, onComplete: finishPop });
       } else {
         animateTo(progress, 0, {
-          ...spring('navigation'),
+          ...spring('swipeBack'),
           velocity,
           onComplete: () => {
             busy.current = false;
