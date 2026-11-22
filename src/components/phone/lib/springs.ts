@@ -57,14 +57,18 @@ type Options = Transition & { velocity?: number; onComplete?: () => void };
 /**
  * Runs one value animation on a motion value. Motion's own `animate` also handles elements and
  * sequences, which the phone never uses and which triple the library's share of the bundle.
+ * Without a `velocity`, it carries on only the speed of an animation it interrupts: a value
+ * just moved with `set`, as a pushed page placed off screen, would report that jump as speed.
  */
 export function animateTo(value: MotionValue<number>, to: number, options: Options): Promise<void> {
   const { onComplete, ...transition } = options;
+  // Read before `start`, which stops the running animation first.
+  const velocity = value.isAnimating() ? value.getVelocity() : 0;
   return value.start(
     (complete) =>
       new JSAnimation({
         keyframes: [value.get(), to],
-        velocity: value.getVelocity(),
+        velocity,
         ...transition,
         motionValue: value,
         onUpdate: (latest: number) => value.set(latest),

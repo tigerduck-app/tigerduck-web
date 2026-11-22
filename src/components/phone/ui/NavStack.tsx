@@ -38,6 +38,8 @@ interface Entry {
 const EDGE_POINTS = 28;
 /** The page underneath sits this share of the width to the left, as UIKit's parallax. */
 const PARALLAX = 0.3;
+/** A fast flick can carry the spring past either end; the pages stop there. */
+const inRange = (p: number) => Math.min(1, Math.max(0, p));
 
 /**
  * A UINavigationController-like stack: pages slide in from the right over a parallaxed,
@@ -48,9 +50,9 @@ export function NavStack({ root }: { root: ReactNode }) {
   const [entries, setEntries] = useState<Entry[]>(() => [{ key: 0, page: null }]);
   // 0: the top page is in place; 1: it is off to the right.
   const progress = useMotionValue(0);
-  const topX = useTransform(progress, (p) => `${p * 100}%`);
-  const belowX = useTransform(progress, (p) => `${(p - 1) * PARALLAX * 100}%`);
-  const dim = useTransform(progress, (p) => (1 - p) * 0.1);
+  const topX = useTransform(progress, (p) => `${inRange(p) * 100}%`);
+  const belowX = useTransform(progress, (p) => `${(inRange(p) - 1) * PARALLAX * 100}%`);
+  const dim = useTransform(progress, (p) => (1 - inRange(p)) * 0.1);
   const busy = useRef(false);
   const nextKey = useRef(1);
   const pendingPush = useRef(false);
