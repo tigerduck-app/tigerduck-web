@@ -58,11 +58,10 @@ import swap from '@phosphor-icons/core/assets/bold/arrows-left-right-bold.svg?ra
 import bubble from '@phosphor-icons/core/assets/fill/chat-circle-fill.svg?raw';
 import minusCircle from '@phosphor-icons/core/assets/fill/minus-circle-fill.svg?raw';
 import plusCircle from '@phosphor-icons/core/assets/regular/plus-circle.svg?raw';
-import list from '@phosphor-icons/core/assets/bold/list-bold.svg?raw';
 import graduation from '@phosphor-icons/core/assets/fill/graduation-cap-fill.svg?raw';
 import hash from '@phosphor-icons/core/assets/bold/hash-bold.svg?raw';
 import sparkle from '@phosphor-icons/core/assets/fill/sparkle-fill.svg?raw';
 
-export const ICONS = { house, classTable, envelope, books, more, calendar, megaphone, megaphoneLine, chart, chartLine, bank, buildings, gear, back, chevron, chevronDown, search, compose, trash, trashFill, flag, envelopeOpen, envelopeBadge, dots, dotsCircle, reply, replyAll, forward, paperclip, doc, folder, people, chats, plus, check, close, filter, help, clock, qr, link, external, pin, person, copy, mapPin, send, pencil, checkCircle, eyeSlash, filePdf, fileZip, fileDoc, sparkle, archive, undo, swap, bubble, minusCircle, plusCircle, list, graduation, hash };
+export const ICONS = { house, classTable, envelope, books, more, calendar, megaphone, megaphoneLine, chart, chartLine, bank, buildings, gear, back, chevron, chevronDown, search, compose, trash, trashFill, flag, envelopeOpen, envelopeBadge, dots, dotsCircle, reply, replyAll, forward, paperclip, doc, folder, people, chats, plus, check, close, filter, help, clock, qr, link, external, pin, person, copy, mapPin, send, pencil, checkCircle, eyeSlash, filePdf, fileZip, fileDoc, sparkle, archive, undo, swap, bubble, minusCircle, plusCircle, graduation, hash };
 
 export type IconName = keyof typeof ICONS;

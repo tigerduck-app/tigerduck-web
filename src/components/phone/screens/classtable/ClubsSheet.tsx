@@ -32,7 +32,6 @@ export function ClubsSheet() {
               <div className="td-ph-row td-ph-club-row" style={{ "--ph-sep-inset": "52px" } as React.CSSProperties}>
                 <span className="td-ph-club-swatch" style={{ background: clubColor(club.id) }} />
                 <ClubName club={club} />
-                <Icon name="list" className="td-ph-row-chevron" />
               </div>
             </SwipeRow>
           ))}
