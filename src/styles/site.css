@@ -602,11 +602,12 @@
 .td-hero > .td-hero-grid > div:first-child > *:nth-child(6) {
   animation-delay: 0.36s;
 }
-.td-phone-host {
-  animation: tdHeroSlideRight 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+/* Backwards fill only: a transform left on the slot would trap the full-screen phone inside it. */
+.td-phone-slot {
+  animation: tdHeroSlideRight 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
 }
 @media (prefers-reduced-motion: reduce) {
-  .td-phone-host,
+  .td-phone-slot,
   .td-hero > .td-hero-grid > div:first-child > * {
     animation: none;
   }

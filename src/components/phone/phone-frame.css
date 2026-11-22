@@ -1,12 +1,22 @@
 /* The device around the interactive phone: iPhone 18 Pro proportions, drawn in CSS.
    The screen is 402 x 874 points; the whole device is scaled to fit its column. */
-.td-phone-host {
-  --td-phone-w: 428px;
-  --td-phone-h: 900px;
+.td-phone-slot {
   position: relative;
   width: min(100%, 340px);
   aspect-ratio: 428 / 900;
   margin: 0 auto;
+}
+.td-phone-stage {
+  position: absolute;
+  inset: 0;
+}
+.td-phone-host {
+  --td-phone-w: 428px;
+  --td-phone-h: 900px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 428 / 900;
+  transform-origin: 0 0;
 }
 .td-phone-device {
   position: absolute;
@@ -81,7 +91,125 @@
   background: var(--td-bg-soft);
 }
 @media (max-width: 768px) {
-  .td-phone-host {
+  .td-phone-slot {
     width: min(100%, 300px);
+  }
+}
+
+/* Narrow screens: a preview the page scrolls over; the whole frame is the button that opens it. */
+.td-phone-open {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  padding: 0;
+  border: 0;
+  border-radius: 16.4%/7.8%;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.td-phone-open:active {
+  transform: scale(0.97);
+}
+.td-phone-open:focus-visible {
+  outline: 3px solid var(--td-blue);
+  outline-offset: 4px;
+}
+.td-phone-open-badge {
+  position: absolute;
+  right: -10px;
+  bottom: 12%;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(20, 22, 26, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 8px 20px rgba(0, 0, 0, 0.25);
+  animation: tdPhoneBadge 2.8s ease-in-out 1.2s infinite;
+}
+.td-phone-open-badge svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+@keyframes tdPhoneBadge {
+  0%,
+  70%,
+  100% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(1.12);
+  }
+}
+
+/* Full screen: the stage owns the viewport and the phone fits under the close button. */
+.td-phone-stage--full {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 12px 12px;
+  overscroll-behavior: contain;
+  outline: none;
+}
+.td-phone-stage--full::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--td-bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  animation: tdPhoneFade 0.3s ease-out;
+}
+.td-phone-stage--full .td-phone-host {
+  flex: none;
+  width: min(100%, calc((100vh - 72px) * 428 / 900));
+  width: min(100%, calc((100dvh - 72px) * 428 / 900));
+}
+.td-phone-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--td-text);
+  background: color-mix(in srgb, var(--td-text) 10%, transparent);
+  cursor: pointer;
+  animation: tdPhoneFade 0.3s ease-out;
+}
+.td-phone-close svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.td-phone-close:focus-visible {
+  outline: 3px solid var(--td-blue);
+  outline-offset: 2px;
+}
+.td-phone-stage--closing::before,
+.td-phone-stage--closing .td-phone-close {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+@keyframes tdPhoneFade {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .td-phone-open-badge {
+    animation: none;
   }
 }

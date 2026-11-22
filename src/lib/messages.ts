@@ -14,6 +14,7 @@ interface HeroMessages {
   desc1: string;
   desc2: string;
   phoneAriaLabel: string;
+  phoneCloseLabel: string;
 }
 
 interface WhyMessages {
@@ -279,6 +280,7 @@ const zh: Messages = {
     desc1: '作業、課表、行事曆、公告、圖書館、成績都整合起來',
     desc2: '功能不夠？你提出我們都會做！',
     phoneAriaLabel: 'TigerDuck App 互動示範',
+    phoneCloseLabel: '關閉',
   },
   why: {
     title: '為什麼要做這個？',
@@ -690,6 +692,7 @@ const en: Messages = {
     desc1: 'Homework, timetable, calendar, announcements, library, and grades — all in one place.',
     desc2: 'Missing a feature? Tell us, and we\'ll build it.',
     phoneAriaLabel: 'Interactive TigerDuck app demo',
+    phoneCloseLabel: 'Close',
   },
   why: {
     title: 'Why we built this',
