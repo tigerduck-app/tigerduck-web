@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Copies the app's demo account data and the UI labels the phone uses into the site.
-// Usage: npm run sync-demo -- <path to the tigerduck-app repository> [--today YYYY-MM-DD]
+// Usage: npm run sync-demo -- <path to the tigerduck-app repository>
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,24 +12,12 @@ const OUT_DIR = path.join(PHONE_SRC, 'data');
 
 // Sign-in secrets and file bodies are not needed to draw the screens.
 const DROPPED_KEYS = new Set(['school-password', 'library-password', 'password', 'base64']);
-// Keys whose dates lie ahead of the demo's "today"; the rest record something that already happened.
-const FUTURE_KEYS = new Set(['due', 'calendar', 'start', 'end', 'cutoff']);
 
 function fail(message) {
   console.error(message);
   process.exit(1);
 }
 
-function parseArgs(argv) {
-  const args = { repo: null, today: null };
-  for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === '--today') args.today = argv[++i];
-    else args.repo = argv[i];
-  }
-  if (!args.repo) fail('Usage: npm run sync-demo -- <path to the tigerduck-app repository> [--today YYYY-MM-DD]');
-  if (args.today && !/^\d{4}-\d{2}-\d{2}$/.test(args.today)) fail('--today takes YYYY-MM-DD');
-  return args;
-}
 
 function readJson(file) {
   try {
@@ -57,26 +45,6 @@ function strip(value) {
     );
   }
   return typeof value === 'string' && value.includes('<') ? inert(value) : value;
-}
-
-const DATE_PREFIX = /^(\d{4}-\d{2}-\d{2})/;
-
-/** The latest day on which something in the data already happened. */
-function latestPastDay(value, key = '') {
-  if (FUTURE_KEYS.has(key)) return null;
-  if (typeof value === 'string') return DATE_PREFIX.exec(value)?.[1] ?? null;
-  const children = Array.isArray(value)
-    ? value.map((inner) => latestPastDay(inner))
-    : value && typeof value === 'object'
-      ? Object.entries(value).map(([k, inner]) => latestPastDay(inner, k))
-      : [];
-  return children.filter(Boolean).sort().at(-1) ?? null;
-}
-
-function nextDay(day) {
-  const date = new Date(`${day}T00:00:00Z`);
-  date.setUTCDate(date.getUTCDate() + 1);
-  return date.toISOString().slice(0, 10);
 }
 
 function qrModules(content) {
@@ -114,20 +82,20 @@ function pickStrings(translations, keys, label) {
   return Object.fromEntries(keys.map((key) => [key, table[key]]));
 }
 
-const { repo, today } = parseArgs(process.argv.slice(2));
+const repo = process.argv[2];
+if (!repo) fail('Usage: npm run sync-demo -- <path to the tigerduck-app repository>');
 const demo = readJson(path.join(repo, 'swift/TigerDuck/Account/Demo/demo.json'));
 const zh = readJson(path.join(repo, 'app-translation/source/zh-Hant.json'));
 const en = readJson(path.join(repo, 'app-translation/source/en.json'));
 
 const data = strip(demo);
-const latest = latestPastDay(data);
-const anchor = today ?? (latest ? nextDay(latest) : null);
-if (!anchor) fail('The demo data has no dates to anchor on; pass --today YYYY-MM-DD');
+// The phone moves every date from this day to the visitor's, as the app's DemoFixture.shifted does.
+if (!/^\d{4}-\d{2}-\d{2}$/.test(data.anchor ?? '')) fail('demo.json has no top-level anchor day (yyyy-MM-dd)');
 if (data.libraryQr?.content) data.libraryQr.modules = qrModules(data.libraryQr.content);
 
 const keys = usedKeys();
 const strings = { zh: pickStrings(zh, keys, 'zh-Hant.json'), en: pickStrings(en, keys, 'en.json') };
 
-writeFileSync(path.join(OUT_DIR, 'demo.json'), `${JSON.stringify({ anchor, ...data }, null, 1)}\n`);
+writeFileSync(path.join(OUT_DIR, 'demo.json'), `${JSON.stringify(data, null, 1)}\n`);
 writeFileSync(path.join(OUT_DIR, 'strings.json'), `${JSON.stringify(strings, null, 1)}\n`);
-console.log(`demo.json: anchored on ${anchor}; strings.json: ${keys.length} keys`);
+console.log(`demo.json: anchored on ${data.anchor}; strings.json: ${keys.length} keys`);
