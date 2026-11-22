@@ -43,6 +43,9 @@ export function Footer() {
               <li>
                 <a href={LICENSE_URL}>{messages.links.license}</a>
               </li>
+              <li>
+                <a href="/third-party-notices.txt">{messages.links.notices}</a>
+              </li>
             </ul>
           </div>
           <div className="td-footer-col">
