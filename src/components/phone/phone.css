@@ -1,0 +1,843 @@
+/* The interactive TigerDuck app inside the phone frame. Colors follow the app's theme
+   (swift/TigerDuck/UI/Theme), sizes follow iOS's default text styles at 1 point = 1 px. */
+.td-ph-app {
+  --ph-bg: #f2f2f7;
+  --ph-card: #ffffff;
+  --ph-grouped: #ffffff;
+  --ph-text: #000000;
+  --ph-text-2: rgba(0, 0, 0, 0.6);
+  --ph-text-3: rgba(60, 60, 67, 0.3);
+  --ph-sep: rgba(60, 60, 67, 0.18);
+  --ph-fill: rgba(120, 120, 128, 0.12);
+  --ph-fill-2: rgba(120, 120, 128, 0.2);
+  --ph-empty-cell: rgba(0, 0, 0, 0.05);
+  --ph-accent: #007aff;
+  --ph-red: #ff3b30;
+  --ph-red-text: #d70015;
+  --ph-orange: #ff9500;
+  --ph-green: #34c759;
+  --ph-gray: #8e8e93;
+  --ph-glass: rgba(255, 255, 255, 0.66);
+  --ph-glass-strong: rgba(255, 255, 255, 0.82);
+  --ph-glass-edge: rgba(255, 255, 255, 0.9);
+  --ph-glass-shade: rgba(0, 0, 0, 0.06);
+  --ph-lens: rgba(0, 0, 0, 0.07);
+  --ph-bar: rgba(242, 242, 247, 0.72);
+  --ph-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.11);
+  --ph-float-shadow: 0 10px 30px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06);
+  --ph-dim: rgba(0, 0, 0, 0.32);
+  --ph-change: #7c2d12;
+  --ph-assessment: #c0392b;
+  --ph-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'PingFang TC', 'Noto Sans TC', system-ui,
+    sans-serif;
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--ph-bg);
+  color: var(--ph-text);
+  font-family: var(--ph-font);
+  font-size: 17px;
+  line-height: 1.29;
+  letter-spacing: -0.01em;
+  text-align: left;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-feature-settings: normal;
+}
+.td-ph-app--dark {
+  --ph-bg: #000000;
+  --ph-card: #1c1c1e;
+  --ph-grouped: #1c1c1e;
+  --ph-text: #ffffff;
+  --ph-text-2: rgba(255, 255, 255, 0.6);
+  --ph-text-3: rgba(235, 235, 245, 0.3);
+  --ph-sep: rgba(84, 84, 88, 0.55);
+  --ph-fill: rgba(118, 118, 128, 0.24);
+  --ph-fill-2: rgba(118, 118, 128, 0.36);
+  --ph-empty-cell: rgba(255, 255, 255, 0.1);
+  --ph-accent: #0a84ff;
+  --ph-red: #ff453a;
+  --ph-red-text: #ff7a72;
+  --ph-orange: #ff9f0a;
+  --ph-green: #30d158;
+  --ph-glass: rgba(44, 44, 46, 0.6);
+  --ph-glass-strong: rgba(44, 44, 46, 0.86);
+  --ph-glass-edge: rgba(255, 255, 255, 0.16);
+  --ph-glass-shade: rgba(255, 255, 255, 0.04);
+  --ph-lens: rgba(255, 255, 255, 0.12);
+  --ph-bar: rgba(0, 0, 0, 0.66);
+  --ph-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --ph-float-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --ph-dim: rgba(0, 0, 0, 0.5);
+  --ph-change: #fdba74;
+  --ph-assessment: #ff6b6b;
+}
+:where(.td-ph-app) *,
+:where(.td-ph-app) *::before,
+:where(.td-ph-app) *::after {
+  box-sizing: border-box;
+}
+:where(.td-ph-app) button {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: inherit;
+}
+:where(.td-ph-app) :focus-visible {
+  outline: 2px solid var(--ph-accent);
+  outline-offset: 2px;
+}
+:where(.td-ph-app) :where(p, h1, h2, h3, ul, ol, dl) {
+  margin: 0;
+}
+.td-ph-icon {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+.td-ph-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Stage, status bar, home indicator ---------- */
+.td-ph-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--ph-bg);
+  transform-origin: 50% 0;
+}
+.td-ph-statusbar {
+  position: absolute;
+  z-index: 40;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 0;
+  pointer-events: none;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.td-ph-statusbar > * {
+  width: 139px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+.td-ph-statusbar time {
+  padding-left: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.td-ph-statusbar svg {
+  display: block;
+}
+.td-ph-home-indicator {
+  position: absolute;
+  z-index: 40;
+  left: 50%;
+  bottom: 8px;
+  width: 140px;
+  height: 5px;
+  margin-left: -70px;
+  border-radius: 3px;
+  background: var(--ph-text);
+  pointer-events: none;
+}
+
+/* ---------- Tabs and navigation stack ---------- */
+.td-ph-tab {
+  position: absolute;
+  inset: 0;
+}
+.td-ph-tab[hidden] {
+  display: block;
+  visibility: hidden;
+}
+.td-ph-nav {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.td-ph-navpage {
+  position: absolute;
+  inset: 0;
+  background: var(--ph-bg);
+  will-change: transform;
+  outline: none;
+}
+.td-ph-navpage--top {
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.12);
+}
+.td-ph-navpage[data-hidden] {
+  visibility: hidden;
+}
+.td-ph-navdim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+}
+
+/* ---------- Page: scroller, bar, titles ---------- */
+.td-ph-page {
+  position: absolute;
+  inset: 0;
+}
+.td-ph-scroller {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scrollbar-width: none;
+}
+.td-ph-scroller::-webkit-scrollbar {
+  display: none;
+}
+.td-ph-content {
+  min-height: 100%;
+  padding-top: 112px;
+  padding-bottom: 120px;
+  will-change: transform;
+}
+.td-ph-page--sheet .td-ph-content {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+.td-ph-bar {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 108px;
+  padding: 56px 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.td-ph-page--sheet .td-ph-bar {
+  height: 62px;
+  padding-top: 10px;
+}
+.td-ph-bar > * {
+  pointer-events: auto;
+}
+.td-ph-bar-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--ph-bar);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-mask-image: linear-gradient(#000 72%, transparent);
+  mask-image: linear-gradient(#000 72%, transparent);
+}
+.td-ph-bar-title {
+  position: absolute;
+  left: 76px;
+  right: 76px;
+  bottom: 13px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.td-ph-bar-heading {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  white-space: nowrap;
+}
+.td-ph-bar-spacer {
+  flex: 1;
+}
+.td-ph-bar-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.td-ph-large-title {
+  padding: 0 16px 8px;
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transform-origin: 0 50%;
+  overflow-wrap: anywhere;
+}
+.td-ph-app-title {
+  padding: 0 16px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 44px;
+}
+.td-ph-app-title > span:first-child {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.td-ph-refresh {
+  position: absolute;
+  left: 50%;
+  top: 112px;
+  width: 30px;
+  height: 30px;
+  margin: 0 0 0 -15px;
+  pointer-events: none;
+  color: var(--ph-gray);
+}
+.td-ph-refresh span {
+  position: absolute;
+  left: 13.5px;
+  top: 2px;
+  width: 3px;
+  height: 8px;
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: 1.5px 13px;
+}
+.td-ph-refresh--spinning {
+  animation: td-ph-spin 0.9s steps(8) infinite;
+}
+@keyframes td-ph-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Glass ---------- */
+.td-ph-glass {
+  background: var(--ph-glass);
+  -webkit-backdrop-filter: blur(14px) saturate(190%);
+  backdrop-filter: blur(14px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0.5px var(--ph-glass-edge),
+    inset 0 -1px 1px var(--ph-glass-shade),
+    0 0 0 0.5px rgba(0, 0, 0, 0.04),
+    var(--ph-float-shadow);
+}
+.td-ph-glass-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+}
+.td-ph-glass-btn:active {
+  transform: scale(1.12);
+}
+.td-ph-glass-btn--text {
+  width: auto;
+  min-width: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.td-ph-glass-pill {
+  height: 44px;
+  border-radius: 22px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
+}
+.td-ph-glass-pill > button {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border-radius: 50%;
+}
+.td-ph-glass-pill > button:active {
+  background: var(--ph-fill);
+}
+
+/* ---------- Tab bar ---------- */
+.td-ph-tabbar {
+  position: absolute;
+  z-index: 20;
+  left: 21px;
+  right: 21px;
+  bottom: 25px;
+  height: 62px;
+  border-radius: 31px;
+  padding: 4px;
+  display: flex;
+  touch-action: none;
+}
+.td-ph-tabbar-lens {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  border-radius: 27px;
+  background: var(--ph-lens);
+  pointer-events: none;
+}
+.td-ph-tabbar-lens--lifted {
+  background: var(--ph-glass-strong);
+  box-shadow:
+    inset 0 1px 1px var(--ph-glass-edge),
+    0 6px 18px rgba(0, 0, 0, 0.16);
+}
+.td-ph-tab-item {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-radius: 27px;
+  color: var(--ph-text);
+}
+.td-ph-tab-item .td-ph-icon {
+  font-size: 25px;
+}
+.td-ph-tab-item small {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 12px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.td-ph-tab-item[aria-selected='true'] {
+  color: var(--ph-accent);
+}
+
+/* ---------- Sheets ---------- */
+.td-ph-backdrop {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  background: var(--ph-dim);
+}
+.td-ph-sheet {
+  position: absolute;
+  z-index: 31;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 874px;
+  overflow: hidden;
+  background: var(--ph-bg);
+  box-shadow: 0 -2px 30px rgba(0, 0, 0, 0.18);
+  will-change: transform;
+}
+.td-ph-sheet-grabber {
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  touch-action: none;
+  cursor: grab;
+}
+.td-ph-sheet-grabber::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 36px;
+  height: 5px;
+  margin-left: -18px;
+  border-radius: 3px;
+  background: var(--ph-fill-2);
+}
+
+/* ---------- Menus ---------- */
+.td-ph-menu-layer {
+  position: absolute;
+  z-index: 35;
+  inset: 0;
+}
+.td-ph-menu {
+  position: absolute;
+  min-width: 230px;
+  max-width: 290px;
+  padding: 8px 0;
+  border-radius: 24px;
+  background: var(--ph-glass-strong);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0.5px var(--ph-glass-edge),
+    0 18px 50px rgba(0, 0, 0, 0.22);
+}
+.td-ph-menu {
+  animation: td-ph-menu-in 0.34s cubic-bezier(0.2, 1.15, 0.35, 1);
+}
+.td-ph-menu--closing {
+  animation: td-ph-menu-out 0.14s ease-in forwards;
+}
+@keyframes td-ph-menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+@keyframes td-ph-menu-out {
+  to {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+.td-ph-menu hr {
+  border: 0;
+  height: 0.5px;
+  margin: 6px 20px;
+  background: var(--ph-sep);
+}
+.td-ph-menu-item {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 20px 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 17px;
+}
+.td-ph-menu-item:hover,
+.td-ph-menu-item:focus-visible {
+  background: var(--ph-fill);
+  outline: none;
+}
+.td-ph-menu-item > .td-ph-icon {
+  font-size: 19px;
+}
+.td-ph-menu-item > .td-ph-check {
+  width: 19px;
+  font-size: 15px;
+}
+.td-ph-menu-item > span:not(.td-ph-icon) {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.td-ph-menu-item--destructive {
+  color: var(--ph-red);
+}
+
+/* ---------- Building blocks ---------- */
+.td-ph-section {
+  margin-top: 24px;
+}
+.td-ph-section-title {
+  padding: 0 16px 8px;
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.td-ph-section-title > span:first-child {
+  flex: 1;
+}
+.td-ph-card {
+  margin: 0 16px;
+  border-radius: 18px;
+  background: var(--ph-card);
+  box-shadow: var(--ph-card-shadow);
+}
+.td-ph-group {
+  margin: 0 16px;
+  border-radius: 26px;
+  background: var(--ph-grouped);
+  overflow: hidden;
+}
+.td-ph-group-footer {
+  padding: 7px 32px 0;
+  font-size: 13px;
+  color: var(--ph-text-2);
+}
+.td-ph-group-header {
+  padding: 0 32px 7px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.td-ph-row {
+  position: relative;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  font-size: 17px;
+}
+button.td-ph-row:active,
+.td-ph-row--pressable:active {
+  background: var(--ph-fill);
+}
+.td-ph-row + .td-ph-row::before,
+.td-ph-row-wrap + .td-ph-row-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--ph-sep-inset, 18px);
+  right: 0;
+  height: 0.5px;
+  background: var(--ph-sep);
+}
+.td-ph-row-wrap {
+  position: relative;
+}
+.td-ph-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-wrap: anywhere;
+}
+.td-ph-row-value {
+  color: var(--ph-text-2);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.td-ph-row-icon {
+  font-size: 22px;
+  color: var(--ph-accent);
+}
+.td-ph-row-chevron {
+  font-size: 13px;
+  color: var(--ph-text-3);
+}
+.td-ph-sub {
+  font-size: 13px;
+  color: var(--ph-text-2);
+}
+.td-ph-caption {
+  font-size: 12px;
+  color: var(--ph-text-2);
+}
+.td-ph-badge {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--ph-red);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.td-ph-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ph-accent);
+  flex: none;
+}
+.td-ph-sync-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ph-green);
+  opacity: 0.85;
+}
+.td-ph-sync-dot--busy {
+  background: var(--ph-orange);
+  animation: td-ph-pulse 0.9s ease-in-out infinite alternate;
+}
+@keyframes td-ph-pulse {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.td-ph-segmented {
+  position: relative;
+  display: flex;
+  margin: 0 16px;
+  padding: 3px;
+  border-radius: 20px;
+  background: var(--ph-fill);
+}
+.td-ph-segmented-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  border-radius: 17px;
+  background: var(--ph-card);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.td-ph-app--dark .td-ph-segmented-thumb {
+  background: #636366;
+}
+.td-ph-segmented button {
+  position: relative;
+  flex: 1;
+  height: 34px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 17px;
+}
+.td-ph-segmented button[aria-pressed='true'] {
+  font-weight: 600;
+}
+.td-ph-chips {
+  display: flex;
+  gap: 8px;
+  padding: 2px 16px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  touch-action: pan-x pan-y;
+}
+.td-ph-chips::-webkit-scrollbar {
+  display: none;
+}
+.td-ph-chip {
+  flex: none;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 19px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ph-text-2);
+}
+.td-ph-chip[aria-pressed='true'] {
+  background: var(--ph-accent);
+  color: #fff;
+  box-shadow: none;
+}
+.td-ph-empty {
+  padding: 48px 32px;
+  text-align: center;
+  color: var(--ph-text-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+.td-ph-empty .td-ph-icon {
+  font-size: 34px;
+  opacity: 0.5;
+}
+.td-ph-html {
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.td-ph-html p,
+.td-ph-html ul,
+.td-ph-html ol,
+.td-ph-html table,
+.td-ph-html h2,
+.td-ph-html h4 {
+  margin: 0 0 10px;
+}
+.td-ph-html ul,
+.td-ph-html ol {
+  padding-left: 22px;
+}
+.td-ph-html h2 {
+  font-size: 20px;
+}
+.td-ph-html h4 {
+  font-size: 17px;
+}
+.td-ph-html img {
+  max-width: 100%;
+  height: auto;
+}
+.td-ph-html a {
+  color: var(--ph-accent);
+}
+.td-ph-html table {
+  border-collapse: collapse;
+}
+
+/* ---------- Swipe rows ---------- */
+.td-ph-swipe {
+  position: relative;
+  touch-action: pan-y;
+}
+.td-ph-swipe-face {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+}
+.td-ph-swipe-actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.td-ph-swipe-actions--trailing {
+  right: 0;
+  flex-direction: row-reverse;
+}
+.td-ph-swipe-actions--leading {
+  left: 0;
+}
+.td-ph-swipe-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 22px;
+  overflow: hidden;
+  will-change: width;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The site shortens every transition to 0.01ms here, which would also start one for each
+     inherited visibility change and keep a newly shown tab hidden for a few frames. */
+  .td-ph-app * {
+    transition-property: none !important;
+  }
+  .td-ph-refresh--spinning,
+  .td-ph-sync-dot--busy {
+    animation-duration: 2.4s;
+  }
+}
