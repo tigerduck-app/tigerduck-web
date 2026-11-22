@@ -11,9 +11,12 @@
     "cf:dev": "wrangler dev",
     "cf:preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "sync-demo": "node scripts/sync-demo.mjs"
   },
   "dependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "motion": "^14.14.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -22,6 +25,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "qrcode-generator": "^2.0.4",
     "typescript": "^5.7.2",
     "vite": "^6.0.7",
     "wrangler": "^4.40.0"
