@@ -1,0 +1,87 @@
+/* The device around the interactive phone: iPhone 18 Pro proportions, drawn in CSS.
+   The screen is 402 x 874 points; the whole device is scaled to fit its column. */
+.td-phone-host {
+  --td-phone-w: 428px;
+  --td-phone-h: 900px;
+  position: relative;
+  width: min(100%, 340px);
+  aspect-ratio: 428 / 900;
+  margin: 0 auto;
+}
+.td-phone-device {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--td-phone-w);
+  height: var(--td-phone-h);
+  transform: scale(var(--td-phone-scale, 0.79));
+  transform-origin: 0 0;
+  border-radius: 70px;
+  padding: 13px;
+  background:
+    linear-gradient(145deg, #5b606b 0%, #2a2d33 22%, #1b1d21 50%, #2c2f36 78%, #61666f 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    inset 0 0 0 3px #15171a,
+    0 40px 80px -20px rgba(15, 20, 30, 0.35),
+    0 18px 36px -18px rgba(15, 20, 30, 0.3);
+}
+.td-phone-device::before {
+  /* The black glass border between the metal band and the display. */
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 66px;
+  background: #050506;
+  pointer-events: none;
+}
+.td-phone-key {
+  position: absolute;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #2a2d33, #6a6f78 55%, #2a2d33);
+}
+.td-phone-key--action { left: -3px; top: 150px; height: 30px; }
+.td-phone-key--up { left: -3px; top: 212px; height: 58px; }
+.td-phone-key--down { left: -3px; top: 284px; height: 58px; }
+.td-phone-key--power { right: -3px; top: 232px; height: 94px; }
+.td-phone-key--camera {
+  right: -2px;
+  top: 470px;
+  height: 64px;
+  width: 3px;
+  background: linear-gradient(90deg, #1b1d21, #3a3e45);
+}
+.td-phone-screen {
+  position: relative;
+  width: 402px;
+  height: 874px;
+  border-radius: 57px;
+  overflow: hidden;
+  /* Keeps every positioned layer of the app inside the display. */
+  contain: layout paint;
+  isolation: isolate;
+  background: var(--td-bg-soft);
+}
+.td-phone-island {
+  position: absolute;
+  z-index: 50;
+  top: 11px;
+  left: 50%;
+  width: 124px;
+  height: 36px;
+  margin-left: -62px;
+  border-radius: 18px;
+  background: #000;
+  pointer-events: none;
+}
+.td-phone-boot {
+  position: absolute;
+  inset: 0;
+  background: var(--td-bg-soft);
+}
+@media (max-width: 768px) {
+  .td-phone-host {
+    width: min(100%, 300px);
+  }
+}

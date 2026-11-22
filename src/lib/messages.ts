@@ -13,19 +13,7 @@ interface HeroMessages {
   tagline: string;
   desc1: string;
   desc2: string;
-  carouselAriaLabel: string;
-  dotsAriaLabel: string;
-  slideAriaLabel: (n: number, alt: string) => string;
-  alts: {
-    home: string;
-    homeworks: string;
-    classtable: string;
-    calendar: string;
-    announcement: string;
-    library: string;
-    grades: string;
-    customize: string;
-  };
+  phoneAriaLabel: string;
 }
 
 interface WhyMessages {
@@ -290,19 +278,7 @@ const zh: Messages = {
     tagline: '為臺科大學生打造的校園助手',
     desc1: '作業、課表、行事曆、公告、圖書館、成績都整合起來',
     desc2: '功能不夠？你提出我們都會做！',
-    carouselAriaLabel: 'TigerDuck App 畫面輪播',
-    dotsAriaLabel: '選擇畫面',
-    slideAriaLabel: (n, alt) => `第 ${n} 張：${alt}`,
-    alts: {
-      home: '主畫面',
-      homeworks: '作業列表畫面',
-      classtable: '課表畫面',
-      calendar: '行事曆畫面',
-      announcement: '公告列表畫面',
-      library: '圖書館 QR 畫面',
-      grades: '歷年成績畫面',
-      customize: '客製化設定畫面',
-    },
+    phoneAriaLabel: 'TigerDuck App 互動示範',
   },
   why: {
     title: '為什麼要做這個？',
@@ -713,19 +689,7 @@ const en: Messages = {
     tagline: 'A campus companion for NTUST students',
     desc1: 'Homework, timetable, calendar, announcements, library, and grades — all in one place.',
     desc2: 'Missing a feature? Tell us, and we\'ll build it.',
-    carouselAriaLabel: 'TigerDuck app screenshot carousel',
-    dotsAriaLabel: 'Choose screenshot',
-    slideAriaLabel: (n, alt) => `Slide ${n}: ${alt}`,
-    alts: {
-      home: 'Home screen',
-      homeworks: 'Homework list',
-      classtable: 'Timetable',
-      calendar: 'Calendar',
-      announcement: 'Announcements list',
-      library: 'Library QR code',
-      grades: 'Grades history',
-      customize: 'Customization settings',
-    },
+    phoneAriaLabel: 'Interactive TigerDuck app demo',
   },
   why: {
     title: 'Why we built this',
