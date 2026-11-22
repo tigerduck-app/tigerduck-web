@@ -168,7 +168,7 @@ export function PhoneHero() {
               ref={openRef}
               type="button"
               className="td-phone-open"
-              aria-label={messages.phoneAriaLabel}
+              aria-label={messages.phoneOpenLabel}
               aria-haspopup="dialog"
               onClick={open}
             >
