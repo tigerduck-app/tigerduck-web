@@ -900,15 +900,16 @@ button.td-ph-row:active,
 .td-ph-html h4 {
   font-size: 17px;
 }
-.td-ph-html img {
-  max-width: 100%;
-  height: auto;
-}
 .td-ph-html a {
   color: var(--ph-accent);
 }
 .td-ph-html table {
   border-collapse: collapse;
+}
+.td-ph-html th,
+.td-ph-html td {
+  border: 1px solid var(--ph-sep);
+  padding: 4px;
 }
 
 /* ---------- Swipe rows ---------- */

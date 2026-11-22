@@ -20,9 +20,10 @@
     "date": "2026-10-12T09:00:00+08:00",
     "seen": false,
     "html": {
-     "zh": "<div style=\"font-family:sans-serif\"><img src=\"https://www.ntust.edu.tw/var/file/0/1000/img/logo.png\" alt=\"NTUST\"><h2 style=\"color:#1a4f8b\">期中考試時間</h2><p>各位同學好：</p><p>本學期期中考試週將至，<b>各科考試時間</b>請留意各課程公告。</p><table style=\"border-collapse:collapse\"><tr><td style=\"border:1px solid #ccc;padding:4px\">期中考試週</td><td style=\"border:1px solid #ccc;padding:4px\">詳見學校行事曆</td></tr></table><p>教務處 敬啟</p></div>",
-     "en": "<div style=\"font-family:sans-serif\"><img src=\"https://www.ntust.edu.tw/var/file/0/1000/img/logo.png\" alt=\"NTUST\"><h2 style=\"color:#1a4f8b\">Midterm exams</h2><p>Dear students,</p><p>Midterm week is coming up. Please check each course's announcements for <b>its exam time</b>.</p><table style=\"border-collapse:collapse\"><tr><td style=\"border:1px solid #ccc;padding:4px\">Midterm week</td><td style=\"border:1px solid #ccc;padding:4px\">See the academic calendar</td></tr></table><p>Office of Academic Affairs</p></div>"
-    }
+     "zh": "<div><h2>期中考試時間</h2><p>各位同學好：</p><p>本學期期中考試週將至，<b>各科考試時間</b>請留意各課程公告。</p><table><tbody><tr><td>期中考試週</td><td>詳見學校行事曆</td></tr></tbody></table><p>教務處 敬啟</p></div>",
+     "en": "<div><h2>Midterm exams</h2><p>Dear students,</p><p>Midterm week is coming up. Please check each course's announcements for <b>its exam time</b>.</p><table><tbody><tr><td>Midterm week</td><td>See the academic calendar</td></tr></tbody></table><p>Office of Academic Affairs</p></div>"
+    },
+    "remoteImages": true
    },
    {
     "from": {
@@ -78,8 +79,8 @@
     "date": "2026-10-14T08:05:00+08:00",
     "seen": false,
     "html": {
-     "zh": "<p>您的信箱容量已滿，24 小時內未完成驗證將停用帳號。</p><p>請點選 <a href=\"https://ntust-mail-verify.com/login\">https://mail.ntust.edu.tw</a> 重新登入並輸入密碼。</p>",
-     "en": "<p>Your mailbox is full. Accounts not verified within 24 hours will be suspended.</p><p>Click <a href=\"https://ntust-mail-verify.com/login\">https://mail.ntust.edu.tw</a> to sign in again and enter your password.</p>"
+     "zh": "<p>您的信箱容量已滿，24 小時內未完成驗證將停用帳號。</p><p>請點選 <a>https://mail.ntust.edu.tw</a> 重新登入並輸入密碼。</p>",
+     "en": "<p>Your mailbox is full. Accounts not verified within 24 hours will be suspended.</p><p>Click <a>https://mail.ntust.edu.tw</a> to sign in again and enter your password.</p>"
     }
    },
    {
@@ -992,8 +993,8 @@
        "en": "Midterm scope and room"
       },
       "message": {
-       "zh": "<p>期中考將於<strong>期中考週</strong>上課時間舉行，地點 TR-313。</p><ol><li>範圍：第 1–7 章</li><li>可攜帶一張 A4 手寫筆記</li></ol><p>考古題請見<a href=\"https://moodle2.ntust.edu.tw/course/view.php?id=90501\">課程頁面</a>。</p>",
-       "en": "<p>The midterm is in class time <strong>during midterm week</strong>, room TR-313.</p><ol><li>Scope: chapters 1–7</li><li>One handwritten A4 sheet allowed</li></ol><p>Past papers are on the <a href=\"https://moodle2.ntust.edu.tw/course/view.php?id=90501\">course page</a>.</p>"
+       "zh": "<p>期中考將於<strong>期中考週</strong>上課時間舉行，地點 TR-313。</p><ol><li>範圍：第 1–7 章</li><li>可攜帶一張 A4 手寫筆記</li></ol><p>考古題請見<a>課程頁面</a>。</p>",
+       "en": "<p>The midterm is in class time <strong>during midterm week</strong>, room TR-313.</p><ol><li>Scope: chapters 1–7</li><li>One handwritten A4 sheet allowed</li></ol><p>Past papers are on the <a>course page</a>.</p>"
       }
      }
     ],

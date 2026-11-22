@@ -63,6 +63,8 @@ export interface DemoMail {
   seen?: boolean;
   html?: DemoText;
   plain?: DemoText;
+  /** Set by sync-demo, which leaves the HTML's images out. */
+  remoteImages?: boolean;
   attachments?: { name: DemoText; type?: string; size?: number }[];
 }
 

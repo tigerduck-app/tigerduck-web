@@ -5,6 +5,7 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import qrcode from 'qrcode-generator';
+import { cleanHtml } from './demo-html.mjs';
 
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PHONE_SRC = path.join(SITE, 'src/components/phone');
@@ -27,24 +28,22 @@ function readJson(file) {
   }
 }
 
-/** The site renders demo HTML as is, so nothing in it may run. */
-function inert(html) {
-  return html
-    .replace(/<(script|style|iframe|object|embed)\b[\s\S]*?<\/\1\s*>/gi, '')
-    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
-    .replace(/(href|src)\s*=\s*(["'])\s*javascript:[^"']*\2/gi, '$1="#"');
-}
+const isLocalized = (value) =>
+  value && typeof value === 'object' && !Array.isArray(value) && Object.values(value).every((inner) => typeof inner === 'string');
 
-function strip(value) {
-  if (Array.isArray(value)) return value.map(strip);
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value)
-        .filter(([key]) => !DROPPED_KEYS.has(key))
-        .map(([key, inner]) => [key, strip(inner)])
-    );
-  }
-  return typeof value === 'string' && value.includes('<') ? inert(value) : value;
+/** Copies the demo without secrets; an object whose HTML held images is marked `remoteImages`. */
+function strip(value, where = 'demo', found = { images: 0 }) {
+  if (typeof value === 'string') return cleanHtml(value, where, found);
+  if (Array.isArray(value)) return value.map((inner, index) => strip(inner, `${where}[${index}]`, found));
+  if (!value || typeof value !== 'object') return value;
+  // A localized text's images count for the object that holds it.
+  const own = isLocalized(value) ? found : { images: 0 };
+  const copy = Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => !DROPPED_KEYS.has(key))
+      .map(([key, inner]) => [key, strip(inner, `${where}.${key}`, own)])
+  );
+  return own !== found && own.images ? { ...copy, remoteImages: true } : copy;
 }
 
 function qrModules(content) {
@@ -88,7 +87,12 @@ const demo = readJson(path.join(repo, 'swift/TigerDuck/Account/Demo/demo.json'))
 const zh = readJson(path.join(repo, 'app-translation/source/zh-Hant.json'));
 const en = readJson(path.join(repo, 'app-translation/source/en.json'));
 
-const data = strip(demo);
+let data;
+try {
+  data = strip(demo);
+} catch (error) {
+  fail(`demo.json: ${error.message}; allow it in scripts/demo-html.mjs once reviewed`);
+}
 // The phone moves every date from this day to the visitor's, as the app's DemoFixture.shifted does.
 if (!/^\d{4}-\d{2}-\d{2}$/.test(data.anchor ?? '')) fail('demo.json has no top-level anchor day (yyyy-MM-dd)');
 if (data.libraryQr?.content) data.libraryQr.modules = qrModules(data.libraryQr.content);

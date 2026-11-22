@@ -199,15 +199,7 @@ export function EmptyState({ icon, title, message }: { icon: IconName; title: st
 }
 
 /** Demo HTML from demo.json: written by the project, never by a visitor. */
+/** Demo HTML as `npm run sync-demo` writes it: allowed tags only, with no attribute, link target or image. */
 export function DemoHtml({ html, className }: { html: string; className?: string }) {
-  return (
-    <div
-      className={className ? `td-ph-html ${className}` : 'td-ph-html'}
-      dangerouslySetInnerHTML={{ __html: html }}
-      onClick={(event) => {
-        // The demo has no network; links do not leave the phone.
-        if ((event.target as Element).closest('a')) event.preventDefault();
-      }}
-    />
-  );
+  return <div className={className ? `td-ph-html ${className}` : 'td-ph-html'} dangerouslySetInnerHTML={{ __html: html }} />;
 }

@@ -11,8 +11,6 @@ import { ComposeSheet } from './ComposeSheet';
 import { isExternal, type Mail } from './MailScreen';
 
 const PASSWORD_BAIT = /驗證|重新登入|密碼|password|verify your account|mailbox (is )?full/i;
-const REMOTE_IMAGE = /<img\b[^>]*>/gi;
-const HAS_IMAGE = /<img\b/i;
 
 /** `then` pops this page, once the message has left the mailbox it was opened from. */
 export function MailMessagePage({
@@ -34,7 +32,7 @@ export function MailMessagePage({
   const external = isExternal(message.from.address);
   const bait = external && PASSWORD_BAIT.test(`${subject}\n${html ?? plain}`);
   // The site loads nothing from other servers, as the app blocks remote images by default.
-  const blockedImages = html !== null && HAS_IMAGE.test(html);
+  const blockedImages = html !== null && message.remoteImages === true;
   const sender = message.from.name || message.from.address;
   const reply = () =>
     presenter.present(<ComposeSheet replyTo={{ address: message.from.address, subject }} />, { detents: ['large'] });
@@ -94,7 +92,7 @@ export function MailMessagePage({
         </div>
       ) : null}
       <div className="td-ph-card td-ph-pad td-ph-mail-body">
-        {html !== null ? <DemoHtml html={html.replace(REMOTE_IMAGE, '')} /> : <p className="td-ph-html td-ph-plain">{plain}</p>}
+        {html !== null ? <DemoHtml html={html} /> : <p className="td-ph-html td-ph-plain">{plain}</p>}
       </div>
       {message.attachments?.length ? (
         <Group header={t('school_mail_attachments')}>
