@@ -60,7 +60,7 @@ export function MenuHost({ children }: { children: ReactNode }) {
   const close = useCallback(() => setClosing(true), []);
 
   useEffect(() => {
-    if (open) layerRef.current?.querySelector<HTMLElement>('[role="menuitem"]')?.focus({ preventScroll: true });
+    if (open) layerRef.current?.querySelector<HTMLElement>('[role^="menuitem"]')?.focus({ preventScroll: true });
   }, [open]);
 
   return (
@@ -83,7 +83,7 @@ export function MenuHost({ children }: { children: ReactNode }) {
                 }
                 if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
                   event.preventDefault();
-                  const items = [...event.currentTarget.querySelectorAll<HTMLElement>('[role="menuitem"]')];
+                  const items = [...event.currentTarget.querySelectorAll<HTMLElement>('[role^="menuitem"]')];
                   const at = items.indexOf(document.activeElement as HTMLElement);
                   const next = (at + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
                   items[next]?.focus();
@@ -136,10 +136,10 @@ export function MenuHost({ children }: { children: ReactNode }) {
   );
 }
 
-/** Opens a menu from a long press, as the tab bar and list rows do. */
 /** How far a finger may drift during a long press, in screen pixels, before it counts as a drag. */
 const LONG_PRESS_SLOP = 8;
 
+/** Opens a menu from a long press, as the tab bar and list rows do. */
 export function useLongPress(onLongPress: (target: HTMLElement) => void, ms = 450) {
   const timer = useRef(0);
   const fired = useRef(false);
