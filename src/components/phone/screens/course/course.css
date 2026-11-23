@@ -1,0 +1,111 @@
+/* ---------- Course detail ---------- */
+.td-ph-course-bar {
+  height: 5px;
+  margin: 0 16px 16px;
+  border-radius: 3px;
+}
+.td-ph-course-facts {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px;
+}
+.td-ph-course-facts .td-ph-card {
+  margin: 0;
+}
+.td-ph-fact {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.td-ph-fact strong {
+  font-size: 22px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.td-ph-course-rows {
+  margin: 12px 16px 0;
+}
+.td-ph-course-changes {
+  margin-top: 16px;
+}
+.td-ph-course-changes h3 {
+  margin: 0 16px 8px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.td-ph-course-changes dl {
+  margin: 0 16px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px 20px;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.td-ph-course-changes dl > div {
+  display: contents;
+}
+.td-ph-course-changes dt {
+  color: var(--ph-text-2);
+  white-space: nowrap;
+}
+.td-ph-course-changes dd {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.td-ph-sheet-subtitle {
+  margin: -8px 16px 16px;
+  font-size: 15px;
+  color: var(--ph-text-2);
+}
+.td-ph-club-content {
+  margin: 0 16px;
+  font-size: 17px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+.td-ph-club-row {
+  gap: 12px;
+  background: var(--ph-grouped);
+}
+.td-ph-club-swatch {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+.td-ph-club-mark {
+  flex: none;
+  font-size: 22px;
+  color: var(--ph-accent);
+}
+.td-ph-course-rows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+}
+.td-ph-course-rows dt {
+  color: var(--ph-text-2);
+}
+.td-ph-course-rows dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.td-ph-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.td-ph-copy .td-ph-icon {
+  color: var(--ph-text-2);
+  font-size: 15px;
+}

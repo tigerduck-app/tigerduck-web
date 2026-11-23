@@ -1,5 +1,5 @@
 import { PlatformCTA } from '@/components/PlatformCTA';
-import { HeroCarousel } from '@/components/hero/HeroCarousel';
+import { PhoneHero } from '@/components/phone/PhoneHero';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
 
@@ -36,7 +36,7 @@ export function HeroB() {
         </div>
 
         <div className="td-hero-visual">
-          <HeroCarousel />
+          <PhoneHero />
         </div>
       </div>
     </section>
