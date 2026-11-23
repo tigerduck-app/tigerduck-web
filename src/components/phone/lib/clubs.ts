@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { createContext, createElement, useContext, useMemo, useState, type ReactNode } from 'react';
 import type { Locale } from '@/lib/locale';
 import { demo, text } from './demo';
 import { comingDay, fnv1a, PALETTE } from './schedule';
@@ -24,23 +24,33 @@ export interface ClubOccurrence {
   content: string;
 }
 
-// The visitor's subscriptions, kept in memory for the visit.
-let subscribed: readonly number[] = (demo.clubs ?? []).filter((club) => club.subscribed).map((club) => club.id);
-const listeners = new Set<() => void>();
+const DEFAULT_SUBSCRIBED: readonly number[] = (demo.clubs ?? []).filter((club) => club.subscribed).map((club) => club.id);
 
-export function useSubscribedClubs(): readonly number[] {
-  return useSyncExternalStore(
-    (listener) => {
-      listeners.add(listener);
-      return () => listeners.delete(listener);
-    },
-    () => subscribed
-  );
+export interface ClubSubscriptions {
+  /** Club ids in subscription order. */
+  ids: readonly number[];
+  set: (id: number, on: boolean) => void;
 }
 
-export function setSubscribed(id: number, on: boolean) {
-  subscribed = on ? [...subscribed.filter((other) => other !== id), id] : subscribed.filter((other) => other !== id);
-  listeners.forEach((listener) => listener());
+const SubscriptionsContext = createContext<ClubSubscriptions | null>(null);
+
+/** Holds the visitor's club subscriptions for the life of one phone, starting from the demo's. */
+export function ClubSubscriptionsProvider({ children }: { children: ReactNode }) {
+  const [ids, setIds] = useState(DEFAULT_SUBSCRIBED);
+  const value = useMemo<ClubSubscriptions>(
+    () => ({
+      ids,
+      set: (id, on) => setIds((list) => [...list.filter((other) => other !== id), ...(on ? [id] : [])]),
+    }),
+    [ids]
+  );
+  return createElement(SubscriptionsContext.Provider, { value }, children);
+}
+
+export function useClubSubscriptions(): ClubSubscriptions {
+  const value = useContext(SubscriptionsContext);
+  if (!value) throw new Error('useClubSubscriptions needs a ClubSubscriptionsProvider above it');
+  return value;
 }
 
 /** The app's ClubSubscriptions.defaultColor. */

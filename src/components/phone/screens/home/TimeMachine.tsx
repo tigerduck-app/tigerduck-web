@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { JSAnimation } from 'motion/react';
-import { clubOccurrences, useSubscribedClubs, type ClubOccurrence } from '../../lib/clubs';
+import { clubOccurrences, useClubSubscriptions, type ClubOccurrence } from '../../lib/clubs';
 import { demo } from '../../lib/demo';
 import { phoneScale, usePan } from '../../lib/gesture';
 import { usePhoneLocale } from '../../lib/i18n';
@@ -40,7 +40,7 @@ function stateAt(meetings: TimeItem[], at: number): CardState | null {
 /** Home's time machine: the class at a moment, and a track to drag through the week. */
 export function TimeMachine({ now, onOpen }: { now: number; onOpen: (item: TimeItem) => void }) {
   const { t, locale } = usePhoneLocale();
-  const clubIds = useSubscribedClubs();
+  const clubIds = useClubSubscriptions().ids;
   const meetings = useMemo(
     () =>
       [...meetingsAround(demo.courses ?? [], now, locale), ...clubOccurrences(clubIds, now, locale)].sort(

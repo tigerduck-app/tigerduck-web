@@ -1,4 +1,4 @@
-import { useEffect, useRef, type RefObject } from 'react';
+import { createContext, createElement, useCallback, useContext, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 
 export type Axis = 'x' | 'y';
 
@@ -43,9 +43,11 @@ interface Tracked {
 
 const SLOP_PX = 6;
 const VELOCITY_WINDOW_MS = 90;
-const tracked = new Map<number, Tracked>();
-let listening = false;
-let swallowClickUntil = 0;
+/** One phone's pointers: the pans each went down in, and until when a click is dropped. */
+interface Gestures {
+  tracked: Map<number, Tracked>;
+  swallowClickUntil: number;
+}
 
 function info(entry: Tracked): PanInfo {
   const first = entry.samples[0];
@@ -65,7 +67,7 @@ function info(entry: Tracked): PanInfo {
   };
 }
 
-function onMove(event: PointerEvent) {
+function onMove({ tracked }: Gestures, event: PointerEvent) {
   const entry = tracked.get(event.pointerId);
   if (!entry || entry.unclaimed) return;
   entry.samples.push({ x: event.clientX, y: event.clientY, t: event.timeStamp });
@@ -86,36 +88,58 @@ function onMove(event: PointerEvent) {
   entry.owner.onMove(now);
 }
 
-function onEnd(event: PointerEvent) {
-  const entry = tracked.get(event.pointerId);
+function onEnd(gestures: Gestures, event: PointerEvent) {
+  const entry = gestures.tracked.get(event.pointerId);
   if (!entry) return;
-  tracked.delete(event.pointerId);
+  gestures.tracked.delete(event.pointerId);
   if (!entry.owner) return;
   // The click that follows a drag must not also tap whatever is under the pointer.
-  swallowClickUntil = event.timeStamp + 400;
+  gestures.swallowClickUntil = event.timeStamp + 400;
   entry.owner.onEnd(info(entry), event.type === 'pointercancel');
 }
 
-/** Drops the click that ends the tap `event` starts, as a tap that only closes something. */
-export function swallowNextClick(event: Event): void {
-  listen();
-  swallowClickUntil = event.timeStamp + 1000;
-}
-
-function onClick(event: MouseEvent) {
-  if (event.timeStamp > swallowClickUntil) return;
-  swallowClickUntil = 0;
+function onClick(gestures: Gestures, event: MouseEvent) {
+  if (event.timeStamp > gestures.swallowClickUntil) return;
+  gestures.swallowClickUntil = 0;
   event.preventDefault();
   event.stopPropagation();
 }
 
-function listen() {
-  if (listening) return;
-  listening = true;
-  window.addEventListener('pointermove', onMove, { passive: false });
-  window.addEventListener('pointerup', onEnd);
-  window.addEventListener('pointercancel', onEnd);
-  window.addEventListener('click', onClick, true);
+const GestureContext = createContext<Gestures | null>(null);
+
+/** Tracks the pointers of the phone inside it, which follow a drag past its edges. */
+export function GestureScope({ children }: { children: ReactNode }) {
+  const [gestures] = useState<Gestures>(() => ({ tracked: new Map(), swallowClickUntil: 0 }));
+  useEffect(() => {
+    const move = (event: PointerEvent) => onMove(gestures, event);
+    const end = (event: PointerEvent) => onEnd(gestures, event);
+    const click = (event: MouseEvent) => onClick(gestures, event);
+    window.addEventListener('pointermove', move, { passive: false });
+    window.addEventListener('pointerup', end);
+    window.addEventListener('pointercancel', end);
+    window.addEventListener('click', click, true);
+    return () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', end);
+      window.removeEventListener('pointercancel', end);
+      window.removeEventListener('click', click, true);
+    };
+  }, [gestures]);
+  return createElement(GestureContext.Provider, { value: gestures }, children);
+}
+
+function useGestures(): Gestures {
+  const gestures = useContext(GestureContext);
+  if (!gestures) throw new Error('usePan needs a GestureScope above it');
+  return gestures;
+}
+
+/** Drops the click that ends the tap `event` starts, as a tap that only closes something. */
+export function useSwallowNextClick(): (event: Event) => void {
+  const gestures = useGestures();
+  return useCallback((event) => {
+    gestures.swallowClickUntil = event.timeStamp + 1000;
+  }, [gestures]);
 }
 
 /**
@@ -131,11 +155,11 @@ export function usePan(
   const latest = useRef(handlers);
   latest.current = handlers;
   const { capture = false, enabled = true } = options;
+  const { tracked } = useGestures();
 
   useEffect(() => {
     const element = ref.current;
     if (!element || !enabled) return;
-    listen();
     const proxy: PanHandlers = {
       get axis() {
         return latest.current.axis;
@@ -165,7 +189,7 @@ export function usePan(
     };
     element.addEventListener('pointerdown', down, { capture });
     return () => element.removeEventListener('pointerdown', down, { capture });
-  }, [ref, capture, enabled]);
+  }, [ref, capture, enabled, tracked]);
 }
 
 /** Screen pixels per phone point: the device is drawn at 402 points wide and scaled to fit. */

@@ -5,7 +5,10 @@ import { useNow } from './lib/time';
 import { useMenu, MenuHost } from './ui/Menu';
 import { NavStack } from './ui/NavStack';
 import { SheetHost } from './ui/Sheet';
+import { SwipeRowScope } from './ui/SwipeRow';
 import { ConfirmHost } from './ui/Confirm';
+import { ClubSubscriptionsProvider } from './lib/clubs';
+import { GestureScope } from './lib/gesture';
 import { StatusBar } from './ui/StatusBar';
 import { TabBar, type TabItem } from './ui/TabBar';
 import { HomeScreen } from './screens/home/HomeScreen';
@@ -55,11 +58,17 @@ export default function PhoneApp({ locale }: { locale: Locale }) {
   return (
     <LocaleContext.Provider value={value}>
       <div className={dark ? 'td-ph-app td-ph-app--dark' : 'td-ph-app'} lang={locale === 'zh' ? 'zh-Hant' : 'en'}>
-        <MenuHost>
-          <ConfirmHost>
-            <Tabs />
-          </ConfirmHost>
-        </MenuHost>
+        <GestureScope>
+          <MenuHost>
+            <ConfirmHost>
+              <ClubSubscriptionsProvider>
+                <SwipeRowScope>
+                  <Tabs />
+                </SwipeRowScope>
+              </ClubSubscriptionsProvider>
+            </ConfirmHost>
+          </MenuHost>
+        </GestureScope>
       </div>
     </LocaleContext.Provider>
   );

@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { JSAnimation, useMotionValue, useTransform } from 'motion/react';
-import { phoneScale, swallowNextClick, usePan } from '../lib/gesture';
+import { phoneScale, usePan, useSwallowNextClick } from '../lib/gesture';
 import { rubberBand, animateTo, spring } from '../lib/springs';
 import { Icon, type IconName } from './Icon';
 import { Motion } from './Motion';
@@ -19,10 +19,26 @@ const ACTION_GAP = 8;
 /** Share of the row's width past which a full swipe runs the first trailing action. */
 const FULL_SWIPE = 0.6;
 
-// Only one row stays open: opening one closes the others, as UITableView does.
-const openListeners = new Set<(owner: symbol) => void>();
-function announceOpen(owner: symbol) {
-  openListeners.forEach((listener) => listener(owner));
+interface OpenRows {
+  announce: (owner: symbol) => void;
+  listen: (listener: (owner: symbol) => void) => () => void;
+}
+
+const OpenRowsContext = createContext<OpenRows | null>(null);
+
+/** Keeps one row open in the phone: opening one closes the others, as UITableView does. */
+export function SwipeRowScope({ children }: { children: ReactNode }) {
+  const [rows] = useState<OpenRows>(() => {
+    const listeners = new Set<(owner: symbol) => void>();
+    return {
+      announce: (owner) => listeners.forEach((listener) => listener(owner)),
+      listen: (listener) => {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+      },
+    };
+  });
+  return <OpenRowsContext.Provider value={rows}>{children}</OpenRowsContext.Provider>;
 }
 
 function revealWidth(count: number): number {
@@ -46,6 +62,9 @@ export function SwipeRow({
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const owner = useRef(Symbol('swipe-row'));
+  const rows = useContext(OpenRowsContext);
+  const swallowNextClick = useSwallowNextClick();
+  if (!rows) throw new Error('SwipeRow needs a SwipeRowScope above it');
   const x = useMotionValue(0);
   const dragFrom = useRef(0);
   const [armed, setArmed] = useState(false);
@@ -56,7 +75,7 @@ export function SwipeRow({
 
   const settle = (target: number, velocity = 0) => {
     setOpen(target !== 0);
-    if (target !== 0) announceOpen(owner.current);
+    if (target !== 0) rows.announce(owner.current);
     animateTo(x, target, { ...spring('swipe'), velocity });
   };
 
@@ -64,11 +83,8 @@ export function SwipeRow({
     const listener = (other: symbol) => {
       if (other !== owner.current && x.get() !== 0) settle(0);
     };
-    openListeners.add(listener);
-    return () => {
-      openListeners.delete(listener);
-    };
-  }, [x]);
+    return rows.listen(listener);
+  }, [rows, x]);
 
   // A tap anywhere else in the phone closes the open row and does nothing more, as in UITableView.
   useEffect(() => {
@@ -81,7 +97,7 @@ export function SwipeRow({
     };
     window.addEventListener('pointerdown', onDown, true);
     return () => window.removeEventListener('pointerdown', onDown, true);
-  }, [open]);
+  }, [open, swallowNextClick]);
 
   // A folded row that its list keeps, as one a filter change brings back, opens up again closed.
   useLayoutEffect(() => {
@@ -123,7 +139,7 @@ export function SwipeRow({
     onStart: () => {
       x.stop();
       dragFrom.current = x.get();
-      announceOpen(owner.current);
+      rows.announce(owner.current);
     },
     onMove: (info) => {
       const element = rowRef.current!;

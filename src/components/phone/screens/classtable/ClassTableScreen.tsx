@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { demo, demoTime, text, type DemoCourse } from '../../lib/demo';
 import { k, usePhoneLocale } from '../../lib/i18n';
-import { clubOccurrences, useSubscribedClubs, type ClubOccurrence } from '../../lib/clubs';
+import { clubOccurrences, useClubSubscriptions, type ClubOccurrence } from '../../lib/clubs';
 import {
   changedRoom,
   changesOn,
@@ -89,7 +89,7 @@ export function ClassTableScreen({ now, tables }: { now: number; tables: ReturnT
   const mate = demo.classmates?.find((c) => c.studentId === tables.shown);
   const courses = mate ? mate.courses ?? [] : demo.courses ?? [];
   const credits = courses.reduce((sum, c) => sum + (c.credits ?? 0), 0);
-  const clubIds = useSubscribedClubs();
+  const clubIds = useClubSubscriptions().ids;
   const clubs = useMemo(() => (mate ? [] : clubOccurrences(clubIds, now, locale)), [mate, clubIds, now, locale]);
   const today = taipei(now);
   const semesterStart = demoTime(demo.calendar?.find((e) => e.source === 'semester')?.date);

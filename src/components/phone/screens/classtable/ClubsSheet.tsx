@@ -1,4 +1,4 @@
-import { clubColor, setSubscribed, useSubscribedClubs } from '../../lib/clubs';
+import { clubColor, useClubSubscriptions } from '../../lib/clubs';
 import { demo, text, type DemoClub } from '../../lib/demo';
 import { usePhoneLocale } from '../../lib/i18n';
 import { Icon } from '../../ui/Icon';
@@ -9,7 +9,7 @@ import { Group } from '../../ui/controls';
 /** The app's ClubSubscribeSheet: the subscribed clubs in their order, then every club. */
 export function ClubsSheet() {
   const { t } = usePhoneLocale();
-  const subscribed = useSubscribedClubs();
+  const { ids: subscribed, set: setSubscribed } = useClubSubscriptions();
   const clubs = demo.clubs ?? [];
   const shown = subscribed.flatMap((id) => clubs.filter((club) => club.id === id));
   return (
