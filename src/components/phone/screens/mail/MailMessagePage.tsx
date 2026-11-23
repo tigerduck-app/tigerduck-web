@@ -1,4 +1,4 @@
-import { text } from '../../lib/demo';
+import { text, type DemoMail } from '../../lib/demo';
 import { usePhoneLocale } from '../../lib/i18n';
 import { fileSize } from '../../lib/format';
 import { monthDayTime } from '../../lib/time';
@@ -7,7 +7,7 @@ import { useNav } from '../../ui/NavStack';
 import { Page } from '../../ui/Page';
 import { usePresenter } from '../../ui/sheetContext';
 import { DemoHtml, Group, Row } from '../../ui/controls';
-import { ComposeSheet } from './ComposeSheet';
+import { ComposeSheet, draftFor } from './ComposeSheet';
 import { isExternal, type Mail } from './MailScreen';
 
 const PASSWORD_BAIT = /驗證|重新登入|密碼|password|verify your account|mailbox (is )?full/i;
@@ -17,10 +17,13 @@ export function MailMessagePage({
   mail,
   onDelete,
   onMove,
+  onSend,
 }: {
   mail: Mail;
   onDelete: (then: () => void) => void;
   onMove: (then: () => void) => void;
+  /** Files a reply or a forward in the mailbox this message was opened from. */
+  onSend: (sent: DemoMail) => void;
 }) {
   const { t, locale } = usePhoneLocale();
   const nav = useNav();
@@ -34,8 +37,10 @@ export function MailMessagePage({
   // The site loads nothing from other servers, as the app blocks remote images by default.
   const blockedImages = html !== null && message.remoteImages === true;
   const sender = message.from.name || message.from.address;
-  const reply = () =>
-    presenter.present(<ComposeSheet replyTo={{ address: message.from.address, subject }} />, { detents: ['large'] });
+  const compose = (mode: 'reply' | 'forward') =>
+    presenter.present(<ComposeSheet draft={draftFor(mode, message.from.address, subject)} onSend={onSend} />, {
+      detents: ['large'],
+    });
 
   return (
     <Page
@@ -52,10 +57,10 @@ export function MailMessagePage({
           <button type="button" aria-label={t('school_mail_move_to')} onClick={() => onMove(nav.pop)}>
             <Icon name="folder" />
           </button>
-          <button type="button" aria-label={t('school_mail_reply')} onClick={reply}>
+          <button type="button" aria-label={t('school_mail_reply')} onClick={() => compose('reply')}>
             <Icon name="reply" />
           </button>
-          <button type="button" aria-label={t('school_mail_forward')} onClick={reply}>
+          <button type="button" aria-label={t('school_mail_forward')} onClick={() => compose('forward')}>
             <Icon name="forward" />
           </button>
         </div>

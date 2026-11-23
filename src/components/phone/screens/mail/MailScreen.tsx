@@ -89,12 +89,19 @@ export function MailScreen({ now }: { now: number }) {
       },
     });
   };
+  // Compose, reply and forward all file what they send in this mailbox's Sent.
+  const send = (sent: DemoMail) =>
+    setMail((list) => [
+      ...list,
+      { id: Math.max(0, ...list.map((item) => item.id)) + 1, folder: 'sent', message: sent, date: Date.now(), seen: true, flagged: false },
+    ]);
   const open = (item: Mail) => {
     update(item.id, { seen: true });
     nav.push(
       <MailMessagePage
         mail={item}
         onDelete={(then) => trash(item, then)}
+        onSend={send}
         onMove={(then) =>
           presenter.present(
             <MoveSheet
@@ -135,14 +142,7 @@ export function MailScreen({ now }: { now: number }) {
           aria-label={t('school_mail_compose')}
           onClick={() =>
             presenter.present(
-              <ComposeSheet
-                onSend={(sent) =>
-                  setMail((list) => [
-                    ...list,
-                    { id: list.length + 100, folder: 'sent', message: sent, date: Date.now(), seen: true, flagged: false },
-                  ])
-                }
-              />,
+              <ComposeSheet onSend={send} />,
               { detents: ['large'] }
             )
           }

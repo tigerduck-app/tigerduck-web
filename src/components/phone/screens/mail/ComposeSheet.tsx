@@ -6,19 +6,27 @@ import { Page } from '../../ui/Page';
 import { useInSheet } from '../../ui/sheetContext';
 import { GlassButton } from '../../ui/controls';
 
-/** A new message, or a reply; sending only files it under Sent, as the demo has no server. */
-export function ComposeSheet({
-  replyTo,
-  onSend,
-}: {
-  replyTo?: { address: string; subject: string };
-  onSend?: (mail: DemoMail) => void;
-}) {
+/** A recipient and subject the composer opens with, as a reply or a forward. */
+export interface ComposeDraft {
+  to: string;
+  subject: string;
+}
+
+/** The app's MailReplyComposer.replySubject and forwardSubject: a prefix the subject lacks. */
+export function draftFor(mode: 'reply' | 'forward', from: string, subject: string): ComposeDraft {
+  const has = (prefixes: string[]) => prefixes.some((prefix) => subject.toLowerCase().startsWith(prefix));
+  return mode === 'reply'
+    ? { to: from, subject: has(['re:']) ? subject : `Re: ${subject}` }
+    : { to: '', subject: has(['fwd:', 'fw:']) ? subject : `Fwd: ${subject}` };
+}
+
+/** A new message, a reply or a forward; sending files it under Sent, as the demo has no server. */
+export function ComposeSheet({ draft, onSend }: { draft?: ComposeDraft; onSend: (mail: DemoMail) => void }) {
   const { t, locale } = usePhoneLocale();
   const sheet = useInSheet();
   const id = useId();
-  const [to, setTo] = useState(replyTo?.address ?? '');
-  const [subject, setSubject] = useState(replyTo ? `Re: ${replyTo.subject}` : '');
+  const [to, setTo] = useState(draft?.to ?? '');
+  const [subject, setSubject] = useState(draft?.subject ?? '');
   const [body, setBody] = useState('');
   const [missingRecipient, setMissingRecipient] = useState(false);
   const me = demo.mail;
@@ -28,7 +36,7 @@ export function ComposeSheet({
       setMissingRecipient(true);
       return;
     }
-    onSend?.({
+    onSend({
       folder: 'sent',
       from: { name: text(me?.displayName, locale), address: `${(me?.studentId ?? demo.studentId).toLowerCase()}@mail.ntust.edu.tw` },
       to: [{ address: to.trim() }],
