@@ -4,6 +4,7 @@ import expandIcon from '@phosphor-icons/core/assets/bold/arrows-out-simple-bold.
 import closeIcon from '@phosphor-icons/core/assets/bold/x-bold.svg?raw';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
+import { PhoneHint } from './PhoneHint';
 import './phone-frame.css';
 
 const PhoneApp = lazy(() => import('./PhoneApp'));
@@ -66,6 +67,18 @@ export function PhoneHero() {
   const narrow = useMatches(PREVIEW_QUERY);
   const [full, setFull] = useState(false);
   const preview = narrow && !full;
+  // The hint runs until the visitor first touches, clicks, scrolls or types on the phone.
+  const [hinting, setHinting] = useState(true);
+  const showHint = hinting && !full;
+
+  useEffect(() => {
+    const slot = slotRef.current;
+    if (!slot || !hinting) return;
+    const stop = () => setHinting(false);
+    const events = ['pointerdown', 'wheel', 'keydown'] as const;
+    events.forEach((name) => slot.addEventListener(name, stop, { capture: true, passive: true }));
+    return () => events.forEach((name) => slot.removeEventListener(name, stop, { capture: true }));
+  }, [hinting]);
 
   useLayoutEffect(() => {
     const host = hostRef.current;
@@ -150,7 +163,7 @@ export function PhoneHero() {
         tabIndex={full ? -1 : undefined}
       >
         <div ref={hostRef} className="td-phone-host" style={{ '--td-phone-scale': 0.79 } as CSSProperties}>
-          <div className="td-phone-device">
+          <div className={showHint ? 'td-phone-device td-phone-device--hint' : 'td-phone-device'}>
             <span className="td-phone-key td-phone-key--action" />
             <span className="td-phone-key td-phone-key--up" />
             <span className="td-phone-key td-phone-key--down" />
@@ -163,6 +176,7 @@ export function PhoneHero() {
               <div className="td-phone-island" />
             </div>
           </div>
+          <PhoneHint hostRef={hostRef} preview={preview} active={showHint} />
           {preview ? (
             <button
               ref={openRef}
