@@ -79,7 +79,7 @@ export function ScoresPage() {
   const enrolled = (demo.courses ?? []).reduce((sum, course) => sum + (course.credits ?? 0), 0);
 
   return (
-    <Page title={t('feature_score')} onRefresh={refresh} trailing={<SyncDot busy={busy} label={t('feature_score')} />}>
+    <Page title={t('feature_score')} titleMode="bar" onRefresh={refresh} trailing={<SyncDot busy={busy} label={t('feature_score')} />}>
       {terms.length ? (
         <div className="td-ph-scores">
           <div className="td-ph-card td-ph-score-student">

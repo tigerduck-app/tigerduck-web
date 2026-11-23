@@ -31,7 +31,7 @@ export function AnnouncementsPage({ course }: { course: MoodleCourse }) {
     (a, b) => Number(b.pinned ?? false) - Number(a.pinned ?? false) || (demoTime(b.created) ?? 0) - (demoTime(a.created) ?? 0)
   );
   return (
-    <Page title={t('feature_announcements')}>
+    <Page title={t('feature_announcements')} titleMode="inline">
       <div className="td-ph-list">
         {list.map((a) => {
           const unread = a.unread && !read.has(a.id);
@@ -100,7 +100,7 @@ function MaterialRow({ item }: { item: MoodleMaterialItem }) {
         value={String(item.files?.length ?? 0)}
         onClick={() =>
           nav.push(
-            <Page title={name}>
+            <Page title={name} titleMode="inline">
               <Group>
                 <FileRows files={item.files ?? []} />
               </Group>
@@ -119,7 +119,7 @@ function MaterialRow({ item }: { item: MoodleMaterialItem }) {
 export function MaterialsPage({ course }: { course: MoodleCourse }) {
   const { t, locale } = usePhoneLocale();
   return (
-    <Page title={t('course_detail_files_label')}>
+    <Page title={t('course_detail_files_label')} titleMode="inline">
       {(course.materials ?? []).map((section) => (
         <Group key={section.id} header={text(section.name, locale) || undefined}>
           {(section.items ?? []).map((item) => (
@@ -138,7 +138,7 @@ export function GradesPage({ course }: { course: MoodleCourse }) {
   const items = grades.filter((g) => g.type !== 'course');
   const total = grades.find((g) => g.type === 'course');
   return (
-    <Page title={t('course_detail_moodle_grades_label')}>
+    <Page title={t('course_detail_moodle_grades_label')} titleMode="inline">
       {total ? (
         <div className="td-ph-card td-ph-pad td-ph-total">
           <span className="td-ph-caption">{t('score_credit_total')}</span>

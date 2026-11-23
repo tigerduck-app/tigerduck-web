@@ -40,7 +40,7 @@ export function LibraryScreen() {
   return (
     <Page
       title={t('feature_library')}
-      titleMode="app"
+      titleMode="bar"
       onRefresh={async () => {
         await refresh();
         setLeft(CYCLE_S);

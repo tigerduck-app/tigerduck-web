@@ -34,7 +34,7 @@ export function MembersPage({ course }: { course: MoodleCourse }) {
   const nav = useNav();
   const me = demo.moodle?.ownMemberId;
   return (
-    <Page title={t('course_detail_members_label')}>
+    <Page title={t('course_detail_members_label')} titleMode="inline">
       {ROLE_ORDER.map(({ roles, key }) => {
         // Sorted by the full name, which leads with the student ID for students, the visitor first.
         const members = (course.members ?? [])
@@ -98,7 +98,7 @@ export function ForumsPage({ course }: { course: MoodleCourse }) {
   const forums = course.forums ?? [];
   if (forums.length === 1) return <ForumPage forum={forums[0]} />;
   return (
-    <Page title={t('course_detail_forums_label')}>
+    <Page title={t('course_detail_forums_label')} titleMode="inline">
       <Group>
         {forums.map((forum) => (
           <Row key={forum.id} icon="chats" title={text(forum.name, locale)} onClick={() => nav.push(<ForumPage forum={forum} />)} />
@@ -112,7 +112,7 @@ function ForumPage({ forum }: { forum: MoodleForum }) {
   const { t, locale } = usePhoneLocale();
   const nav = useNav();
   return (
-    <Page title={text(forum.name, locale)}>
+    <Page title={text(forum.name, locale)} titleMode="inline">
       {forum.intro ? (
         <p className="td-ph-sub" style={{ padding: '0 16px 12px' }}>
           {text(forum.intro, locale)}

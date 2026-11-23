@@ -230,7 +230,7 @@
 }
 .td-ph-content {
   min-height: 100%;
-  padding-top: 112px;
+  padding-top: 122px;
   padding-bottom: 120px;
   will-change: transform;
 }
@@ -238,14 +238,15 @@
   padding-top: 64px;
   padding-bottom: 40px;
 }
+/* One row for every page's title and controls, centred 92 points down as the app's title bars. */
 .td-ph-bar {
   position: absolute;
   z-index: 5;
   top: 0;
   left: 0;
   right: 0;
-  height: 108px;
-  padding: 56px 16px 0;
+  height: 118px;
+  padding: 70px 16px 4px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -254,6 +255,7 @@
 .td-ph-page--sheet .td-ph-bar {
   height: 62px;
   padding-top: 10px;
+  padding-bottom: 0;
 }
 .td-ph-bar > * {
   pointer-events: auto;
@@ -273,7 +275,8 @@
   position: absolute;
   left: 76px;
   right: 76px;
-  bottom: 13px;
+  bottom: 4px;
+  line-height: 44px;
   text-align: center;
   font-size: 17px;
   font-weight: 600;
@@ -283,10 +286,13 @@
   pointer-events: none;
 }
 .td-ph-bar-heading {
+  min-width: 0;
   font-size: 22px;
   font-weight: 700;
   line-height: 28px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .td-ph-bar-spacer {
   flex: 1;
@@ -305,25 +311,10 @@
   transform-origin: 0 50%;
   overflow-wrap: anywhere;
 }
-.td-ph-app-title {
-  padding: 0 16px;
-  font-size: 22px;
-  line-height: 28px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  min-height: 44px;
-}
-.td-ph-app-title > span:first-child {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
 .td-ph-refresh {
   position: absolute;
   left: 50%;
-  top: 112px;
+  top: 122px;
   width: 30px;
   height: 30px;
   margin: 0 0 0 -15px;

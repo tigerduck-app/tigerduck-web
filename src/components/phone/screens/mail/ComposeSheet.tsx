@@ -43,6 +43,7 @@ export function ComposeSheet({
   return (
     <Page
       title={t('school_mail_compose')}
+      titleMode="inline"
       leading={<GlassButton text={t('action_cancel')} label={t('action_cancel')} onClick={() => sheet?.dismiss()} />}
       trailing={
         <button type="button" className="td-ph-send" aria-label={t('school_mail_send')} onClick={send}>

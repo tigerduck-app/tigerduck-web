@@ -10,15 +10,16 @@ import { Motion } from './Motion';
 
 /**
  * `large`: iOS's large title, collapsing into the bar's inline title.
- * `app`: the app's own 22-point heading row at the top of the content, which scrolls away.
- * `bar`: the heading stays in the bar, as the app's More and Mail pages do.
+ * `bar`: the app's title bar, a 22-point heading on the bar's row beside its controls, as each
+ * tab's page and the features More opens.
+ * `inline`: a centred title on the bar's row, as the app's sheets and Moodle lists.
  */
-export type TitleMode = 'large' | 'app' | 'bar';
+export type TitleMode = 'large' | 'bar' | 'inline';
 
 interface PageProps {
   title: string;
   titleMode?: TitleMode;
-  /** Controls at the trailing end of the bar, or of the heading row in `app` mode. */
+  /** Controls at the trailing end of the bar. */
   trailing?: ReactNode;
   /** Replaces the back or close button, as a compose sheet's Cancel. */
   leading?: ReactNode;
@@ -32,6 +33,8 @@ interface PageProps {
 const REFRESH_AT = 92;
 const REFRESH_REST = 58;
 const SCREEN_HEIGHT = 874;
+/** Scroll offset by which the large title has passed under the bar. */
+const LARGE_TITLE_END = 44;
 
 export function Page({ title, titleMode = 'large', leading, trailing, overlay, onRefresh, children }: PageProps) {
   const { t } = usePhoneLocale();
@@ -45,8 +48,7 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
   const onRefreshRef = useRef(onRefresh);
   onRefreshRef.current = onRefresh;
 
-  const titleEnd = titleMode === 'large' ? 44 : 40;
-  const inlineOpacity = useTransform(scrollY, [titleEnd - 14, titleEnd], [0, 1]);
+  const inlineOpacity = useTransform(scrollY, [LARGE_TITLE_END - 14, LARGE_TITLE_END], [0, 1]);
   const barOpacity = useTransform(scrollY, [0, 12], [0, 1]);
   const largeScale = useTransform(pull, [0, 200], [1, 1.12], { clamp: true });
 
@@ -191,14 +193,7 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
   const showsBack = !leading && nav.depth > 0;
   const showsClose = !leading && inSheet !== null && !showsBack;
   const heading =
-    titleMode === 'app' ? (
-      <div className="td-ph-app-title">
-        <span role="heading" aria-level={1}>
-          {title}
-        </span>
-        {trailing}
-      </div>
-    ) : titleMode === 'large' ? (
+    titleMode === 'large' ? (
       <Motion className="td-ph-large-title" role="heading" aria-level={1} style={{ scale: largeScale }}>
         {title}
       </Motion>
@@ -225,13 +220,17 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
           <span className="td-ph-bar-heading" role="heading" aria-level={1}>
             {title}
           </span>
+        ) : titleMode === 'inline' ? (
+          <span className="td-ph-bar-title" role="heading" aria-level={1}>
+            {title}
+          </span>
         ) : (
           <Motion as="span" className="td-ph-bar-title" style={{ opacity: inlineOpacity }} aria-hidden="true">
             {title}
           </Motion>
         )}
         <span className="td-ph-bar-spacer" />
-        {titleMode === 'app' ? null : <span className="td-ph-bar-tools">{trailing}</span>}
+        <span className="td-ph-bar-tools">{trailing}</span>
         {showsClose ? <GlassButton icon="close" label={t('action_close')} onClick={inSheet.dismiss} /> : null}
       </div>
       {overlay}

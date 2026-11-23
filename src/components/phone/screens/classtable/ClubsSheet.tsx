@@ -13,7 +13,7 @@ export function ClubsSheet() {
   const clubs = demo.clubs ?? [];
   const shown = subscribed.flatMap((id) => clubs.filter((club) => club.id === id));
   return (
-    <Page title={t('class_table_subscribe_clubs')}>
+    <Page title={t('class_table_subscribe_clubs')} titleMode="inline">
       {shown.length ? (
         <Group header={t('class_table_club_section_subscribed')}>
           {shown.map((club) => (

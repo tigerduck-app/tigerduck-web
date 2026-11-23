@@ -203,7 +203,7 @@ function MoodleSection({ course }: { course: MoodleCourse }) {
       label: t('course_detail_assignments_label'),
       count: items.length,
       page: (
-        <Page title={t('course_detail_assignments_label')}>
+        <Page title={t('course_detail_assignments_label')} titleMode="inline">
           <div className="td-ph-card td-ph-rows">
             {items.map((item) => (
               <button key={item.id} type="button" className="td-ph-row" onClick={() => nav.push(<AssignmentPage item={item} />)}>

@@ -11,6 +11,7 @@ export function MoveSheet({ from, onMove }: { from: Mailbox; onMove: (to: Mailbo
   return (
     <Page
       title={t('school_mail_move_to')}
+      titleMode="inline"
       leading={<GlassButton text={t('action_cancel')} label={t('action_cancel')} onClick={() => sheet?.dismiss()} />}
     >
       <Group>

@@ -133,7 +133,7 @@ export function ClassTableScreen({ now, tables }: { now: number; tables: ReturnT
   return (
     <Page
       title={t('feature_class_table')}
-      titleMode="app"
+      titleMode="bar"
       onRefresh={refresh}
       trailing={
         <>
