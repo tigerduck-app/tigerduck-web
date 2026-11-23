@@ -90,7 +90,7 @@ export function HomeScreen({ now }: { now: number }) {
   return (
     <Page
       title={t(greeting(now))}
-      titleMode="bar"
+      titleMode="row"
       onRefresh={refresh}
       trailing={
         <>

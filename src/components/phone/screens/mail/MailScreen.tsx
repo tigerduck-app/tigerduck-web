@@ -120,7 +120,7 @@ export function MailScreen({ now }: { now: number }) {
   return (
     <Page
       title={t('feature_school_mail')}
-      titleMode="bar"
+      titleMode="row"
       onRefresh={refresh}
       trailing={
         <>

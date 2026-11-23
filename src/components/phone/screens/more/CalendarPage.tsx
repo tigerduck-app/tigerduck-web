@@ -100,7 +100,7 @@ export function CalendarPage({ now }: { now: number }) {
   const cells = monthCells(month.year, month.month);
 
   return (
-    <Page title={t('feature_calendar')} titleMode="bar">
+    <Page title={t('feature_calendar')} titleMode="row">
       <div className="td-ph-card td-ph-cal">
         <div className="td-ph-cal-head">
           <b>{t('calendar_month_year', month.year, month.month)}</b>

@@ -10,16 +10,18 @@ import { Motion } from './Motion';
 
 /**
  * `large`: iOS's large title, collapsing into the bar's inline title.
- * `bar`: the app's title bar, a 22-point heading on the bar's row beside its controls, as each
- * tab's page and the features More opens.
+ * `row`: the app's title bar, a 22-point heading and its controls at the top of the content, at
+ * rest on the bar's row and scrolling away with the page, as each tab's page and the features
+ * More opens.
+ * `bar`: the same heading and controls kept in the bar, as More's own page.
  * `inline`: a centred title on the bar's row, as the app's sheets and Moodle lists.
  */
-export type TitleMode = 'large' | 'bar' | 'inline';
+export type TitleMode = 'large' | 'row' | 'bar' | 'inline';
 
 interface PageProps {
   title: string;
   titleMode?: TitleMode;
-  /** Controls at the trailing end of the bar. */
+  /** Controls at the trailing end of the bar, or of the title row in `row` mode. */
   trailing?: ReactNode;
   /** Replaces the back or close button, as a compose sheet's Cancel. */
   leading?: ReactNode;
@@ -197,10 +199,19 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
       <Motion className="td-ph-large-title" role="heading" aria-level={1} style={{ scale: largeScale }}>
         {title}
       </Motion>
+    ) : titleMode === 'row' ? (
+      <div className={showsBack ? 'td-ph-title-row td-ph-title-row--after-back' : 'td-ph-title-row'}>
+        <span className="td-ph-bar-heading" role="heading" aria-level={1}>
+          {title}
+        </span>
+        <span className="td-ph-bar-spacer" />
+        <span className="td-ph-bar-tools">{trailing}</span>
+      </div>
     ) : null;
+  const pageClass = ['td-ph-page', inSheet ? 'td-ph-page--sheet' : '', titleMode === 'row' ? 'td-ph-page--row' : ''];
 
   return (
-    <div className={inSheet ? 'td-ph-page td-ph-page--sheet' : 'td-ph-page'}>
+    <div className={pageClass.filter(Boolean).join(' ')}>
       <div
         ref={scrollerRef}
         className="td-ph-scroller"
@@ -224,13 +235,13 @@ export function Page({ title, titleMode = 'large', leading, trailing, overlay, o
           <span className="td-ph-bar-title" role="heading" aria-level={1}>
             {title}
           </span>
-        ) : (
+        ) : titleMode === 'large' ? (
           <Motion as="span" className="td-ph-bar-title" style={{ opacity: inlineOpacity }} aria-hidden="true">
             {title}
           </Motion>
-        )}
+        ) : null}
         <span className="td-ph-bar-spacer" />
-        <span className="td-ph-bar-tools">{trailing}</span>
+        {titleMode === 'row' ? null : <span className="td-ph-bar-tools">{trailing}</span>}
         {showsClose ? <GlassButton icon="close" label={t('action_close')} onClick={inSheet.dismiss} /> : null}
       </div>
       {overlay}

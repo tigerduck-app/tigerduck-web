@@ -234,6 +234,20 @@
   padding-bottom: 120px;
   will-change: transform;
 }
+/* A title row starts the content where the bar's row is, and the rest follows where it would. */
+.td-ph-page--row .td-ph-content {
+  padding-top: 70px;
+}
+.td-ph-title-row {
+  height: 52px;
+  padding: 0 16px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.td-ph-title-row--after-back {
+  padding-left: 68px;
+}
 .td-ph-page--sheet .td-ph-content {
   padding-top: 64px;
   padding-bottom: 40px;
@@ -320,6 +334,9 @@
   margin: 0 0 0 -15px;
   pointer-events: none;
   color: var(--ph-gray);
+}
+.td-ph-page--row .td-ph-refresh {
+  top: 70px;
 }
 .td-ph-refresh span {
   position: absolute;

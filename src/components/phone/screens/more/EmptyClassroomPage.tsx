@@ -49,7 +49,7 @@ export function EmptyClassroomPage({ now }: { now: number }) {
     .sort((a, b) => Number(a.mark !== '.') - Number(b.mark !== '.') || a.room.localeCompare(b.room));
 
   return (
-    <Page title={t('feature_empty_classroom')} titleMode="bar">
+    <Page title={t('feature_empty_classroom')} titleMode="row">
       {buildings.length ? (
         <>
           <div className="td-ph-chips" role="group" aria-label={t('feature_empty_classroom')}>
