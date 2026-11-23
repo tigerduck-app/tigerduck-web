@@ -1,13 +1,14 @@
 import { demo, demoTime, type DemoBulletin } from '../../lib/demo';
 import { usePhoneLocale } from '../../lib/i18n';
 import { listDate } from '../../lib/format';
-import { monthDayTime } from '../../lib/time';
+import { monthDayTime, useNow } from '../../lib/time';
 import { useNav } from '../../ui/NavStack';
 import { Page } from '../../ui/Page';
 import { EmptyState } from '../../ui/controls';
 import { useRefresh } from '../useRefresh';
 
-export function BulletinsPage({ now }: { now: number }) {
+export function BulletinsPage() {
+  const now = useNow();
   const { t } = usePhoneLocale();
   const nav = useNav();
   const { refresh } = useRefresh();

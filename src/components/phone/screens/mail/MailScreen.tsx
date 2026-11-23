@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { phoneState } from '../../lib/phoneState';
+import { useNow } from '../../lib/time';
 import { demo, demoTime, text, type DemoMail } from '../../lib/demo';
 import { k, usePhoneLocale } from '../../lib/i18n';
 import { listDate } from '../../lib/format';
@@ -13,7 +15,6 @@ import { useConfirm } from '../../ui/Confirm';
 import { useRefresh } from '../useRefresh';
 import { ComposeSheet } from './ComposeSheet';
 import { MailMessagePage } from './MailMessagePage';
-import { MoveSheet } from './MoveSheet';
 
 type Folder = 'all' | Mailbox;
 export type Mailbox = 'inbox' | 'sent' | 'drafts' | 'junk' | 'trash';
@@ -54,21 +55,14 @@ function initialMail(): Mail[] {
   }));
 }
 
-export function MailScreen({ now }: { now: number }) {
+/** The one mailbox, as the school's server holds it, that every mail page reads. */
+const MailboxState = phoneState('Mailbox', initialMail);
+export const MailboxProvider = MailboxState.Provider;
+
+export function useMailbox() {
   const { t } = usePhoneLocale();
-  const nav = useNav();
-  const presenter = usePresenter();
   const confirm = useConfirm();
-  const { busy, refresh } = useRefresh();
-  const [folder, setFolder] = useState<Folder>('all');
-  const [mail, setMail] = useState(initialMail);
-  const shown = useMemo(
-    () =>
-      mail
-        .filter((item) => (folder === 'all' ? item.folder === 'inbox' || item.folder === 'sent' : item.folder === folder))
-        .sort((a, b) => b.date - a.date),
-    [mail, folder]
-  );
+  const [mail, setMail] = MailboxState.useValue();
   const update = (id: number, change: Partial<Mail>) =>
     setMail((list) => list.map((item) => (item.id === id ? { ...item, ...change } : item)));
   // The app's MailMessageActions.delete: a message goes to Trash, and only one in Trash, once
@@ -89,32 +83,33 @@ export function MailScreen({ now }: { now: number }) {
       },
     });
   };
-  // Compose, reply and forward all file what they send in this mailbox's Sent.
+  // Compose, reply and forward all file what they send in Sent.
   const send = (sent: DemoMail) =>
     setMail((list) => [
       ...list,
       { id: Math.max(0, ...list.map((item) => item.id)) + 1, folder: 'sent', message: sent, date: Date.now(), seen: true, flagged: false },
     ]);
+  return { mail, update, trash, send };
+}
+
+export function MailScreen() {
+  const { t } = usePhoneLocale();
+  const now = useNow();
+  const nav = useNav();
+  const presenter = usePresenter();
+  const { busy, refresh } = useRefresh();
+  const [folder, setFolder] = useState<Folder>('all');
+  const { mail, update, trash, send } = useMailbox();
+  const shown = useMemo(
+    () =>
+      mail
+        .filter((item) => (folder === 'all' ? item.folder === 'inbox' || item.folder === 'sent' : item.folder === folder))
+        .sort((a, b) => b.date - a.date),
+    [mail, folder]
+  );
   const open = (item: Mail) => {
     update(item.id, { seen: true });
-    nav.push(
-      <MailMessagePage
-        mail={item}
-        onDelete={(then) => trash(item, then)}
-        onSend={send}
-        onMove={(then) =>
-          presenter.present(
-            <MoveSheet
-              from={item.folder}
-              onMove={(folder) => {
-                update(item.id, { folder });
-                then();
-              }}
-            />
-          )
-        }
-      />
-    );
+    nav.push(<MailMessagePage mail={item} />);
   };
 
   return (

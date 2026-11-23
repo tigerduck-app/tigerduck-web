@@ -4,7 +4,7 @@ import { demo, demoTime } from '../../lib/demo';
 import { phoneScale, usePan } from '../../lib/gesture';
 import { k, usePhoneLocale } from '../../lib/i18n';
 import { animateTo, spring } from '../../lib/springs';
-import { DAY_MS, hhmm, startOfTaipeiDay, taipei } from '../../lib/time';
+import { DAY_MS, hhmm, startOfTaipeiDay, taipei, useNow } from '../../lib/time';
 import { Icon } from '../../ui/Icon';
 import { Motion } from '../../ui/Motion';
 import { Page } from '../../ui/Page';
@@ -47,7 +47,8 @@ const WEEK_KEYS = [
   k('weekday_sat_short'),
 ];
 
-export function CalendarPage({ now }: { now: number }) {
+export function CalendarPage() {
+  const now = useNow();
   const { t, locale } = usePhoneLocale();
   const today = startOfTaipeiDay(now);
   const [month, setMonth] = useState(() => ({ year: taipei(now).year, month: taipei(now).month }));

@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, type CSSProperties } from 'react';
 import { demo, demoTime, text, type DemoCourse } from '../../lib/demo';
 import { k, usePhoneLocale } from '../../lib/i18n';
 import { clubOccurrences, useClubSubscriptions, type ClubOccurrence } from '../../lib/clubs';
@@ -15,7 +15,8 @@ import {
   roomFor,
   tint,
 } from '../../lib/schedule';
-import { DAY_MS, minutesOf, startOfTaipeiDay, taipei } from '../../lib/time';
+import { phoneState } from '../../lib/phoneState';
+import { DAY_MS, minutesOf, startOfTaipeiDay, taipei, useNow } from '../../lib/time';
 import { Icon } from '../../ui/Icon';
 import { useMenu, type MenuEntry } from '../../ui/Menu';
 import { Page } from '../../ui/Page';
@@ -51,9 +52,13 @@ const WEEKDAY_KEYS = [
 ];
 
 /** Whose class table is shown: null for the student's own, or a classmate's student ID. */
+/** The student id of the timetable shown, null for the student's own. */
+const ShownTable = phoneState<string | null>('ShownTable', () => null);
+export const ShownTableProvider = ShownTable.Provider;
+
 export function useTableChoice() {
   const { t, locale } = usePhoneLocale();
-  const [shown, setShown] = useState<string | null>(null);
+  const [shown, setShown] = ShownTable.useValue();
   const menu = useCallback(
     (afterPick: () => void): MenuEntry[] => [
       { label: demo.studentId, checked: shown === null, onSelect: () => (setShown(null), afterPick()) },
@@ -78,8 +83,10 @@ function semesterLabel(now: number): string {
   return `${year}-${semester}`;
 }
 
-export function ClassTableScreen({ now, tables }: { now: number; tables: ReturnType<typeof useTableChoice> }) {
+export function ClassTableScreen() {
   const { t, locale } = usePhoneLocale();
+  const now = useNow();
+  const tables = useTableChoice();
   const presenter = usePresenter();
   const openMenu = useMenu();
   const { busy, refresh } = useRefresh();

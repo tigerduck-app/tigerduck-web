@@ -2,7 +2,8 @@ import { useMemo, useRef, useState } from 'react';
 import type { SwipeAction } from '../../ui/SwipeRow';
 import { k, usePhoneLocale } from '../../lib/i18n';
 import { dueLabel } from '../../lib/format';
-import { taipei } from '../../lib/time';
+import { phoneState } from '../../lib/phoneState';
+import { taipei, useNow } from '../../lib/time';
 import { useMenu } from '../../ui/Menu';
 import { useNav } from '../../ui/NavStack';
 import { Page } from '../../ui/Page';
@@ -45,16 +46,22 @@ function greeting(now: number): string {
   return k('greeting_evening');
 }
 
-export function HomeScreen({ now }: { now: number }) {
+const AssignmentMarks = phoneState<ReadonlyMap<string, Mark>>('AssignmentMarks', () => new Map());
+const Reminders = phoneState('Reminders', () => ({ assignments: true, liveActivity: true }));
+export const AssignmentMarksProvider = AssignmentMarks.Provider;
+export const RemindersProvider = Reminders.Provider;
+
+export function HomeScreen() {
   const { t, locale } = usePhoneLocale();
+  const now = useNow();
   const nav = useNav();
   const presenter = usePresenter();
   const openMenu = useMenu();
   const menuButton = useRef<HTMLButtonElement>(null);
   const { busy, refresh } = useRefresh();
   const [filter, setFilter] = useState<Filter>('incomplete');
-  const [marks, setMarks] = useState<ReadonlyMap<string, Mark>>(new Map());
-  const [reminders, setReminders] = useState({ assignments: true, liveActivity: true });
+  const [marks, setMarks] = AssignmentMarks.useValue();
+  const [reminders, setReminders] = Reminders.useValue();
   const items = useMemo(() => assignmentItems(locale), [locale]);
   const hasIgnored = [...marks.values()].includes('ignored');
   // The app's HomeAssignmentList.recompute: the ignored filter goes with the last ignored assignment.

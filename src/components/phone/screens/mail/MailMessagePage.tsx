@@ -1,4 +1,4 @@
-import { text, type DemoMail } from '../../lib/demo';
+import { text } from '../../lib/demo';
 import { usePhoneLocale } from '../../lib/i18n';
 import { fileSize } from '../../lib/format';
 import { monthDayTime } from '../../lib/time';
@@ -8,26 +8,18 @@ import { Page } from '../../ui/Page';
 import { usePresenter } from '../../ui/sheetContext';
 import { DemoHtml, Group, Row } from '../../ui/controls';
 import { ComposeSheet, draftFor } from './ComposeSheet';
-import { isExternal, type Mail } from './MailScreen';
+import { isExternal, useMailbox, type Mail } from './MailScreen';
+import { MoveSheet } from './MoveSheet';
 
 const PASSWORD_BAIT = /驗證|重新登入|密碼|password|verify your account|mailbox (is )?full/i;
 
-/** `then` pops this page, once the message has left the mailbox it was opened from. */
-export function MailMessagePage({
-  mail,
-  onDelete,
-  onMove,
-  onSend,
-}: {
-  mail: Mail;
-  onDelete: (then: () => void) => void;
-  onMove: (then: () => void) => void;
-  /** Files a reply or a forward in the mailbox this message was opened from. */
-  onSend: (sent: DemoMail) => void;
-}) {
+/** A message as the mailbox holds it now; `opened` once another mail page has deleted it. */
+export function MailMessagePage({ mail: opened }: { mail: Mail }) {
   const { t, locale } = usePhoneLocale();
   const nav = useNav();
   const presenter = usePresenter();
+  const mailbox = useMailbox();
+  const mail = mailbox.mail.find((item) => item.id === opened.id) ?? opened;
   const { message } = mail;
   const subject = text(message.subject, locale) || t('school_mail_no_subject');
   const html = message.html ? text(message.html, locale) : null;
@@ -38,7 +30,7 @@ export function MailMessagePage({
   const blockedImages = html !== null && message.remoteImages === true;
   const sender = message.from.name || message.from.address;
   const compose = (mode: 'reply' | 'forward') =>
-    presenter.present(<ComposeSheet draft={draftFor(mode, message.from.address, subject)} onSend={onSend} />, {
+    presenter.present(<ComposeSheet draft={draftFor(mode, message.from.address, subject)} onSend={mailbox.send} />, {
       detents: ['large'],
     });
 
@@ -50,11 +42,25 @@ export function MailMessagePage({
           <button
             type="button"
             aria-label={t('school_mail_delete')}
-            onClick={() => onDelete(nav.pop)}
+            onClick={() => mailbox.trash(mail, nav.pop)}
           >
             <Icon name="trash" />
           </button>
-          <button type="button" aria-label={t('school_mail_move_to')} onClick={() => onMove(nav.pop)}>
+          <button
+            type="button"
+            aria-label={t('school_mail_move_to')}
+            onClick={() =>
+              presenter.present(
+                <MoveSheet
+                  from={mail.folder}
+                  onMove={(folder) => {
+                    mailbox.update(mail.id, { folder });
+                    nav.pop();
+                  }}
+                />
+              )
+            }
+          >
             <Icon name="folder" />
           </button>
           <button type="button" aria-label={t('school_mail_reply')} onClick={() => compose('reply')}>

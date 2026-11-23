@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { demo, text } from '../../lib/demo';
 import { k, usePhoneLocale } from '../../lib/i18n';
 import { PERIODS } from '../../lib/schedule';
-import { minutesOf, taipei } from '../../lib/time';
+import { minutesOf, taipei, useNow } from '../../lib/time';
 import { Page } from '../../ui/Page';
 import { EmptyState } from '../../ui/controls';
 
@@ -32,7 +32,8 @@ function currentPeriod(now: number): number {
   return index < 0 ? 0 : index;
 }
 
-export function EmptyClassroomPage({ now }: { now: number }) {
+export function EmptyClassroomPage() {
+  const now = useNow();
   const { t, locale } = usePhoneLocale();
   const data = demo.emptyClassroom;
   const buildings = Object.keys(data?.buildings ?? {});

@@ -11,9 +11,9 @@ import { ClubSubscriptionsProvider } from './lib/clubs';
 import { GestureScope } from './lib/gesture';
 import { StatusBar } from './ui/StatusBar';
 import { TabBar, type TabItem } from './ui/TabBar';
-import { HomeScreen } from './screens/home/HomeScreen';
-import { ClassTableScreen, useTableChoice } from './screens/classtable/ClassTableScreen';
-import { MailScreen } from './screens/mail/MailScreen';
+import { AssignmentMarksProvider, HomeScreen, RemindersProvider } from './screens/home/HomeScreen';
+import { ClassTableScreen, ShownTableProvider, useTableChoice } from './screens/classtable/ClassTableScreen';
+import { MailboxProvider, MailScreen } from './screens/mail/MailScreen';
 import { LibraryScreen } from './screens/library/LibraryScreen';
 import { MoreScreen } from './screens/more/MoreScreen';
 // One place, in this order: later files' rules win ties over earlier ones.
@@ -62,9 +62,17 @@ export default function PhoneApp({ locale }: { locale: Locale }) {
           <MenuHost>
             <ConfirmHost>
               <ClubSubscriptionsProvider>
-                <SwipeRowScope>
-                  <Tabs />
-                </SwipeRowScope>
+                <ShownTableProvider>
+                  <MailboxProvider>
+                    <AssignmentMarksProvider>
+                      <RemindersProvider>
+                        <SwipeRowScope>
+                          <Tabs />
+                        </SwipeRowScope>
+                      </RemindersProvider>
+                    </AssignmentMarksProvider>
+                  </MailboxProvider>
+                </ShownTableProvider>
               </ClubSubscriptionsProvider>
             </ConfirmHost>
           </MenuHost>
@@ -76,7 +84,7 @@ export default function PhoneApp({ locale }: { locale: Locale }) {
 
 function Tabs() {
   const now = useNow();
-  const { t } = usePhoneLocale();
+  const { t, locale } = usePhoneLocale();
   const [tab, setTab] = useState<TabId>('home');
   const openMenu = useMenu();
   const tables = useTableChoice();
@@ -88,15 +96,17 @@ function Tabs() {
     { id: 'more', label: t('feature_more_short'), icon: 'more' },
   ];
   const screens: Record<TabId, ReactNode> = {
-    home: <HomeScreen now={now} />,
-    classTable: <ClassTableScreen now={now} tables={tables} />,
-    mail: <MailScreen now={now} />,
+    home: <HomeScreen />,
+    classTable: <ClassTableScreen />,
+    mail: <MailScreen />,
     library: <LibraryScreen />,
-    more: <MoreScreen now={now} tables={tables} />,
+    more: <MoreScreen />,
   };
   return (
     <>
-      <SheetHost>
+      {/* Pushed pages and sheets keep the text they opened with, so a language switch returns each
+          tab to its root page, as iOS relaunches an app whose language changes. */}
+      <SheetHost key={locale}>
         {tabs.map(({ id }) => (
           <div key={id} className="td-ph-tab" hidden={id !== tab} role="tabpanel">
             <NavStack root={screens[id]} />
