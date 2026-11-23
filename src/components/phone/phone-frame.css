@@ -208,8 +208,81 @@
     opacity: 0;
   }
 }
+/* The first-visit hint: a light running round the frame, and one touch that taps and swipes. */
+@property --td-hint-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.td-phone-device::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 77px;
+  padding: 3px;
+  background: conic-gradient(
+    from var(--td-hint-angle),
+    transparent 0 66%,
+    var(--td-yellow) 80%,
+    #fff3b0 85%,
+    transparent 94%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+  animation: tdPhoneHintSpin 2.4s linear infinite paused;
+  pointer-events: none;
+}
+.td-phone-device--hint::after {
+  opacity: 1;
+  animation-play-state: running;
+}
+@keyframes tdPhoneHintSpin {
+  to {
+    --td-hint-angle: 360deg;
+  }
+}
+.td-phone-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 61;
+  pointer-events: none;
+}
+.td-phone-hint-dot,
+.td-phone-hint-ripple {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(48px * var(--td-phone-scale, 0.79));
+  height: calc(48px * var(--td-phone-scale, 0.79));
+  margin: calc(-24px * var(--td-phone-scale, 0.79)) 0 0 calc(-24px * var(--td-phone-scale, 0.79));
+  border-radius: 50%;
+  border: 2px solid rgba(18, 22, 30, 0.38);
+  opacity: 0;
+}
+.td-phone-hint-dot {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.td-phone-hint-trail {
+  position: absolute;
+  height: calc(44px * var(--td-phone-scale, 0.79));
+  margin-top: calc(-22px * var(--td-phone-scale, 0.79));
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(18, 22, 30, 0), rgba(18, 22, 30, 0.16));
+  transform: scaleX(0);
+  transform-origin: right center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .td-phone-open-badge {
     animation: none;
+  }
+  .td-phone-device::after {
+    display: none;
   }
 }
