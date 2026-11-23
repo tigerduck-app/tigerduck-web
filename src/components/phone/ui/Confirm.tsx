@@ -24,6 +24,8 @@ export function ConfirmHost({ children }: { children: ReactNode }) {
   const [closing, setClosing] = useState(false);
   const confirmed = useRef(false);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const returnFocus = useRef<Element | null>(null);
   const id = useId();
 
   const ask = useCallback<Confirm>((next) => {
@@ -40,20 +42,30 @@ export function ConfirmHost({ children }: { children: ReactNode }) {
   // The sheet slides away in CSS and is removed, and its action runs, when that animation ends.
   const finish = () => {
     if (!request) return;
-    const { returnFocus, onConfirm } = request;
+    returnFocus.current = request.returnFocus;
+    const { onConfirm } = request;
     setRequest(null);
     setClosing(false);
-    if (returnFocus instanceof HTMLElement && returnFocus.isConnected) returnFocus.focus({ preventScroll: true });
     if (confirmed.current) onConfirm();
   };
 
   useEffect(() => {
-    if (request) dialogRef.current?.focus({ preventScroll: true });
+    if (backgroundRef.current) backgroundRef.current.inert = request !== null;
+    if (request) {
+      dialogRef.current?.focus({ preventScroll: true });
+      return;
+    }
+    // The browser ignores focus() into an inert subtree, so it waits until the background is live.
+    const target = returnFocus.current;
+    returnFocus.current = null;
+    if (target instanceof HTMLElement && target.isConnected) target.focus({ preventScroll: true });
   }, [request]);
 
   return (
     <ConfirmContext.Provider value={ask}>
-      {children}
+      <div ref={backgroundRef} className="td-ph-confirm-background">
+        {children}
+      </div>
       {request ? (
         <div
           className={closing ? 'td-ph-confirm-layer td-ph-confirm-layer--closing' : 'td-ph-confirm-layer'}

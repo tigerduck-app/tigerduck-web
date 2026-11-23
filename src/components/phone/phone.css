@@ -580,6 +580,10 @@
   color: var(--ph-red);
 }
 
+.td-ph-confirm-background {
+  display: contents;
+}
+
 .td-ph-confirm-layer {
   position: absolute;
   z-index: 40;
