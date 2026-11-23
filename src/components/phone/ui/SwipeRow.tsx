@@ -155,17 +155,21 @@ export function SwipeRow({
       x.set(next);
       setArmed(fullSwipe && next < -width * FULL_SWIPE);
     },
-    onEnd: (info) => {
+    onEnd: (info, cancelled) => {
       const element = rowRef.current!;
       const width = element.offsetWidth;
       const velocity = info.vx / phoneScale(element);
       const value = x.get();
-      if (armed && trailing.length) {
+      if (armed && trailing.length && !cancelled) {
         setArmed(false);
         animateTo(x, -width, { ...spring('swipe'), velocity }).then(() => run(trailing[0]));
         return;
       }
       setArmed(false);
+      if (cancelled) {
+        settle(0, 0);
+        return;
+      }
       const side = value < 0 ? trailing : leading;
       const reveal = revealWidth(side.length);
       const flung = Math.abs(velocity) > 400;
