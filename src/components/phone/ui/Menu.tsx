@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { trapTab } from '../lib/focus';
 import { Icon, type IconName } from './Icon';
 
 export type MenuEntry =
@@ -76,6 +77,7 @@ export function MenuHost({ children }: { children: ReactNode }) {
                 if (event.target === event.currentTarget) close();
               }}
               onKeyDown={(event) => {
+                if (trapTab(event, event.currentTarget)) return;
                 if (event.key === 'Escape') {
                   event.preventDefault();
                   event.stopPropagation();

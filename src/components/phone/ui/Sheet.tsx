@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useMotionValue, useTransform } from 'motion/react';
+import { trapTab } from '../lib/focus';
 import { phoneScale, usePan } from '../lib/gesture';
 import { rubberBand, animateTo, spring } from '../lib/springs';
 import {
@@ -164,6 +165,7 @@ export function SheetHost({ children }: { children: ReactNode }) {
               borderRadius: 38,
             }}
             onKeyDown={(event) => {
+              if (sheetRef.current && trapTab(event, sheetRef.current)) return;
               if (event.key === 'Escape' && !event.defaultPrevented) {
                 event.preventDefault();
                 settle(CLOSED_Y);

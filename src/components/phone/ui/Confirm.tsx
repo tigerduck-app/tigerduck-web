@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { trapTab } from '../lib/focus';
 import { usePhoneLocale } from '../lib/i18n';
 
 export interface ConfirmRequest {
@@ -73,15 +74,7 @@ export function ConfirmHost({ children }: { children: ReactNode }) {
             if (event.target === event.currentTarget) close(false);
           }}
           onKeyDown={(event) => {
-            // Only the phone behind is inert; the site around it is not, so Tab cycles here.
-            if (event.key === 'Tab') {
-              event.preventDefault();
-              const buttons = [...(dialogRef.current?.querySelectorAll('button') ?? [])];
-              const at = buttons.indexOf(document.activeElement as HTMLButtonElement);
-              const next = at === -1 ? (event.shiftKey ? buttons.length - 1 : 0) : (at + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length;
-              buttons[next]?.focus();
-              return;
-            }
+            if (trapTab(event, event.currentTarget)) return;
             if (event.key !== 'Escape') return;
             event.preventDefault();
             event.stopPropagation();
