@@ -45,8 +45,8 @@ test('cleans HTML fields and leaves plain text as it is', () => {
       messages: [
         {
           subject: 'a < b',
-          from: { name: 'Wang <wang@example.com>' },
-          plain: { zh: 'a < b <name@x>', en: 'a < b <name@x>' },
+          from: { name: 'Wang < 3' },
+          plain: { zh: 'a < b', en: 'a <= b' },
           html: { zh: '<p>a</p><img src="https://x.example/a.png">', en: '<p>a &lt; b</p>' },
         },
         { plain: 'x' },
@@ -58,8 +58,8 @@ test('cleans HTML fields and leaves plain text as it is', () => {
       messages: [
         {
           subject: 'a < b',
-          from: { name: 'Wang <wang@example.com>' },
-          plain: { zh: 'a < b <name@x>', en: 'a < b <name@x>' },
+          from: { name: 'Wang < 3' },
+          plain: { zh: 'a < b', en: 'a <= b' },
           html: { zh: '<p>a</p>', en: '<p>a &lt; b</p>' },
           remoteImages: true,
         },
@@ -72,3 +72,12 @@ test('cleans HTML fields and leaves plain text as it is', () => {
 test('refuses a script in an HTML field', () => {
   assert.throws(() => stripDemo({ moodle: { courses: [{ summary: '<script>x</script>' }] } }), /moodle\.courses\[0\]\.summary: <script>/);
 });
+
+for (const plain of ['Wang <wang@example.com>', '</p>', '<!-- x -->', '<?xml?>']) {
+  test(`refuses ${plain} in a field not listed as HTML`, () => {
+    assert.throws(
+      () => stripDemo({ mail: { messages: [{ plain: { zh: 'x', en: plain } }] } }),
+      /mail\.messages\[0\]\.plain\.en looks like HTML: list mail\.messages\[\]\.plain in HTML_FIELDS or PLAIN_FIELDS/
+    );
+  });
+}

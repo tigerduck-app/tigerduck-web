@@ -53,9 +53,21 @@ const HTML_FIELDS = new Set([
   'moodle.courses[].assignments[].submission.comments[].content',
 ]);
 
+// Plain-text fields allowed to hold text that looks like markup. Any other string that does fails
+// the sync, so a new HTML field is listed before it ships.
+const PLAIN_FIELDS = new Set();
+const MARKUP = /<[A-Za-z/!?]/;
+
 /** The demo without secrets, its HTML fields cleaned; an object whose HTML held images is marked `remoteImages`. */
 export function stripDemo(value, where = '') {
   if (Array.isArray(value)) return value.map((inner, index) => stripDemo(inner, `${where}[${index}]`));
+  if (typeof value === 'string') {
+    const field = where.replace(/\[\d+\]/g, '[]').replace(/\.(zh|en)$/, '');
+    if (MARKUP.test(value) && !PLAIN_FIELDS.has(field)) {
+      throw new Error(`${where} looks like HTML: list ${field} in HTML_FIELDS or PLAIN_FIELDS`);
+    }
+    return value;
+  }
   if (!value || typeof value !== 'object') return value;
   const found = { images: 0 };
   const copy = Object.fromEntries(
