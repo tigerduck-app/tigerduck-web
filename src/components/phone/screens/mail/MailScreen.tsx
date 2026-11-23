@@ -197,7 +197,7 @@ function MailRow({
   const openMenu = useMenu();
   const { message } = item;
   const sender =
-    item.folder !== 'sent' && item.folder !== 'drafts' ? message.from.name || message.from.address : message.to?.[0]?.name ?? message.from.name;
+    item.folder !== 'sent' && item.folder !== 'drafts' ? message.from.name || message.from.address : message.to?.[0]?.name || message.to?.[0]?.address || message.from.name;
   const readLabel = item.seen ? t('school_mail_mark_unread') : t('school_mail_mark_read');
   const flagLabel = item.flagged ? t('school_mail_unflag') : t('school_mail_flag');
   const entries: MenuEntry[] = [
