@@ -8,6 +8,8 @@ interface Point {
 const WIDE_MS = 3000;
 const TAP_MS = 1600;
 const START_DELAY_MS = 400;
+/** The share of the phone, or of a viewport shorter than it, that must be on screen first. */
+const SHOWN_RATIO = 0.6;
 const TARGET_POLL_MS = 150;
 const TARGET_POLL_LIMIT = 40;
 const EASE = 'cubic-bezier(0.45, 0.05, 0.3, 1)';
@@ -136,13 +138,16 @@ export function PhoneHint({ hostRef, preview, active }: { hostRef: RefObject<HTM
       played.current = true;
       animations = play(layer, host, target, row);
     };
+    // An observer also reports every change of isIntersecting, below its thresholds too.
+    const mostlyShown = (entry: IntersectionObserverEntry) =>
+      entry.intersectionRatio >= SHOWN_RATIO || entry.intersectionRect.height >= window.innerHeight * SHOWN_RATIO;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
+        if (!entries.some(mostlyShown)) return;
         observer.disconnect();
         timer = window.setTimeout(attempt, START_DELAY_MS);
       },
-      { threshold: 0.6 }
+      { threshold: [0, 0.2, 0.4, SHOWN_RATIO, 0.8, 1] }
     );
     observer.observe(host);
     return () => {
