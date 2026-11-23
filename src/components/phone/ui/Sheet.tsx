@@ -38,6 +38,8 @@ export function SheetHost({ children }: { children: ReactNode }) {
   const dragStart = useRef(0);
   const shownRef = useRef(shown);
   shownRef.current = shown;
+  // Where focus goes once a closed sheet has left and the stage takes focus again.
+  const returnFocus = useRef<Element | null>(null);
 
   const largest = shown?.detents.includes('large') ? DETENT_Y.large : DETENT_Y.medium;
   const backdrop = useTransform(y, [DETENT_Y.medium, CLOSED_Y], [1, 0]);
@@ -53,9 +55,8 @@ export function SheetHost({ children }: { children: ReactNode }) {
         velocity,
         onComplete: () => {
           if (target !== CLOSED_Y) return;
-          const closing = shownRef.current;
+          returnFocus.current = shownRef.current?.returnFocus ?? null;
           setShown(null);
-          if (closing?.returnFocus instanceof HTMLElement) closing.returnFocus.focus({ preventScroll: true });
         },
       });
     },
@@ -129,7 +130,12 @@ export function SheetHost({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stage = stageRef.current;
-    if (stage) stage.inert = shown !== null;
+    if (!stage) return;
+    stage.inert = shown !== null;
+    // The browser ignores focus() into an inert subtree, so it waits until the stage is live.
+    const target = returnFocus.current;
+    returnFocus.current = null;
+    if (!shown && target instanceof HTMLElement && target.isConnected) target.focus({ preventScroll: true });
   }, [shown]);
 
   return (
