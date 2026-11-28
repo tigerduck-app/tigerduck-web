@@ -195,16 +195,6 @@
   padding: 16px 28px;
   font-size: 16px;
 }
-.td-btn--link {
-  background: transparent;
-  color: var(--td-text-secondary);
-  padding-left: 12px;
-  padding-right: 12px;
-}
-.td-btn--link:hover,
-.td-btn--link:focus-visible {
-  color: var(--td-text);
-}
 .td-btn--disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -523,6 +513,19 @@
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
+}
+/* Under the hero's store buttons: the other builds, kept quieter than the buttons. */
+.td-hero-more {
+  display: inline-block;
+  margin: 14px 0 24px;
+  font-size: 13px;
+  color: var(--td-text-tertiary);
+  text-decoration: none;
+}
+.td-hero-more:hover,
+.td-hero-more:focus-visible {
+  color: var(--td-text-secondary);
+  text-decoration: underline;
 }
 
 /* ============ Hero grid (legacy two-column) ============ */

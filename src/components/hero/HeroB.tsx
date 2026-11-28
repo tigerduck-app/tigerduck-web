@@ -33,17 +33,16 @@ export function HeroB() {
             {messages.desc2}
           </p>
 
-          <div className="td-cta-row" style={{ marginBottom: 24 }}>
+          <div className="td-cta-row">
             <PlatformCTA placement="hero" />
-            <Link
-              to="/download"
-              className="td-btn td-btn--lg td-btn--link"
-              onClick={() => trackEvent('cta_click', { store: 'download_page', placement: 'hero' })}
-            >
-              <span>{all.download.others}</span>
-              <span aria-hidden="true">→</span>
-            </Link>
           </div>
+          <Link
+            to="/download"
+            className="td-hero-more"
+            onClick={() => trackEvent('cta_click', { store: 'download_page', placement: 'hero' })}
+          >
+            {all.download.others}
+          </Link>
         </div>
 
         <div className="td-hero-visual">
