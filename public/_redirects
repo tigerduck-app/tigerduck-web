@@ -6,6 +6,4 @@
 /download/android     https://play.google.com/store/apps/details?id=org.ntust.app.tigerduck 302
 /download/play        https://play.google.com/store/apps/details?id=org.ntust.app.tigerduck 302
 /download/fdroid      https://f-droid.org/packages/org.ntust.app.tigerduck.fdroid 302
-# GitHub resolves "latest" itself; the F-Droid build is the one without Google services.
-/download/apk         https://github.com/tigerduck-app/tigerduck-app-android/releases/latest/download/TigerDuck-fdroid.apk 302
 /download/testflight  https://testflight.apple.com/join/eVt9Gjkw 302

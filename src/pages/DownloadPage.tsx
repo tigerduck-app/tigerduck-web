@@ -5,27 +5,16 @@ import { tFor, type DownloadChannel } from '@/lib/messages';
 import { trackEvent } from '@/lib/analytics';
 import { AppleIcon, GooglePlayIcon } from '@/components/PlatformCTA';
 
-/** Where Google Play is unavailable, Android visitors get the build without Google services first. */
-const NO_GOOGLE_PLAY_TIME_ZONES = new Set(['Asia/Shanghai', 'Asia/Urumqi', 'Asia/Chongqing', 'Asia/Harbin']);
-
-const DownloadIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14" />
-  </svg>
-);
-
 const ICONS: Partial<Record<DownloadChannel, () => ReactNode>> = {
   apple: AppleIcon,
   android: GooglePlayIcon,
-  apk: DownloadIcon,
 };
 
 /** The first two become the store buttons, the rest the smaller links below them. */
 function channelOrder(platform: Platform): DownloadChannel[] {
-  if (platform !== 'android') return ['apple', 'android', 'testflight', 'fdroid', 'apk'];
-  return NO_GOOGLE_PLAY_TIME_ZONES.has(Intl.DateTimeFormat().resolvedOptions().timeZone)
-    ? ['apk', 'android', 'fdroid', 'apple', 'testflight']
-    : ['android', 'apple', 'fdroid', 'apk', 'testflight'];
+  return platform === 'android'
+    ? ['android', 'apple', 'fdroid', 'testflight']
+    : ['apple', 'android', 'testflight', 'fdroid'];
 }
 
 /**

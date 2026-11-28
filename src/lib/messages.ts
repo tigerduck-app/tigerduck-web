@@ -236,7 +236,7 @@ interface HelpIndexMessages {
   };
 }
 
-export type DownloadChannel = 'apple' | 'android' | 'fdroid' | 'apk' | 'testflight';
+export type DownloadChannel = 'apple' | 'android' | 'fdroid' | 'testflight';
 
 interface DownloadMessages {
   documentTitle: string;
@@ -688,7 +688,6 @@ const zh: Messages = {
       apple: { name: 'App Store', note: 'iPhone、iPad、Mac、Apple Watch' },
       android: { name: 'Google Play', note: 'Android、Wear OS' },
       fdroid: { name: 'F-Droid', note: 'Android，不含 Google 服務' },
-      apk: { name: 'APK', note: 'GitHub 最新版本，不含 Google 服務' },
       testflight: { name: 'TestFlight', note: 'iOS 測試版' },
     },
   },
@@ -1157,7 +1156,6 @@ const en: Messages = {
       apple: { name: 'App Store', note: 'iPhone, iPad, Mac, Apple Watch' },
       android: { name: 'Google Play', note: 'Android, Wear OS' },
       fdroid: { name: 'F-Droid', note: 'Android, without Google services' },
-      apk: { name: 'APK', note: 'Latest build on GitHub, without Google services' },
       testflight: { name: 'TestFlight', note: 'iOS beta' },
     },
   },
