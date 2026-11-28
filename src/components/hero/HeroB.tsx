@@ -1,11 +1,14 @@
+import { Link } from '@/components/Link';
 import { PlatformCTA } from '@/components/PlatformCTA';
+import { trackEvent } from '@/lib/analytics';
 import { PhoneHero } from '@/components/phone/PhoneHero';
 import { useLocale } from '@/hooks/useLocale';
 import { tFor } from '@/lib/messages';
 
 export function HeroB() {
   const { locale } = useLocale();
-  const messages = tFor(locale).hero;
+  const all = tFor(locale);
+  const messages = all.hero;
 
   return (
     <section className="td-page td-hero" aria-labelledby="hero-heading">
@@ -32,6 +35,14 @@ export function HeroB() {
 
           <div className="td-cta-row" style={{ marginBottom: 24 }}>
             <PlatformCTA placement="hero" />
+            <Link
+              to="/download"
+              className="td-btn td-btn--lg td-btn--link"
+              onClick={() => trackEvent('cta_click', { store: 'download_page', placement: 'hero' })}
+            >
+              <span>{all.download.others}</span>
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
 
