@@ -8,6 +8,7 @@
   --td-orange: #ff9500;
   --td-yellow: #ffcc00;
   --td-phone-band: linear-gradient(145deg, #5b606b 0%, #2a2d33 22%, #1b1d21 50%, #2c2f36 78%, #61666f 100%);
+  --td-hint-strength: 1;
   --td-green: #34c759;
   --td-cyan: #5ac8fa;
   --td-indigo: #5856d6;
@@ -91,6 +92,7 @@
   --td-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --td-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
   --td-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --td-hint-strength: 0.6;
 }
 
 /* Auto theme follows system preference */
@@ -108,6 +110,7 @@
     --td-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
     --td-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
     --td-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --td-hint-strength: 0.6;
   }
 }
 
