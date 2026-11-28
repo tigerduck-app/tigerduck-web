@@ -6,6 +6,7 @@ import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
 import { DeleteAccount } from '@/pages/DeleteAccount';
 import { TigerSync } from '@/pages/TigerSync';
 import { HelpIndex } from '@/pages/HelpIndex';
+import { DownloadPage } from '@/pages/DownloadPage';
 import { HelpReceiveMail, type HelpMailPlatform } from '@/pages/HelpReceiveMail';
 import { useReveal } from '@/hooks/useReveal';
 import { useRoute } from '@/hooks/useRoute';
@@ -75,6 +76,7 @@ export default function App() {
     // an exact match and matchSegment('/help', '/help/receive-mail') already
     // returns null for it, but the ordering keeps the exact routes grouped
     // together and ahead of the nested-route fallback as topics are added.
+    if (path === '/download' || path.startsWith('/download/')) return <DownloadPage />;
     if (path === '/help') return <HelpIndex />;
     const helpPlatform = helpMailPlatform(path);
     if (helpPlatform) return <HelpReceiveMail platform={helpPlatform} />;

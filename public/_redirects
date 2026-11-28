@@ -1,0 +1,9 @@
+# Download links (Cloudflare Workers static assets). The store URLs match src/lib/constants.ts.
+/download/apple       https://apps.apple.com/app/id6761084888 302
+/download/ios         https://apps.apple.com/app/id6761084888 302
+/download/ipados      https://apps.apple.com/app/id6761084888 302
+/download/macos       https://apps.apple.com/app/id6761084888 302
+/download/android     https://play.google.com/store/apps/details?id=org.ntust.app.tigerduck 302
+/download/play        https://play.google.com/store/apps/details?id=org.ntust.app.tigerduck 302
+/download/fdroid      https://f-droid.org/packages/org.ntust.app.tigerduck.fdroid 302
+/download/testflight  https://testflight.apple.com/join/eVt9Gjkw 302

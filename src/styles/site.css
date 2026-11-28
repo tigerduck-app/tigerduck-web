@@ -514,6 +514,19 @@
   flex-wrap: wrap;
   align-items: center;
 }
+/* Under the hero's store buttons: the other builds, kept quieter than the buttons. */
+.td-hero-more {
+  display: inline-block;
+  margin: 14px 0 24px;
+  font-size: 13px;
+  color: var(--td-text-tertiary);
+  text-decoration: none;
+}
+.td-hero-more:hover,
+.td-hero-more:focus-visible {
+  color: var(--td-text-secondary);
+  text-decoration: underline;
+}
 
 /* ============ Hero grid (legacy two-column) ============ */
 .td-hero {
@@ -1400,4 +1413,99 @@ body.td-swipe-active * {
   align-items: center;
   min-height: 48px;
   padding: 0 2px;
+}
+
+/* ============ Download page ============ */
+.td-download {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(72px, 12vh, 140px) 16px clamp(72px, 12vh, 128px);
+  background: radial-gradient(ellipse 70% 55% at 50% 0%, var(--td-download-glow), transparent 70%);
+}
+.td-download-icon {
+  width: 112px;
+  height: 112px;
+  border-radius: 26px;
+  box-shadow: 0 18px 40px -12px rgba(120, 90, 0, 0.35);
+  margin-bottom: 28px;
+}
+.td-download-lede {
+  margin-top: 14px;
+}
+.td-download-stores {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px 16px;
+  margin-top: 40px;
+}
+.td-download-store {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.td-download-store .td-btn {
+  min-width: 210px;
+}
+.td-download-note {
+  font-size: 13px;
+  color: var(--td-text-tertiary);
+}
+.td-download-others {
+  width: min(480px, 100%);
+  margin-top: 64px;
+}
+.td-download-others ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+}
+.td-download-others a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px 12px;
+  border-radius: var(--td-radius-lg);
+  color: var(--td-text);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.td-download-others a:hover {
+  background: var(--td-bg-soft);
+}
+.td-download-others a:focus-visible {
+  background: var(--td-bg-soft);
+  outline: 2px solid var(--td-blue);
+  outline-offset: 2px;
+}
+.td-download-other-name {
+  font-weight: 600;
+}
+.td-download-others .td-download-note {
+  text-wrap: balance;
+}
+@media (max-width: 600px) {
+  .td-download-others ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The narrowest phones: the brand, the download button and both toggles on one row. */
+@media (max-width: 360px) {
+  .td-nav-inner {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .td-nav-cta {
+    margin-left: 4px;
+  }
 }
