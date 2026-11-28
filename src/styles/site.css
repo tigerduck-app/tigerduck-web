@@ -1471,3 +1471,14 @@ body.td-swipe-active * {
     border-left: none;
   }
 }
+
+/* The narrowest phones: the brand, the download button and both toggles on one row. */
+@media (max-width: 360px) {
+  .td-nav-inner {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .td-nav-cta {
+    margin-left: 4px;
+  }
+}
