@@ -240,7 +240,6 @@ export type DownloadChannel = 'apple' | 'android' | 'fdroid' | 'apk' | 'testflig
 
 interface DownloadMessages {
   documentTitle: string;
-  back: string;
   title: string;
   others: string;
   channels: Record<DownloadChannel, { name: string; note: string }>;
@@ -683,7 +682,6 @@ const zh: Messages = {
   },
   download: {
     documentTitle: '下載 TigerDuck',
-    back: '← 回首頁',
     title: '下載 TigerDuck',
     others: '其他下載方式',
     channels: {
@@ -1153,7 +1151,6 @@ const en: Messages = {
   },
   download: {
     documentTitle: 'Download TigerDuck',
-    back: '← Back to home',
     title: 'Download TigerDuck',
     others: 'Other ways to install',
     channels: {

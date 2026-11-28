@@ -1394,12 +1394,80 @@ body.td-swipe-active * {
 }
 
 /* ============ Download page ============ */
-.td-download-primary {
-  border-color: var(--td-blue);
+.td-download {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(72px, 12vh, 140px) 16px clamp(72px, 12vh, 128px);
+  background: radial-gradient(ellipse 70% 55% at 50% 0%, var(--td-download-glow), transparent 70%);
 }
-.td-download-primary .td-doc-section-title {
-  font-size: 1.6em;
+.td-download-icon {
+  width: 112px;
+  height: 112px;
+  border-radius: 26px;
+  box-shadow: 0 18px 40px -12px rgba(120, 90, 0, 0.35);
+  margin-bottom: 28px;
+}
+.td-download-lede {
+  margin-top: 14px;
+}
+.td-download-stores {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px 16px;
+  margin-top: 40px;
+}
+.td-download-store {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.td-download-store .td-btn {
+  min-width: 210px;
+}
+.td-download-note {
+  font-size: 13px;
+  color: var(--td-text-tertiary);
 }
 .td-download-others {
-  margin: 40px 0 12px;
+  margin-top: 64px;
+}
+.td-download-others ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 0;
+  margin: 14px 0 0;
+  padding: 0;
+}
+.td-download-others li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 28px;
+}
+.td-download-others li + li {
+  border-left: 1px solid var(--td-border-hairline);
+}
+.td-download-others a {
+  font-weight: 600;
+  color: var(--td-text);
+  text-decoration: none;
+}
+.td-download-others a:hover,
+.td-download-others a:focus-visible {
+  color: var(--td-blue);
+}
+@media (max-width: 600px) {
+  .td-download-others ul {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .td-download-others li + li {
+    border-left: none;
+  }
 }
