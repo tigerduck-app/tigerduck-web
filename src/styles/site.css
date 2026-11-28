@@ -679,7 +679,9 @@
   position: relative;
   width: 100%;
   max-width: 280px;
-  aspect-ratio: 1419 / 2796;
+  /* The hero phone's 428 x 900 frame around a 402 x 874 screen. */
+  aspect-ratio: 428 / 900;
+  container-type: inline-size;
   overflow: hidden;
   touch-action: pan-y;
   cursor: grab;
@@ -698,6 +700,13 @@
   height: 100%;
   display: block;
   object-fit: contain;
+  box-sizing: border-box;
+  border: calc(100cqw * 4 / 428) solid transparent;
+  padding: calc(100cqw * 9 / 428);
+  border-radius: calc(100cqw * 70 / 428);
+  background:
+    linear-gradient(#050506, #050506) padding-box,
+    var(--td-phone-band) border-box;
   will-change: transform, opacity, filter;
   transition:
     transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),

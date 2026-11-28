@@ -67,7 +67,7 @@ export function PhoneHero() {
   const narrow = useMatches(PREVIEW_QUERY);
   const [full, setFull] = useState(false);
   const preview = narrow && !full;
-  // The hint runs until the visitor first touches, clicks, scrolls or types on the phone.
+  // The hint runs until the visitor first touches, clicks, scrolls, types on or focuses the phone.
   const [hinting, setHinting] = useState(true);
   const showHint = hinting && !full;
 
@@ -75,7 +75,7 @@ export function PhoneHero() {
     const slot = slotRef.current;
     if (!slot || !hinting) return;
     const stop = () => setHinting(false);
-    const events = ['pointerdown', 'wheel', 'keydown'] as const;
+    const events = ['pointerdown', 'wheel', 'keydown', 'focusin'] as const;
     events.forEach((name) => slot.addEventListener(name, stop, { capture: true, passive: true }));
     return () => events.forEach((name) => slot.removeEventListener(name, stop, { capture: true }));
   }, [hinting]);
@@ -163,6 +163,7 @@ export function PhoneHero() {
         tabIndex={full ? -1 : undefined}
       >
         <div ref={hostRef} className="td-phone-host" style={{ '--td-phone-scale': 0.79 } as CSSProperties}>
+          <span className={showHint ? 'td-phone-glow td-phone-glow--on' : 'td-phone-glow'} aria-hidden="true" />
           <div className={showHint ? 'td-phone-device td-phone-device--hint' : 'td-phone-device'}>
             <span className="td-phone-key td-phone-key--action" />
             <span className="td-phone-key td-phone-key--up" />

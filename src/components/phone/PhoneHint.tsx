@@ -8,7 +8,8 @@ interface Point {
 const WIDE_MS = 3000;
 const TAP_MS = 1600;
 const START_DELAY_MS = 400;
-/** The share of the phone, or of a viewport shorter than it, that must be on screen first. */
+const REPEAT_GAP_MS = 1200;
+/** The share of the phone, or of a viewport shorter than it, that must be on screen to play. */
 const SHOWN_RATIO = 0.6;
 const TARGET_POLL_MS = 150;
 const TARGET_POLL_LIMIT = 40;
@@ -106,23 +107,29 @@ function play(layer: HTMLElement, host: HTMLElement, target: Element, row: Eleme
 }
 
 /**
- * Shows, once, a touch tapping the Class Table tab and swiping an assignment row the first time
+ * Shows a touch tapping the Class Table tab and swiping an assignment row, again and again while
  * the phone is mostly on screen; on a narrow screen it taps the button that opens the phone. It
- * stops as soon as `active` turns false, which the visitor's first touch does.
+ * stops as soon as `active` turns false, which the visitor's first touch or focus does.
  */
 export function PhoneHint({ hostRef, preview, active }: { hostRef: RefObject<HTMLDivElement>; preview: boolean; active: boolean }) {
   const layerRef = useRef<HTMLDivElement>(null);
-  const played = useRef(false);
 
   useEffect(() => {
     const host = hostRef.current;
     const layer = layerRef.current;
-    if (!active || played.current || !host || !layer) return;
+    if (!active || !host || !layer) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     let animations: Animation[] = [];
     let timer = 0;
     let tries = 0;
+    let shown = false;
+    let pending = false;
+    const schedule = (delay: number) => {
+      if (pending) return;
+      pending = true;
+      timer = window.setTimeout(attempt, delay);
+    };
     const find = () => {
       if (preview) return { target: host.querySelector('.td-phone-open-badge'), row: null };
       const target = host.querySelectorAll('.td-ph-tabbar [role="tab"]')[1] ?? null;
@@ -133,19 +140,26 @@ export function PhoneHint({ hostRef, preview, active }: { hostRef: RefObject<HTM
       const { target, row } = find();
       if (!target) {
         if (++tries < TARGET_POLL_LIMIT) timer = window.setTimeout(attempt, TARGET_POLL_MS);
+        else pending = false;
         return;
       }
-      played.current = true;
       animations = play(layer, host, target, row);
+      // A cancelled animation rejects `finished`, which ends the loop.
+      Promise.all(animations.map((animation) => animation.finished)).then(
+        () => {
+          pending = false;
+          if (shown) schedule(REPEAT_GAP_MS);
+        },
+        () => {}
+      );
     };
     // An observer also reports every change of isIntersecting, below its thresholds too.
     const mostlyShown = (entry: IntersectionObserverEntry) =>
       entry.intersectionRatio >= SHOWN_RATIO || entry.intersectionRect.height >= window.innerHeight * SHOWN_RATIO;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (!entries.some(mostlyShown)) return;
-        observer.disconnect();
-        timer = window.setTimeout(attempt, START_DELAY_MS);
+        shown = mostlyShown(entries[entries.length - 1]);
+        if (shown) schedule(START_DELAY_MS);
       },
       { threshold: [0, 0.2, 0.4, SHOWN_RATIO, 0.8, 1] }
     );

@@ -28,8 +28,7 @@
   transform-origin: 0 0;
   border-radius: 70px;
   padding: 13px;
-  background:
-    linear-gradient(145deg, #5b606b 0%, #2a2d33 22%, #1b1d21 50%, #2c2f36 78%, #61666f 100%);
+  background: var(--td-phone-band);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.22),
     inset 0 0 0 3px #15171a,
@@ -217,15 +216,15 @@
 .td-phone-device::after {
   content: '';
   position: absolute;
-  inset: -7px;
-  border-radius: 77px;
-  padding: 3px;
+  inset: -9px;
+  border-radius: 79px;
+  padding: 5px;
   background: conic-gradient(
     from var(--td-hint-angle),
-    transparent 0 66%,
-    var(--td-yellow) 80%,
-    #fff3b0 85%,
-    transparent 94%
+    rgba(255, 204, 0, 0.4) 0 55%,
+    var(--td-yellow) 75%,
+    #fff6c4 84%,
+    rgba(255, 204, 0, 0.4) 95%
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -236,13 +235,29 @@
   pointer-events: none;
 }
 .td-phone-device--hint::after {
-  opacity: 1;
+  opacity: var(--td-hint-strength);
   animation-play-state: running;
 }
 @keyframes tdPhoneHintSpin {
   to {
     --td-hint-angle: 360deg;
   }
+}
+/* Yellow light from the frame, spilling over the page; a shadow adds no scrollable overflow. */
+.td-phone-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(70px * var(--td-phone-scale, 0.79));
+  box-shadow:
+    0 0 40px 10px rgba(255, 204, 0, 0.55),
+    0 0 160px 60px rgba(255, 204, 0, 0.3),
+    0 0 480px 200px rgba(255, 204, 0, 0.16);
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+  pointer-events: none;
+}
+.td-phone-glow--on {
+  opacity: var(--td-hint-strength);
 }
 .td-phone-hint {
   position: absolute;
