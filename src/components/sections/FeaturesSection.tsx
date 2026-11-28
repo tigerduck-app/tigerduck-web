@@ -17,6 +17,12 @@ const screenshots = [
 
 const SWIPE_THRESHOLD_PX = 48;
 const LOCK_THRESHOLD_PX = 6;
+const WHEEL_QUIET_MS = 220;
+const WHEEL_LINE_PX = 16;
+const WHEEL_WINDOW = 6;
+const WHEEL_SLOWED_RATIO = 0.5;
+const WHEEL_RISE_RATIO = 1.5;
+const WHEEL_RISE_MIN_PX = 3;
 const MAX_BLUR_PX = 6;
 const MIN_OPACITY = 0.35;
 const VISIBLE_RANGE = 1.5;
@@ -68,6 +74,55 @@ export function FeaturesSection() {
       const step = dx < 0 ? 1 : -1;
       setIdx((i) => (((i + step) % total) + total) % total);
     }
+  }, [total]);
+
+  // A horizontal trackpad swipe over the phone turns one page. macOS keeps sending momentum events
+  // after the fingers lift, and Chrome coalesces events into deltas that alternate in size, so the
+  // speed is averaged: after a turn it must fall to half its peak (the fingers lifted or stopped)
+  // and then rise again before the next swipe counts.
+  useEffect(() => {
+    const stack = stackRef.current;
+    if (!stack) return;
+    let recent: number[] = [];
+    let travel = 0;
+    let phase: 'armed' | 'spent' | 'slowed' = 'armed';
+    let peak = 0;
+    let floor = 0;
+    let lastAt = -Infinity;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      const dx = e.deltaMode === WheelEvent.DOM_DELTA_LINE ? e.deltaX * WHEEL_LINE_PX : e.deltaX;
+      if (e.timeStamp - lastAt > WHEEL_QUIET_MS) {
+        recent = [];
+        travel = 0;
+        phase = 'armed';
+      }
+      lastAt = e.timeStamp;
+      recent = [...recent.slice(1 - WHEEL_WINDOW), Math.abs(dx)];
+      const speed = recent.reduce((sum, size) => sum + size, 0) / recent.length;
+      if (phase === 'spent') {
+        peak = Math.max(peak, speed);
+        if (speed > peak * WHEEL_SLOWED_RATIO) return;
+        phase = 'slowed';
+        floor = speed;
+      }
+      if (phase === 'slowed') {
+        floor = Math.min(floor, speed);
+        if (speed < floor * WHEEL_RISE_RATIO + WHEEL_RISE_MIN_PX) return;
+        phase = 'armed';
+        travel = 0;
+      }
+      travel += dx;
+      if (Math.abs(travel) < SWIPE_THRESHOLD_PX) return;
+      const step = travel > 0 ? 1 : -1;
+      travel = 0;
+      phase = 'spent';
+      peak = speed;
+      setIdx((i) => (((i + step) % total) + total) % total);
+    };
+    stack.addEventListener('wheel', onWheel, { passive: false });
+    return () => stack.removeEventListener('wheel', onWheel);
   }, [total]);
 
   useEffect(() => {
