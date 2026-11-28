@@ -236,6 +236,16 @@ interface HelpIndexMessages {
   };
 }
 
+export type DownloadChannel = 'apple' | 'android' | 'fdroid' | 'apk' | 'testflight';
+
+interface DownloadMessages {
+  documentTitle: string;
+  back: string;
+  title: string;
+  others: string;
+  channels: Record<DownloadChannel, { name: string; note: string }>;
+}
+
 interface ThemeToggleMessages {
   labels: { auto: string; light: string; dark: string };
   current: (label: string) => string;
@@ -262,6 +272,7 @@ export interface Messages {
   tigerSync: TigerSyncMessages;
   helpReceiveMail: HelpReceiveMailMessages;
   helpIndex: HelpIndexMessages;
+  download: DownloadMessages;
   themeToggle: ThemeToggleMessages;
   localeToggle: LocaleToggleMessages;
 }
@@ -668,6 +679,19 @@ const zh: Messages = {
         title: '在信件 App 收校園信箱',
         summary: '把臺科大校園信箱加進手機或電腦上的信件 App，讓校園信箱和你其他信箱收在同一個地方。',
       },
+    },
+  },
+  download: {
+    documentTitle: '下載 TigerDuck',
+    back: '← 回首頁',
+    title: '下載 TigerDuck',
+    others: '其他下載方式',
+    channels: {
+      apple: { name: 'App Store', note: 'iPhone、iPad、Mac、Apple Watch' },
+      android: { name: 'Google Play', note: 'Android、Wear OS' },
+      fdroid: { name: 'F-Droid', note: 'Android，不含 Google 服務' },
+      apk: { name: 'APK', note: 'GitHub 最新版本，不含 Google 服務' },
+      testflight: { name: 'TestFlight', note: 'iOS 測試版' },
     },
   },
   themeToggle: {
@@ -1125,6 +1149,19 @@ const en: Messages = {
         summary:
           'Add your NTUST school mailbox to the mail app on your phone or computer, so it arrives alongside your other mail.',
       },
+    },
+  },
+  download: {
+    documentTitle: 'Download TigerDuck',
+    back: '← Back to home',
+    title: 'Download TigerDuck',
+    others: 'Other ways to install',
+    channels: {
+      apple: { name: 'App Store', note: 'iPhone, iPad, Mac, Apple Watch' },
+      android: { name: 'Google Play', note: 'Android, Wear OS' },
+      fdroid: { name: 'F-Droid', note: 'Android, without Google services' },
+      apk: { name: 'APK', note: 'Latest build on GitHub, without Google services' },
+      testflight: { name: 'TestFlight', note: 'iOS beta' },
     },
   },
   themeToggle: {

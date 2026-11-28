@@ -18,6 +18,7 @@ import { getPath, navigate } from '@/lib/router';
 const DOWNLOAD_URL_BY_PLATFORM: Record<Exclude<Platform, 'desktop'>, string> = {
   ios: APP_STORE_URL,
   android: GOOGLE_PLAY_URL,
+  mac: APP_STORE_URL,
 };
 
 export function TopNav() {
