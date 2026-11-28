@@ -4,13 +4,15 @@ import { tFor } from '@/lib/messages';
 import { trackEvent } from '@/lib/analytics';
 
 const screenshots = [
-  '/screenshots/homeworks.png',
-  '/screenshots/classtable.png',
-  '/screenshots/calendar.png',
-  '/screenshots/announcement.png',
-  '/screenshots/library.png',
-  '/screenshots/grades.png',
-  '/screenshots/customize.png',
+  'homework',
+  'class-table',
+  'calendar',
+  'course-announcements',
+  'library',
+  'scores',
+  'mail',
+  'empty-classrooms',
+  'clubs',
 ];
 
 const SWIPE_THRESHOLD_PX = 48;
@@ -301,7 +303,7 @@ export function FeaturesSection() {
                 return (
                   <img
                     key={i}
-                    src={screenshots[i]}
+                    src={`/screenshots/${locale}/${screenshots[i]}.webp`}
                     alt={i === idx ? feat.alt : ''}
                     className="td-feature-shot"
                     style={{
