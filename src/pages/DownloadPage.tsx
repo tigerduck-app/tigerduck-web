@@ -85,9 +85,9 @@ export function DownloadPage() {
           {others.map((channel) => (
             <li key={channel}>
               <a href={`/download/${channel}`} onClick={track(channel)}>
-                {messages.channels[channel].name}
+                <span className="td-download-other-name">{messages.channels[channel].name}</span>
+                <span className="td-download-note">{messages.channels[channel].note}</span>
               </a>
-              <span className="td-download-note">{messages.channels[channel].note}</span>
             </li>
           ))}
         </ul>
